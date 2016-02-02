@@ -15,5 +15,50 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Gift Exchange App"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtLoginUsername"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/txtLoginPassword"
+        android:layout_alignEnd="@+id/txtLoginPassword"
+        android:layout_alignLeft="@+id/txtLoginPassword"
+        android:layout_alignStart="@+id/txtLoginPassword" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/txtLoginPassword"
+        android:layout_below="@+id/txtLoginUsername"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/TEXT_LOGIN_USERNAME"
+        android:layout_above="@+id/txtLoginUsername"
+        android:layout_alignLeft="@+id/txtLoginUsername"
+        android:layout_alignStart="@+id/txtLoginUsername"
+        android:text="Username" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/TEXT_LOGIN_PASSWORD"
+        android:text="Password"
+        android:layout_below="@+id/txtLoginUsername"
+        android:layout_alignLeft="@+id/txtLoginPassword"
+        android:layout_alignStart="@+id/txtLoginPassword" />
 </RelativeLayout>
