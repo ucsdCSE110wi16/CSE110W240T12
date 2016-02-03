@@ -18,6 +18,43 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".createAccount"
+            android:label="@string/title_activity_create_account"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.ucsd.cse110wi16.giftexchange.MainActivity" />
+        </activity>
+        <activity
+            android:name=".viewMyProfile"
+            android:label="@string/title_activity_view_my_profile" />
+        <activity
+            android:name=".viewProfile"
+            android:label="@string/title_activity_view_profile" />
+        <activity
+            android:name=".viewCurrentGroups"
+            android:label="@string/title_activity_view_current_groups" />
+        <activity
+            android:name=".addGroup"
+            android:label="@string/title_activity_add_group" />
+        <activity
+            android:name=".viewGroupDetails_preSort"
+            android:label="@string/title_activity_view_group_details_pre_sort" />
+        <activity
+            android:name=".viewGroupDetails_postSort"
+            android:label="@string/title_activity_view_group_details_post_sort" />
+        <activity
+            android:name=".adminSettings"
+            android:label="@string/title_activity_admin_settings" />
+        <activity
+            android:name=".adminEditUsers"
+            android:label="@string/title_activity_admin_edit_users"
+            android:parentActivityName=".adminSettings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.ucsd.cse110wi16.giftexchange.adminSettings" />
+        </activity>
     </application>
 
 </manifest>
