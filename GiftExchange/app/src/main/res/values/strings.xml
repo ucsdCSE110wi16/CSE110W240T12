@@ -69,4 +69,5 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_admin_settings">Group Manager Settings</string>
     <string name="title_activity_admin_edit_users">adminEditUsers</string>
+    <string name="title_activity_create_group">CreateGroup</string>
 </resources>
