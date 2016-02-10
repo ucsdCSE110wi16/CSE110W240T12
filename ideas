@@ -2,6 +2,9 @@ public class User
 {
   private String full_name;
   //private String assigned_name;
+  private String department;
+  private String e_mail;
+
 
   public User()
   {
@@ -38,3 +41,6 @@ javac this_file -o ex
     "full_name" : "Miguel Vargas"
   }
 }
+
+
+YOU CAN ACTUALLY JUST ADD USERS THROUGH FIREBASE GUI
