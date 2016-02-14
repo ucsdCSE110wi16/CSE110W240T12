@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <color name="black">#000000</color>
+  <color name="seal_brown">#220c13</color>
+  <color name="dark_jungle_green">#252525</color>
+  <color name="taupe">#333333</color>
+  <color name="verdigris">#3a9da8</color>
+  <color name="cordovan">#7d314a</color>
+  <color name="manatee">#979797</color>
+  <color name="manatee2">#989898</color>
+  <color name="light_gray">#d6d6d6</color>
+  <color name="timberwolf">#d8d8d8</color>
+  <color name="snow">#fafafa</color>
+  <color name="white">#ffffff</color>
+</resources>
+
