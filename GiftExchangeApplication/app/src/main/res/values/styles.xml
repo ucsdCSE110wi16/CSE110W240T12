@@ -1,0 +1,16 @@
+<resources>
+
+    <style name="ListItemText">
+        <item name="android:textColor">@color/light_black</item>
+        <item name="android:textSize">@dimen/list_item_text_size</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
+    <style name="FAB">
+        <item name="android:layout_margin">15dp</item>
+        <item name="fabSize">normal</item>
+        <item name="rippleColor">@android:color/white</item>
+        <item name="backgroundTint">@color/primary</item>
+    </style>
+
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Dimension for text -->
+    <dimen name="list_item_text_size">16.6sp</dimen>
+</resources>
