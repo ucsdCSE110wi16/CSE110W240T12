@@ -1,0 +1,140 @@
+Kevin Cheng
+Kevin Chu
+Arthur de Jesus
+Michael Khorram
+Kyle Sherman
+Miguel Vargas
+CSE 110 Group #12 Wednesday B240
+
+
+Development Schedule for Gift Exchange App
+
+
+Week 1 - 7 Summary:
+* Learn Firebase, Android Studio, POJOs and how to work as an effective team.
+* Gain a clear understanding of customer requirements through weekly meetings
+* Add a README to help instructional staff as well as customers navigate and understand our repository.
+* Create Firebase structure
+* Understand userflow 
+
+
+Week 8:
+* Add registration, group creation and login connectivity from app to Firebase
+* Continue work on creating activities to finish working demo 
+
+
+Week 9:
+* Polish UI if time permits
+* Finalize app for release to clients
+
+
+
+
+OLD SCHEDULE
+---
+                                        
+Week 5:
+-Design UI frontend
+                                        
+Week 6:
+-Implement the UI, create an account system using firebase, and implement gift exchange
+                                        
+UI hookup: Kyle, Michael, Arthur
+firebase account system creation: Miguel, Kevin gift exchange implementation: Other Kevin
+                                        
+-Create countdown system 1-2 people
+                                        
+-Implement Admin and User deadline options for customizing the gift exchange 1-2 people
+                                        
+Clients will be able to login, create a group, invite users, and set up gift exchange(the core functionality) by the end of this week or the next.
+                                        
+Week 7:
+-Continue Week 6 stuff or move on to Week 8 stuff
+                                        
+Clients will be able to login, create a group, invite users, and set up gift exchange(the core functionality) by the end of this week
+                                        
+Week 8:
+-Polish UI
+                                        
+-Create ways to customize a user's profile frontend: 3 days, 2 people
+                                        
+backend: 3 days, 2 people -add other neat features maybe
+                                        
+???
+Clients will be pleased
+                                        
+OR
+                                        
+-fix unforeseen mistakes ???
+                                        
+Week 9:
+-Finalize the app and prepare it for release 
+                                
+                        
+                
+________________
+
+
+OLD SCHEDULE 2
+---                                                                               
+                                        
+tldr:
+Weeks 3-6: Implement core features of the app while learning android studio and app design Weeks 6-9: Implement nonessential luxury features while polishing the app as a whole
+                                        
+Week 4:
+-Create account system
+                                        
+-backend/database/figuring stuff out: 5 days, 2 people -Create account creation and main menu screens
+                                        
+-frontend: 4 days, 2 people -backend: 4 days, 2 people
+                                        
+Clients will be shown a login-screen and a menu after creating an account
+                                        
+Week 5:
+-Create ability to create a group
+                                        
+-frontend: 3 days, 2 people
+                                        
+-backend: 3 days, 2 people -Create ability to invite users
+                                        
+-frontend: 3 days, 2 people
+                                        
+-backend: 4 days, 2 people
+-Implement the functionality of accomplishing the actual gift exchange
+                                        
+-frontend: 3 days, 2 people -backend: 2 days, 2 people
+                                        
+Clients will be able to create a group, invite users, and set up a gift exchange
+                                        
+Week 6:
+-Create the deadline/countdown system
+                                        
+frontend: 3 days, 2 people
+                                        
+backend: 2 days, 2 people
+-Implement Admin and User deadline options for customizing the gift exchange
+                                        
+frontend: 3 days, 2 people backend: 5 days, 2 people
+                                        
+Clients will be shown more options when creating a group as an admin, and while looking at a group as a normal group member
+                                      
+Week 7:
+-Create ways to customize a user's profile
+                                        
+frontend: 3 days, 2 people
+                                        
+backend: 3 days, 2 people -add other neat features maybe
+                                        
+???
+Clients will be pleased
+                                        
+OR
+                                        
+-fix unforeseen mistakes ???
+                                        
+Week 8:
+-Continue writing the neat features and polishing the app
+                                        
+??? Week 9:
+                                        
+-Finalize the app and prepare it for release
