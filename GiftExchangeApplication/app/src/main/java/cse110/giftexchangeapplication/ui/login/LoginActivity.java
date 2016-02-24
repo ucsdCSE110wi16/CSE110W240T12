@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.AuthData;
@@ -35,11 +37,16 @@ public class LoginActivity extends AppCompatActivity {
         appName.setTypeface(type);
 
         TextView appTagLine = (TextView) findViewById(R.id.txtAppTagline);
-        Typeface type2 = Typeface.createFromAsset(getAssets(), "fonts/Avenir Next.ttc");
         appTagLine.setText("Exchanging gifts the easy way");
         appTagLine.setTypeface(type);
 
+        TextView userNameField = (TextView) findViewById(R.id.editUsername);
+        Typeface type3 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        userNameField.setTypeface(type3);
 
+        TextView passwordField = (TextView) findViewById(R.id.editPassword);
+        Typeface type4 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        passwordField.setTypeface(type4);
 
     }
 
@@ -76,6 +83,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthenticationError(FirebaseError firebaseError) {
                 // there was an error
                 System.out.print("Wrong Info");
+
+                Toast toast = Toast.makeText(LoginActivity.this, "Incorrect Username or Password. \n" +
+                        " Please try again.", Toast.LENGTH_SHORT);
+
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if( v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
             }
         });
 

@@ -53,24 +53,33 @@
         android:id="@+id/editUsername"
         android:layout_marginTop="31dp"
         android:layout_below="@+id/txtAppTagline"
-        android:layout_alignLeft="@+id/editPassword"
-        android:layout_alignStart="@+id/editPassword"
         android:hint="Username"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        android:background="@null"  />
+        android:background="@null"
+        android:inputType="textEmailAddress"
+        android:layout_alignLeft="@+id/txtSignUp"
+        android:layout_alignStart="@+id/txtSignUp"
+        android:layout_alignRight="@+id/txtSignUp"
+        android:layout_alignEnd="@+id/txtSignUp"
+        android:textAlignment="center" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editPassword"
         android:layout_below="@+id/editUsername"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp"
         android:hint="Password"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        android:background="@null"  />
+        android:background="@null"
+        android:inputType="textPassword"
+        android:layout_alignRight="@+id/editUsername"
+        android:layout_alignEnd="@+id/editUsername"
+        android:layout_alignLeft="@+id/editUsername"
+        android:layout_alignStart="@+id/editUsername"
+        android:textAlignment="center" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

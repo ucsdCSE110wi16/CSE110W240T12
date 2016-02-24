@@ -1,13 +1,13 @@
 package cse110.giftexchangeapplication.ui.createAccount;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import cse110.giftexchangeapplication.R;
+import cse110.giftexchangeapplication.ui.login.LoginActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -30,6 +30,7 @@ public class CreateAcctActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_acct);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Create New Account");
         setSupportActionBar(toolbar);
 
 
@@ -78,6 +79,11 @@ public class CreateAcctActivity extends AppCompatActivity {
                 System.out.println("ERROR: " + firebaseError.getMessage());
             }
         });
+    }
+
+    public void goLogin(View view){
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginIntent);
     }
 
 }

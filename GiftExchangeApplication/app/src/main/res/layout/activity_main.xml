@@ -14,15 +14,9 @@
     <RelativeLayout
         android:id="@+id/active_groups"
         android:layout_width="match_parent"
-        android:layout_height="440dp">
+        android:layout_height="match_parent">
 
     </RelativeLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bttnDEBUG"
-        android:text="Go to LoginActivity"
-        android:onClick="sendToLogin"/>
 
 </LinearLayout>

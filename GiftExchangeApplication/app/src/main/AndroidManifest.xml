@@ -12,8 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.MainActivity"
-            android:label="Gift Exchange App"
+            android:name=".ui.login.LoginActivity"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -26,12 +25,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.login.LoginActivity"
-            android:label="@string/title_activity_login"
+            android:name=".ui.MainActivity"
+            android:label="Current Groups"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.createAccount.CreateAcctActivity"
-            android:label="@string/title_activity_create_acct"
+            android:label="Create New Account"
             android:theme="@style/AppTheme"></activity>
     </application>
 
