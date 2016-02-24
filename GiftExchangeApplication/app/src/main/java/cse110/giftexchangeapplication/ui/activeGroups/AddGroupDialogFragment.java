@@ -97,12 +97,12 @@ public class AddGroupDialogFragment extends DialogFragment {
         Firebase ref = new Firebase(Constants.FIREBASE_URL);
         // Get the string that the user entered into the EditText and make an object with it
         String userEnteredName = mEditTextGroupName.getText().toString();
-        ActiveGroup activeGroup = new ActiveGroup(userEnteredName);
+        //ActiveGroup activeGroup = new ActiveGroup(userEnteredName);
 
         // Go to the "activeGroup" child node of the root node.
         // This will create the node for you if it doesn't already exist.
         // Then using the setValue menu it will serialize the ActiveGroup POJO
-        ref.child("activeGroup").setValue(activeGroup);
+        //ref.child("activeGroup").setValue(activeGroup);
     }
 
 }
