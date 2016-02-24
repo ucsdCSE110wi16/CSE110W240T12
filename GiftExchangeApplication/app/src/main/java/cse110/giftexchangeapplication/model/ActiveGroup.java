@@ -1,7 +1,5 @@
 package cse110.giftexchangeapplication.model;
 
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ActiveGroup {
@@ -22,14 +20,13 @@ public class ActiveGroup {
 
     /**
      * Use this constructor to create new ActiveGroups.
-     * Takes a group name ... for now.
      *
-     * @param groupName
-     * @param sortDate
-     * @param endDate
-     * @param priceMin
-     * @param priceMax
-     * @param blacklistMax
+     * @param groupName Group title
+     * @param sortDate Date of group sort
+     * @param endDate Date which gifts are given
+     * @param priceMin Minimum price for gifts
+     * @param priceMax Maximum price for gifts
+     * @param blacklistMax Maximum number of people to be blacklisted
      *
      */
     public ActiveGroup(String groupName, String sortDate, String endDate,
@@ -43,12 +40,7 @@ public class ActiveGroup {
 
         //make firebase reference then...
         // use push.
-        // "return uid and store it like that" 19:23 02/22/2016
-        // - Kevin Cheng Student Services Center, Conf. Room 450
-        // University of California, San Diego
-        // "32.878747, -117.235908"
-        // - Kvn Chng Stdnt Srvcs Cntr, Cnf. Rm 450
-        // Unvrst f Clfrn, Sn Dg
+        // return uid and store it like that
 
     }
 
