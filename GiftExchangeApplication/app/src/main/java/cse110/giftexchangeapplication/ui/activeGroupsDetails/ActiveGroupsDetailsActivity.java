@@ -173,7 +173,7 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
      */
     public void removeGroup() {
         // Create an instance of the dialog fragment and show it
-//        DialogFragment dialogFragment = RemoveGroupDialogFragment.newInstance(mActiveGroup);
-//        dialogFragment.show(getFragmentManager(), "RemoveGroupDialogFragment");
+        DialogFragment dialogFragment = RemoveGroupDialogFragment.newInstance(mActiveGroup, mGroupId);
+        dialogFragment.show(getFragmentManager(), "RemoveGroupDialogFragment");
     }
 }
