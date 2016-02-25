@@ -1,3 +1,19 @@
 <resources>
+
+    <!-- Menu Items -->
+    <string name="action_edit_group_name">Edit group name</string>
+    <string name="action_remove_group">Remove group</string>
+
+    <!-- Base Strings for the App -->
     <string name="app_name">Gift Exchange Application</string>
+    <string name="pager_title_active_groups">Active Groups</string>
+    <string name="pager_title_pending_groups">Pending Groups</string>
+
+    <!-- Edit Group Dialogs -->
+    <string name="positive_button_edit_item">Edit name</string>
+    <string name="negative_button_cancel">Cancel</string>
+    <string name="dialog_message_are_you_sure_remove_group">
+        Are you sure you want to remove this group?
+    </string>
+
 </resources>
