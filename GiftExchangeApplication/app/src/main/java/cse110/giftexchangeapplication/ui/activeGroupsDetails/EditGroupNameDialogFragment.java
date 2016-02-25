@@ -80,7 +80,7 @@ public class EditGroupNameDialogFragment extends EditGroupDialogFragment {
 
                     // Make a HashMap for the specific properties you are changing
                     HashMap<String, Object> updatedProperties = new HashMap<String, Object>();
-                    updatedProperties.put(Constants.FIREBASE_LOCATION_ACTIVE_GROUPS, inputGroupName);
+                    updatedProperties.put(Constants.FIREBASE_PROPERTY_GROUP_NAME, inputGroupName);
 
                     // Add the timestamp for last changed to the updatedProperties HashMap
                     HashMap<String, Object> changedTimestampMap = new HashMap<>();

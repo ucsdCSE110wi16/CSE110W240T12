@@ -12,6 +12,7 @@ public class Constants {
     public static final String FIREBASE_LOCATION_ACTIVE_GROUPS = "activeGroups";
 
     // Constants for Firebase object properties
+    public static final String FIREBASE_PROPERTY_GROUP_NAME = "groupName";
     public static final String FIREBASE_PROPERTY_TIMESTAMP_LAST_CHANGED = "timestampLastChanged";
     public static final String FIREBASE_PROPERTY_TIMESTAMP = "timestamp";
 
