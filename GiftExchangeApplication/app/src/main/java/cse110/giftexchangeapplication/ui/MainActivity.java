@@ -18,10 +18,19 @@ import cse110.giftexchangeapplication.ui.login.LoginActivity;
 
 public class MainActivity extends BaseActivity{
 
+    String userID = null;
+    // get userID from firebase
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Check if user is logged in, if not, send to login screen
+        if(userID == null){
+            sendToLogin(null);
+        }
+
 
         /**
          * Link layout elements from XML and setup the toolbar
