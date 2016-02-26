@@ -16,4 +16,9 @@
         Are you sure you want to remove this group?
     </string>
 
+    <!-- Instructions and Loading Text -->
+    <string name="progress_dialog_loading">Loading…</string>
+    <string name="progress_dialog_authenticating_with_firebase">Authenticating…</string>
+
+
 </resources>
