@@ -8,6 +8,7 @@
     <string name="app_name">Gift Exchange Application</string>
     <string name="pager_title_active_groups">Active Groups</string>
     <string name="pager_title_pending_groups">Pending Groups</string>
+    <string name="app_slogan">Exchanging gifts the easy way</string>
 
     <!-- Edit Group Dialogs -->
     <string name="positive_button_edit_item">Edit name</string>
@@ -19,6 +20,22 @@
     <!-- Instructions and Loading Text -->
     <string name="progress_dialog_loading">Loading…</string>
     <string name="progress_dialog_authenticating_with_firebase">Authenticating…</string>
+    <string name="progress_dialog_creating_user_with_firebase">Authenticating…</string>
+
+    <!-- Login & Create Account Screen -->
+    <string name="title_activity_create_account">Create Account</string>
+    <string name="hint_enter_email">Email</string>
+    <string name="hint_enter_password">Password</string>
+    <string name="hint_confirm_password">Confirm password</string>
+    <string name="hint_enter_first_name">First name</string>
+    <string name="hint_enter_last_name">Last name</string>
+    <string name="text_dont_have_account">Don\'t have an account?</string>
+    <string name="button_create_account">Sign Up</string>
+    <string name="text_already_have_account">Already have an account?</string>
+    <string name="button_signin_with_google">SIGN IN WITH GOOGLE</string>
+    <string name="button_signin_with_password">SIGN IN</string>
+    <string name="button_sign_in">Sign In</string>
+
 
 
 </resources>
