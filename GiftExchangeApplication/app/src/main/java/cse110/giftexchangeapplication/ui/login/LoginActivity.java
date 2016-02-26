@@ -17,8 +17,10 @@ import com.firebase.client.FirebaseError;
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.ui.createAccount.CreateAcctActivity;
 import cse110.giftexchangeapplication.ui.MainActivity;
+import cse110.giftexchangeapplication.utils.Constants;
 
 public class LoginActivity extends AppCompatActivity {
+
     String userID;
     public final static String UID = "edu.ucsd.cse110wi16.giftexchange.UID";
     Firebase ref;
@@ -28,9 +30,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userID = null;
-        ref = new Firebase("https://giftexchangeapp.firebaseio.com");
+        ref = new Firebase(Constants.FIREBASE_URL);
         setContentView(R.layout.activity_login);
 
+        // Does not follow DRY or SRP
         TextView appName = (TextView) findViewById(R.id.txtAppTitle);
         Typeface type = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
         appName.setText("GIFT EXCHANGE APP");
@@ -81,9 +84,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-                // there was an error
-                System.out.print("Wrong Info");
-
                 Toast toast = Toast.makeText(LoginActivity.this, "Incorrect Username or Password. \n" +
                         " Please try again.", Toast.LENGTH_SHORT);
 
