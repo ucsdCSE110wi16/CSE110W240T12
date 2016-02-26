@@ -26,6 +26,7 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
     private ListView mListView;
     private String mGroupId;
     private ActiveGroup mActiveGroup;
+    private ValueEventListener mActiveGroupRefListener;
 
 
     @Override
@@ -55,7 +56,7 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
          * Save the most recent version of current active group into mActiveGroup instance
          * variable and update the UI to match the current group
          */
-        mActiveGroupRef.addValueEventListener(new ValueEventListener() {
+        mActiveGroupRefListener = mActiveGroupRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 /**
@@ -144,7 +145,10 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
 
     // Clean up when activity is destroyed.
     @Override
-    public void onDestroy() { super.onDestroy(); }
+    public void onDestroy() {
+        super.onDestroy();
+        mActiveGroupRef.removeEventListener(mActiveGroupRefListener);
+    }
 
     /**
      * Link layout elements from XML and setup the toolbar

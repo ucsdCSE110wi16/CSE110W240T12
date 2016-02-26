@@ -2,6 +2,7 @@ package cse110.giftexchangeapplication.ui;
 
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,12 +14,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.ui.activeGroups.ActiveGroupsFragment;
 import cse110.giftexchangeapplication.ui.activeGroups.AddGroupDialogFragment;
+import cse110.giftexchangeapplication.ui.login.LoginActivity;
 import cse110.giftexchangeapplication.ui.pendingGroups.PendingGroupsFragment;
+import cse110.giftexchangeapplication.utils.Constants;
 
 public class MainActivity extends BaseActivity{
+
+    final Firebase ref = new Firebase(Constants.FIREBASE_URL);
+    AuthData authData = ref.getAuth();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +37,27 @@ public class MainActivity extends BaseActivity{
         /**
          * Link layout elements from XML and setup the toolbar
          */
-        initializeScreen();
+//        final Firebase ref = new Firebase(Constants.FIREBASE_URL);
+//        AuthData authData = ref.getAuth();
+
+        if(authData == null)
+        {
+            startLoginActivity();
+            //initializeScreen();
+        }
+        else
+        {
+            initializeScreen();
+        }
+//        Button mEmailSignInButton = (Button) findViewById(R.id.logout_button);
+//        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ref.unauth();
+//                startLoginActivity();
+//            }
+//        });
+        //initializeScreen();
     }
 
     /**
@@ -40,6 +69,13 @@ public class MainActivity extends BaseActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         /* Inflate the menu; This adds items to the action bar if it is present. */
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        // Login menu item
+        MenuItem logout = menu.findItem(R.id.action_logout);
+
+        // Set the visibility
+        logout.setVisible(true);
+
         return true;
     }
 
@@ -51,6 +87,17 @@ public class MainActivity extends BaseActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        /**
+         * logout when logout action is selected
+         */
+        if (id == R.id.action_logout) {
+            ref.unauth();
+            startLoginActivity();
+
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -140,5 +187,11 @@ public class MainActivity extends BaseActivity{
                     return getString(R.string.pager_title_pending_groups);
             }
         }
+    }
+
+    public void startLoginActivity(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 }
