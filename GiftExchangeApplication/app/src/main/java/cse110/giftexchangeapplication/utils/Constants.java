@@ -27,4 +27,9 @@ public class Constants {
     public static final String KEY_GROUP_NAME = "GROUP_NAME";
     public static final String KEY_LAYOUT_RESOURCE = "LAYOUT_RESOURCE";
     public static final String KEY_GROUP_ID = "GROUP_ID";
+
+    /**
+     * Constants for Firebase login
+     */
+    public static final String PASSWORD_PROVIDER = "password";
 }
