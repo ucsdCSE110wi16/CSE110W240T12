@@ -36,5 +36,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
+
+        <activity android:name=".ui.login.LoginActivity">
+
+        </activity>
+
+        <activity
+            android:name=".ui.login.CreateAccountActivity"
+            android:label="@string/title_activity_create_account"
+            android:parentActivityName=".ui.login.LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.login.LoginActivity" />
+        </activity>
+
     </application>
 </manifest>
