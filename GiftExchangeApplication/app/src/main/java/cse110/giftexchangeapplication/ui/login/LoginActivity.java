@@ -79,7 +79,7 @@ public class LoginActivity extends BaseActivity {
     /*
      * Open CreateAccountActivity when the user taps on "Sign up"
      */
-    public void onSignUpPressed(View veiw) {
+    public void onSignUpPressed(View view) {
         Intent intent = new Intent(LoginActivity.this, CreateAccountActivity.class);
         startActivity(intent);
     }
