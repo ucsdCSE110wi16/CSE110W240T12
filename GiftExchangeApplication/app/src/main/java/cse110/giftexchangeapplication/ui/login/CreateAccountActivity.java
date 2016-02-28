@@ -1,44 +1,55 @@
 package cse110.giftexchangeapplication.ui.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Gravity;
+import android.util.Patterns;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ServerValue;
+import com.firebase.client.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import cse110.giftexchangeapplication.R;
+import cse110.giftexchangeapplication.model.User;
 import cse110.giftexchangeapplication.ui.BaseActivity;
 import cse110.giftexchangeapplication.ui.MainActivity;
 import cse110.giftexchangeapplication.utils.Constants;
 
 public class CreateAccountActivity extends BaseActivity {
 
-    private Firebase ref;
-    private EditText mFirstNameView;
-    private EditText mLastNameView;
-    private EditText mEmailView;
-    private EditText mPasswordView;
-    private EditText mPasswordConfirmView;
+    private Firebase mFirebaseRef;
+    private EditText mEditTextFirstNameCreate;
+    private EditText mEditTextLastNameCreate;
+    private EditText mEditTextEmailCreate;
+    private EditText mEditTextPasswordCreate;
+    private EditText mEditTextPasswordConfirmCreate;
+
+    private String mFirstName, mLastName, mUserEmail, mPassword, mConFirmPassword;
+
+    ProgressDialog mAuthProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
-        //Instantiate variables to their XML objects
-        ref = new Firebase(Constants.FIREBASE_URL);
-        mFirstNameView = (EditText) findViewById(R.id.edit_text_first_name_create);
-        mLastNameView = (EditText) findViewById(R.id.edit_text_user_last_name_create);
-        mEmailView = (EditText) findViewById(R.id.edit_text_email_create);
-        mPasswordView = (EditText) findViewById(R.id.edit_text_password_create);
-        mPasswordConfirmView = (EditText) findViewById(R.id.edit_text_confirm_password_create);
+
+        // Create Firebase Reference
+        mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
+
+        // Link XML layout elements & setup the progress dialog
+        initializeScreen();
+
         //Add functionality to button.
         Button mRegisterButton = (Button) findViewById(R.id.btn_create_account_final);
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -49,115 +60,183 @@ public class CreateAccountActivity extends BaseActivity {
         });
     }
 
-    public void createNewAccount() {
-        //Clear all error messages
-        mFirstNameView.setError(null);
-        mLastNameView.setError(null);
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-        mPasswordConfirmView.setError(null);
-        boolean cancel = false;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
-        final String firstName = mFirstNameView.getText().toString();
-        final String lastName = mLastNameView.getText().toString();
-        final String email = mEmailView.getText().toString();
-        final String password = mPasswordView.getText().toString();
-        final String passwordConfirm = mPasswordConfirmView.getText().toString();
+    public void initializeScreen() {
+        mEditTextFirstNameCreate = (EditText) findViewById(R.id.edit_text_first_name_create);
+        mEditTextLastNameCreate = (EditText) findViewById(R.id.edit_text_user_last_name_create);
+        mEditTextEmailCreate = (EditText) findViewById(R.id.edit_text_email_create);
+        mEditTextPasswordCreate = (EditText) findViewById(R.id.edit_text_password_create);
+        mEditTextPasswordConfirmCreate = (EditText) findViewById(R.id.edit_text_confirm_password_create);
+
+        // Setup a progress dialog for authentication progress
+        mAuthProgressDialog = new ProgressDialog(this);
+        mAuthProgressDialog.setTitle(getResources().getString(R.string.progress_dialog_loading));
+        mAuthProgressDialog.setMessage(getResources().getString(R.string.progress_dialog_creating_user_with_firebase));
+        mAuthProgressDialog.setCancelable(false);
+
+    }
+
+    /**
+     * Open LoginActivity when user taps on "Sign in" TextView
+     */
+    public void onSignInPressed(View view) {
+        Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    /**
+     * Create a new account using Firebase email/password provider
+     */
+    public void createNewAccount() {
+
+        mFirstName = mEditTextFirstNameCreate.getText().toString();
+        mLastName = mEditTextLastNameCreate.getText().toString();
+        mUserEmail = mEditTextEmailCreate.getText().toString();
+        mPassword = mEditTextPasswordCreate.getText().toString();
+        mConFirmPassword = mEditTextPasswordConfirmCreate.getText().toString();
+
 
         //Checks validity of all text fields
-        if(firstName.equals("")) {
-            mFirstNameView.setError("This field is required!");
-            cancel = true;
-        }
-        if(lastName.equals("")) {
-            mLastNameView.setError("This field is required!");
-            cancel = true;
-        }
-        if(TextUtils.isEmpty(email)) {
-            mEmailView.setError("This field is required!");
-            cancel = true;
-        }
-        else if(!isEmailValid(email)) {
-            mEmailView.setError("This email address is invalid");
-            cancel = true;
-        }
-        if(TextUtils.isEmpty(password)) {
-            mPasswordView.setError("This field is required!");
-            cancel = true;
-        }
-        else if(!isPasswordValid(password)) {
-            mPasswordView.setError("This password is too short!");
-            cancel = true;
-        }
-        else if(!password.equals(passwordConfirm)) {
-            mPasswordConfirmView.setError("The passwords do not match!");
-            cancel = true;
+        boolean validEmail = isEmailValid(mUserEmail);
+        boolean validFirstName = isFirstNameValid(mFirstName);
+        boolean validLastName = isLastNameValid(mLastName);
+        boolean validPassword = isPasswordValid(mPassword);
+
+        if(!validEmail || !validFirstName || !validLastName || !validPassword)
+            return;
+
+        // If everything is valid show the progress dialog
+        mAuthProgressDialog.show();
+
+        final AuthData authData = mFirebaseRef.getAuth();
+        if (authData != null) {
+            mFirebaseRef.unauth();
         }
 
-        if(TextUtils.isEmpty(passwordConfirm)) {
-            mPasswordConfirmView.setError("This field is required!");
-            cancel = true;
-        }
+        mFirebaseRef.createUser(mUserEmail, mPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
+            @Override
+            public void onSuccess(Map<String, Object> stringObjectMap) {
+                // Dismiss progress dialog
+                mAuthProgressDialog.dismiss();
+                final String uid = (String) stringObjectMap.get("uid");
 
-        if(!cancel)
-        {
-            AuthData authData = ref.getAuth();
-            if(authData != null) {
-                ref.unauth();
+                mFirebaseRef.authWithPassword(mUserEmail, mPassword, new Firebase.AuthResultHandler() {
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                        createUserInFirebase(uid);
+                        startMainActivity();
+                    }
+
+                    @Override
+                    public void onAuthenticationError(FirebaseError firebaseError) {
+
+                    }
+                });
             }
-            ref.createUser(email, password, new Firebase.ResultHandler() {
-                @Override
-                public void onSuccess() {
-                    ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {
-                        @Override
-                        public void onAuthenticated(AuthData authData) {
-                             ref.child("Users").child(authData.getUid()).child("email").setValue(email);
-                             ref.child("Users").child(authData.getUid()).child("first_name").setValue(firstName);
-                             ref.child("Users").child(authData.getUid()).child("last_name").setValue(lastName);
 
-                             startHomeActivity();
-                         }
-                        @Override
-                        public void onAuthenticationError(FirebaseError firebaseError) {
-                        }
-                    });
+            @Override
+            public void onError(FirebaseError firebaseError) {
+                // Error occurs, dismiss dialog
+                mAuthProgressDialog.dismiss();
+
+                // Display error
+                if (firebaseError.getCode() == FirebaseError.EMAIL_TAKEN) {
+                    mEditTextEmailCreate.setError(getString(R.string.error_email_taken));
                 }
-                public void onError(FirebaseError firebaseError) {
-                    if(firebaseError.getCode() == FirebaseError.EMAIL_TAKEN) {
-                        Toast toast = Toast.makeText(CreateAccountActivity.this, "Email is already taken.", Toast.LENGTH_SHORT);
-                        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                        if( v != null) {
-                            v.setGravity(Gravity.CENTER);
-                            toast.show();
-                        }
-                    }
-                    else {
-                        Toast toast = Toast.makeText(CreateAccountActivity.this, "An error has occured!", Toast.LENGTH_SHORT);
-                        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                        if( v != null) {
-                            v.setGravity(Gravity.CENTER);
-                            toast.show();
-                        }
-                    }
+                else {
+                    showErrorToast(firebaseError.getMessage());
                 }
+            }
+        });
+    }
 
-            });
-        }
+    /**
+     * Helper that creates a User & stores it in Firebase
+     * @param uid
+     */
 
+    private void createUserInFirebase(String uid) {
+
+        final Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS).child(uid);
+
+        userLocation.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // If there is no user, make one
+                if (dataSnapshot.getValue() == null) {
+                    HashMap<String, Object> timestampJoined = new HashMap<>();
+                    timestampJoined.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
+
+                    User newUser = new User(mFirstName, mLastName, mUserEmail, timestampJoined);
+                    userLocation.setValue(newUser);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                // blank
+            }
+        });
 
     }
 
+    // Check if email is valid
     private boolean isEmailValid(String email) {
-            return email.contains("@");
+        boolean isGoodEmail =
+                (email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches());
+
+        if(!isGoodEmail) {
+            mEditTextEmailCreate.setError(String.format(getResources().getString(R.string.error_invalid_email_not_valid),
+                    email));
+            return false;
+        }
+        return isGoodEmail;
     }
 
+    // Check if first name is valid
+    private boolean isFirstNameValid(String firstName) {
+        if (firstName.equals("")) {
+            mEditTextFirstNameCreate.setError(getResources().getString(R.string.error_cannot_be_empty));
+            return false;
+        }
+        return true;
+    }
+
+    // Check if last name is valid
+    private boolean isLastNameValid(String lastName) {
+        if (lastName.equals("")) {
+            mEditTextFirstNameCreate.setError(getResources().getString(R.string.error_cannot_be_empty));
+            return false;
+        }
+        return true;
+    }
+
+    // Check if password is valid
     private boolean isPasswordValid(String password) {
-        return password.length() > 5;
+        if (password.length() < 6) {
+            mEditTextPasswordCreate.setError(getResources().getString(R.string.error_invalid_password_not_valid));
+            return false;
+        }
+        return true;
     }
 
-    public void startHomeActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
+    // TODO: Check confirmed password if it matches original password.
+
+    // Show error toast to user
+    private void showErrorToast(String message) {
+        Toast.makeText(CreateAccountActivity.this, message, Toast.LENGTH_LONG).show();
+    }
+
+    public void startMainActivity(){
+        Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        this.finish();
+        finish();
     }
 }
