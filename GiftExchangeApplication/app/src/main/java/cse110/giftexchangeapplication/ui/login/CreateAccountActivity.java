@@ -107,7 +107,7 @@ public class CreateAccountActivity extends BaseActivity {
         boolean validEmail = isEmailValid(mUserEmail);
         boolean validFirstName = isFirstNameValid(mFirstName);
         boolean validLastName = isLastNameValid(mLastName);
-        boolean validPassword = isPasswordValid(mPassword);
+        boolean validPassword = isPasswordValid(mPassword, mConFirmPassword);
 
         if(!validEmail || !validFirstName || !validLastName || !validPassword)
             return;
@@ -218,10 +218,13 @@ public class CreateAccountActivity extends BaseActivity {
     }
 
     // Check if password is valid
-    private boolean isPasswordValid(String password) {
+    private boolean isPasswordValid(String password, String confirmPassword) {
         if (password.length() < 6) {
             mEditTextPasswordCreate.setError(getResources().getString(R.string.error_invalid_password_not_valid));
             return false;
+        }
+        else if (!password.equals(confirmPassword)) {
+            mEditTextPasswordConfirmCreate.setError(getResources().getString(R.string.error_confirm_password_not_valid));
         }
         return true;
     }
