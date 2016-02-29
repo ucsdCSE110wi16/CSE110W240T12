@@ -36,6 +36,13 @@
     <string name="button_signin_with_password">SIGN IN</string>
     <string name="button_sign_in">Sign In</string>
 
-
+    <!-- Errors -->
+    <string name="error_message_email_issue">There was an error with your email; please check that you entered it correctly.</string>
+    <string name="error_message_failed_sign_in_no_network">There was a problem with the network connection.\nAre you sure you\'re connected to the internet?</string>
+    <string name="error_invalid_password_not_valid">Please enter a password that is at least 6 characters long.</string>
+    <string name="error_cannot_be_empty">This cannot be empty.</string>
+    <string name="error_email_taken">This email is already taken</string>
+    <string name="error_invalid_email_not_valid">Please enter a valid email</string>
+    <string name="error_confirm_password_not_valid">The passwords don\'t match</string>
 
 </resources>

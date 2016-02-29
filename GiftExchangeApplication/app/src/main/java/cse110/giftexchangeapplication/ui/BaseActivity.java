@@ -10,16 +10,22 @@ import cse110.giftexchangeapplication.R;
 
 public abstract class BaseActivity extends AppCompatActivity{
 
+    protected String mEncodedEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public void onDestroy() { super.onDestroy(); }
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) { super.onSaveInstanceState(outState); }
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -41,6 +47,6 @@ public abstract class BaseActivity extends AppCompatActivity{
 
     protected void initializeBackground(LinearLayout linearLayout) {
         // Login screen related
+        linearLayout.setBackgroundResource(R.drawable.background_loginscreen);
     }
-
 }
