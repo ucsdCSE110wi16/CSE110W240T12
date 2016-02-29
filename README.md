@@ -1,4 +1,4 @@
-<img src="http://ajdejesus.com/assets/logo.png" width="20%"> </img>
+<img src="http://ajdejesus.com/assets/newlogo.png" width="20%"> </img>
 
 # Gift Exchange App
 
