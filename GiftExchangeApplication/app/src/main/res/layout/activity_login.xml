@@ -16,7 +16,8 @@
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="16dp"
+        android:background="@drawable/background_loginscreen">
 
         <LinearLayout
             android:layout_width="0px"
