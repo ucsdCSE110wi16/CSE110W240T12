@@ -2,87 +2,130 @@ package cse110.giftexchangeapplication.ui;
 
 
 import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.ui.activeGroups.ActiveGroupsFragment;
 import cse110.giftexchangeapplication.ui.activeGroups.AddGroupDialogFragment;
 import cse110.giftexchangeapplication.ui.login.LoginActivity;
+import cse110.giftexchangeapplication.ui.pendingGroups.PendingGroupsFragment;
+import cse110.giftexchangeapplication.utils.Constants;
 
 public class MainActivity extends BaseActivity{
 
-    String userID = null;
-    // get userID from firebase
+    final Firebase ref = new Firebase(Constants.FIREBASE_URL);
+    AuthData authData = ref.getAuth();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Check if user is logged in, if not, send to login screen
-        if(userID == null){
-            sendToLogin(null);
-        }
-
-
         /**
          * Link layout elements from XML and setup the toolbar
          */
-        initializeScreen();
+//        final Firebase ref = new Firebase(Constants.FIREBASE_URL);
+//        AuthData authData = ref.getAuth();
+
+        if(authData == null)
+        {
+            startLoginActivity();
+            //initializeScreen();
+        }
+        else
+        {
+            initializeScreen();
+        }
+//        Button mEmailSignInButton = (Button) findViewById(R.id.logout_button);
+//        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ref.unauth();
+//                startLoginActivity();
+//            }
+//        });
+        //initializeScreen();
     }
 
     /**
      * Override onOptionsItemSelected to use main_menu instead of BaseActivity menu
      *
-     * @param menu Description
+     * @param menu
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         /* Inflate the menu; This adds items to the action bar if it is present. */
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    public void sendToLogin(View view){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        // Login menu item
+        MenuItem logout = menu.findItem(R.id.action_logout);
+
+        // Set the visibility
+        logout.setVisible(true);
+
+        return true;
     }
 
     /**
      * Override onOptionsItemSelected to add action_setting only to the MainActivity
      *
-     * @param item Description
+     * @param item
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        /**
+         * logout when logout action is selected
+         */
+        if (id == R.id.action_logout) {
+            ref.unauth();
+            startLoginActivity();
+
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onDestroy() { super.onDestroy(); }
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
     /**
      * Link layout elements from XML and setup the toolbar
      */
     public void initializeScreen() {
-        // Setup the toolbar
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        /**
+         * Create SectionPagerAdapter, set is as adapter to viewPager with setOffscreenPageLimt(2)
+         */
+        SectionPagerAdapter adapter = new SectionPagerAdapter(getSupportFragmentManager());
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setAdapter(adapter);
 
-        ActiveGroupsFragment fragment = new ActiveGroupsFragment();
-        fragmentTransaction.add(R.id.active_groups, fragment);
-        fragmentTransaction.commit();
+        /**
+         * Setup mTabLayout with view pager
+         */
+        tabLayout.setupWithViewPager(viewPager);
 
     }
 
@@ -93,5 +136,62 @@ public class MainActivity extends BaseActivity{
         // Create an instance of the dialog fragment and show it
         DialogFragment dialog = AddGroupDialogFragment.newInstance();
         dialog.show(MainActivity.this.getFragmentManager(), "AddGroupDialogFragment");
+    }
+
+    /**
+     * SectionPagerAdapter class that extends FragmentStatePagerAdapter to save fragments state
+     */
+    public class SectionPagerAdapter extends FragmentStatePagerAdapter {
+
+        public SectionPagerAdapter(FragmentManager fm) { super(fm); }
+
+        /**
+         * Use positions (0 and 1) to find and instantiate fragments with newInstance()
+         *
+         * @param position
+         */
+        @Override
+        public Fragment getItem(int position) {
+
+            Fragment fragment = null;
+
+            /**
+             * Set fragment to different fragments depending on position in ViewPage
+             */
+            switch (position) {
+                case 0:
+                    fragment = ActiveGroupsFragment.newInstance();
+                    break;
+                case 1:
+                    fragment = PendingGroupsFragment.newInstance();
+                    break;
+                default:
+                    fragment = ActiveGroupsFragment.newInstance();
+                    break;
+            }
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return getString(R.string.pager_title_active_groups);
+                case 1:
+                default:
+                    return getString(R.string.pager_title_pending_groups);
+            }
+        }
+    }
+
+    public void startLoginActivity(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 }

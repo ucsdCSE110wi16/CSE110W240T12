@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.ServerValue;
+
+import java.util.HashMap;
 
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.model.ActiveGroup;
@@ -93,16 +96,40 @@ public class AddGroupDialogFragment extends DialogFragment {
      * Add new ActiveGroup
      */
     public void addActiveGroup() {
-        // Get the reference to the root node in Firebase
-        Firebase ref = new Firebase(Constants.FIREBASE_URL);
         // Get the string that the user entered into the EditText and make an object with it
+        // We'll user "Anonymous Manager" for the manager because accounts aren't setup yet
         String userEnteredName = mEditTextGroupName.getText().toString();
-        //ActiveGroup activeGroup = new ActiveGroup(userEnteredName);
+        String manager = "Anonymous Manager";
 
-        // Go to the "activeGroup" child node of the root node.
-        // This will create the node for you if it doesn't already exist.
-        // Then using the setValue menu it will serialize the ActiveGroup POJO
-        //ref.child("activeGroup").setValue(activeGroup);
+        /**
+         * If EditText input is not empty
+         */
+        if (!userEnteredName.equals("")) {
+
+            // Create Firebase references
+            Firebase groupsRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS);
+            Firebase newGroupRef = groupsRef.push();
+
+            // Save groupsRef.push() to maintain same random ID
+            final String groupID = newGroupRef.getKey();
+
+            /*
+             * Set raw version of date to the ServerValue.TIMESTAMP value and save into
+             * timestampCreateMap
+             */
+            HashMap<String, Object> timestampCreated = new HashMap<>();
+            timestampCreated.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
+
+            // Build the active group
+            ActiveGroup newActiveGroup = new ActiveGroup(userEnteredName, manager, timestampCreated);
+
+            // Add the active group
+            newGroupRef.setValue(newActiveGroup);
+
+            // Close the dialog fragment
+            AddGroupDialogFragment.this.getDialog().cancel();
+
+        }
     }
 
 }

@@ -1,107 +1,226 @@
 package cse110.giftexchangeapplication.ui.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
 import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import cse110.giftexchangeapplication.R;
-import cse110.giftexchangeapplication.ui.createAccount.CreateAcctActivity;
+import cse110.giftexchangeapplication.ui.BaseActivity;
 import cse110.giftexchangeapplication.ui.MainActivity;
 import cse110.giftexchangeapplication.utils.Constants;
 
-public class LoginActivity extends AppCompatActivity {
+/**
+ * A login screen that offers login via email/password.
+ */
+public class LoginActivity extends BaseActivity {
 
-    String userID;
-    public final static String UID = "edu.ucsd.cse110wi16.giftexchange.UID";
-    Firebase ref;
-    String email;
+    private ProgressDialog mAuthProgressDialog;
+    private Firebase ref;
+    private EditText mEditTextEmailInput;
+    private EditText mEditTextPasswordInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userID = null;
-        ref = new Firebase(Constants.FIREBASE_URL);
         setContentView(R.layout.activity_login);
 
-        // Does not follow DRY or SRP
-        TextView appName = (TextView) findViewById(R.id.txtAppTitle);
-        Typeface type = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
-        appName.setText("GIFT EXCHANGE APP");
-        appName.setTypeface(type);
+        // Create Firebase references
+        ref = new Firebase(Constants.FIREBASE_URL);
 
-        TextView appTagLine = (TextView) findViewById(R.id.txtAppTagline);
-        appTagLine.setText("Exchanging gifts the easy way");
-        appTagLine.setTypeface(type);
+        // Link layout elements
+        initializeScreen();
 
-        TextView userNameField = (TextView) findViewById(R.id.editUsername);
-        Typeface type3 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
-        userNameField.setTypeface(type3);
-
-        TextView passwordField = (TextView) findViewById(R.id.editPassword);
-        Typeface type4 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
-        passwordField.setTypeface(type4);
-
-    }
-
-    public void goCreate(View view){
-        Intent createIntent = new Intent(this, CreateAcctActivity.class);
-        startActivity(createIntent);
-    }
-
-    public void goAuth(View view){
-        EditText username = (EditText) findViewById(R.id.editUsername);
-        EditText passwordText = (EditText) findViewById(R.id.editPassword);
-
-        //send username and pass
-
-        email = username.getText().toString();
-        String password = passwordText.getText().toString();
-
-        //verify with firebase
-
-        ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+        mEditTextPasswordInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onAuthenticated(AuthData authData) {
-                System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
-                userID = authData.getUid();
-
-                ref.child("Users").child(authData.getUid()).child("email").setValue(email);
-                ref.child("Users").child(authData.getUid()).child("name").setValue("hardcoded name");
-
-                startHomeActivity();
-
-            }
-
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                Toast toast = Toast.makeText(LoginActivity.this, "Incorrect Username or Password. \n" +
-                        " Please try again.", Toast.LENGTH_SHORT);
-
-                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                if( v != null) v.setGravity(Gravity.CENTER);
-                toast.show();
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN) {
+                    attemptLogin();
+                }
+                return true;
             }
         });
 
-
     }
 
-    public void startHomeActivity() {
-        if(userID != null){
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(UID, userID);
-            startActivity(intent);
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    /**
+     * Override onCreateOptionsMenu to inflate nothing
+     */
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu) {
+        return true;
+    }
+
+    public void onSignInPressed(View view) {
+        attemptLogin();
+    }
+
+    /*
+     * Open CreateAccountActivity when the user taps on "Sign up"
+     */
+    public void onSignUpPressed(View view) {
+        Intent intent = new Intent(LoginActivity.this, CreateAccountActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Initialize all the elements on the screen
+     */
+    public void initializeScreen() {
+        mEditTextEmailInput = (EditText) findViewById(R.id.edit_text_email);
+        mEditTextPasswordInput = (EditText) findViewById(R.id.edit_text_password);
+
+        LinearLayout linearLayoutLoginActivity = (LinearLayout) findViewById(R.id.linear_layout_login_activity);
+        initializeBackground(linearLayoutLoginActivity);
+
+        // Set up a progress dialog
+        mAuthProgressDialog = new ProgressDialog(this);
+        mAuthProgressDialog.setTitle(getString(R.string.progress_dialog_loading));
+        mAuthProgressDialog.setMessage(getString(R.string.progress_dialog_authenticating_with_firebase));
+        mAuthProgressDialog.setCancelable(false);
+    }
+
+    /**
+     * Attempts to sign in or register the account specified by the login form.
+     * If there are form errors (invalid email, missing fields, etc.), the
+     * errors are presented and no actual login attempt is made.
+     */
+    private void attemptLogin() {
+        mEditTextEmailInput.setError(null);
+        mEditTextPasswordInput.setError(null);
+
+        final String email = mEditTextEmailInput.getText().toString();
+        final String password = mEditTextPasswordInput.getText().toString();
+
+        boolean cancel = areInputsValid(email, password);
+
+        if(!cancel){
+            mAuthProgressDialog.show();
+            ref.authWithPassword(email, password, new MyAuthResultHandler(Constants.PASSWORD_PROVIDER));
         }
     }
 
+    /**
+     * When user taps "Done" check password is valid
+     */
+    boolean areInputsValid(String email, String password) {
+        boolean cancel = false;
+
+        if(email.equals("")) {
+            mEditTextEmailInput.setError(getString(R.string.error_cannot_be_empty));
+            cancel = true;
+        }
+
+        if(password.equals("")) {
+            mEditTextPasswordInput.setError(getString(R.string.error_cannot_be_empty));
+            cancel = true;
+        }
+        if(!isPasswordValid(password)) {
+            mEditTextPasswordInput.setError(getString(R.string.error_invalid_password_not_valid));
+            cancel = true;
+        }
+
+        return cancel;
+    }
+
+    /**
+     * Handles the user authentication if the inputs pass the first check
+     */
+
+    private class MyAuthResultHandler implements Firebase.AuthResultHandler {
+
+        public MyAuthResultHandler(String provider) {
+            // Required empty constructor
+        }
+
+        /**
+         * On SUCCESSFUL authentication
+         * @param authData
+         */
+        @Override
+        public void onAuthenticated(AuthData authData) {
+            mAuthProgressDialog.dismiss();
+
+            if (authData != null) {
+                // Go to the main activity
+                startMainActivity();
+            }
+        }
+
+        /**
+         * On NON SUCCESSFULL authentication
+         * @param firebaseError
+         *
+         */
+        @Override
+        public void onAuthenticationError(FirebaseError firebaseError) {
+            mAuthProgressDialog.dismiss();
+
+            /**
+             * Check the network connection state, & check for other
+             * login errors & throw Firebase's errors
+             */
+
+            switch (firebaseError.getCode()) {
+                case FirebaseError.INVALID_EMAIL:
+                case FirebaseError.USER_DOES_NOT_EXIST:
+                    mEditTextEmailInput.setError(getString(R.string.error_message_email_issue));
+                    break;
+
+                case FirebaseError.INVALID_PASSWORD:
+                    mEditTextPasswordInput.setError(firebaseError.getMessage());
+                    break;
+
+                case FirebaseError.NETWORK_ERROR:
+                    showErrorToast(getString(R.string.error_message_failed_sign_in_no_network));
+                    break;
+
+                default:
+                    showErrorToast(firebaseError.toString());
+
+            }
+        }
+    }
+
+    private boolean isPasswordValid(String password) {
+        //TODO: Replace this with your own logic
+        return password.length() > 4;
+    }
+
+    /**
+     * Helper method used to start the MainActivity
+     */
+    public void startMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    // Show the Toast with the error
+    private void showErrorToast(String message) {
+        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+    }
 }
+
