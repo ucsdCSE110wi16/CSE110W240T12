@@ -41,5 +41,7 @@
     <string name="error_message_failed_sign_in_no_network">There was a problem with the network connection.\nAre you sure you\'re connected to the internet?</string>
     <string name="error_invalid_password_not_valid">Please enter a password that is at least 6 characters long.</string>
     <string name="error_cannot_be_empty">This cannot be empty.</string>
+    <string name="error_email_taken">This email is already taken</string>
+    <string name="error_invalid_email_not_valid">Please enter a valid email</string>
 
 </resources>
