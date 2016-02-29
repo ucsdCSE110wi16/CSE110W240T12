@@ -228,9 +228,7 @@ public class CreateAccountActivity extends BaseActivity {
         }
         return true;
     }
-
-    // TODO: Check confirmed password if it matches original password.
-
+    
     // Show error toast to user
     private void showErrorToast(String message) {
         Toast.makeText(CreateAccountActivity.this, message, Toast.LENGTH_LONG).show();
