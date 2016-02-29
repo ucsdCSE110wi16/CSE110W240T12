@@ -25,6 +25,7 @@ import cse110.giftexchangeapplication.model.User;
 import cse110.giftexchangeapplication.ui.BaseActivity;
 import cse110.giftexchangeapplication.ui.MainActivity;
 import cse110.giftexchangeapplication.utils.Constants;
+import cse110.giftexchangeapplication.utils.Utils;
 
 public class CreateAccountActivity extends BaseActivity {
 
@@ -129,7 +130,7 @@ public class CreateAccountActivity extends BaseActivity {
                 mFirebaseRef.authWithPassword(mUserEmail, mPassword, new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        createUserInFirebase(uid);
+                        createUserInFirebase();
                         startMainActivity();
                     }
 
@@ -158,12 +159,11 @@ public class CreateAccountActivity extends BaseActivity {
 
     /**
      * Helper that creates a User & stores it in Firebase
-     * @param uid
      */
 
-    private void createUserInFirebase(String uid) {
-
-        final Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS).child(uid);
+    private void createUserInFirebase() {
+        final String encodedEmail = Utils.encodeEmail(mUserEmail);
+        final Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail);
 
         userLocation.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -173,7 +173,7 @@ public class CreateAccountActivity extends BaseActivity {
                     HashMap<String, Object> timestampJoined = new HashMap<>();
                     timestampJoined.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
 
-                    User newUser = new User(mFirstName, mLastName, mUserEmail, timestampJoined);
+                    User newUser = new User(mFirstName, mLastName, encodedEmail, timestampJoined);
                     userLocation.setValue(newUser);
                 }
             }
