@@ -43,6 +43,6 @@
     <string name="error_cannot_be_empty">This cannot be empty.</string>
     <string name="error_email_taken">This email is already taken</string>
     <string name="error_invalid_email_not_valid">Please enter a valid email</string>
-    <string name="error_confirm_password_not_valid">The passwords don't match</string>
+    <string name="error_confirm_password_not_valid">The passwords don\'t match</string>
 
 </resources>
