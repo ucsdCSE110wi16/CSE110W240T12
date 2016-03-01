@@ -56,7 +56,7 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="@dimen/login_buttons_text_size"
-                android:gravity="center"/>
+                android:gravity="center" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password EditText -->
