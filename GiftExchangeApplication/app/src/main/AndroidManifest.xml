@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cse110.giftexchangeapplication">
+    package="cse110.giftexchangeapplication" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="cse110.giftexchangeapplication.GiftExchangeApplication"
+        android:name=".GiftExchangeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="cse110.giftexchangeapplication.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:label="Gift Exchange App"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
@@ -26,29 +25,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activeGroupsDetails.ActiveGroupsDetailsActivity"
             android:label="Group Details"
             android:parentActivityName=".ui.MainActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
-
-        <activity android:name=".ui.login.LoginActivity">
-
+        <activity android:name=".ui.login.LoginActivity" >
         </activity>
-
         <activity
             android:name=".ui.login.CreateAccountActivity"
             android:label="@string/title_activity_create_account"
-            android:parentActivityName=".ui.login.LoginActivity">
+            android:parentActivityName=".ui.login.LoginActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.login.LoginActivity" />
         </activity>
 
+        <activity
+            android:name=".ui.userProfile.UserProfileActivity"
+            android:label="User Profile"
+            android:parentActivityName=".ui.MainActivity"
+            android:windowSoftInputMode="adjustPan" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
     </application>
+
 </manifest>

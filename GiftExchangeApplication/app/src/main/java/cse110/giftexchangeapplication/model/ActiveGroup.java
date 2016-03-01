@@ -20,7 +20,7 @@ public class ActiveGroup {
     private ArrayList<ArrayList <String>> blacklistFlags;
     private double priceMin, priceMax;
     private int blacklistMax;
-    private boolean isSorted;
+    private boolean sorted;
     private HashMap<String, Object> timestampLastChanged;
     private HashMap<String, Object> timeStampCreated;
 
@@ -50,7 +50,7 @@ public class ActiveGroup {
         this.priceMin = 0;
         this.priceMax = 0;
         this.blacklistMax = 0;
-        this.isSorted = false;
+        this.sorted = false;
 
         this.timeStampCreated = timeStampCreated;
 
@@ -123,7 +123,7 @@ public class ActiveGroup {
     }
 
     public boolean isSorted() {
-        return isSorted;
+        return sorted;
     }
 }
 
