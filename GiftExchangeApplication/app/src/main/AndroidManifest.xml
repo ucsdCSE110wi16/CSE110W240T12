@@ -37,6 +37,26 @@
                 android:value=".ui.MainActivity" />
         </activity>
 
+        <activity
+            android:name=".ui.adminSettings.AdminSettingsActivity"
+            android:label="Admin Settings"
+            android:parentActivityName=".ui.MainActivity"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".ui.activeGroupsDetails.ActiveGroupsDetailsActivity"
+            android:label="Group Details"
+            android:parentActivityName=".ui.MainActivity"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
+
         <activity android:name=".ui.login.LoginActivity">
 
         </activity>
