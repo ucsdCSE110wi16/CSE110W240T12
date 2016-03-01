@@ -133,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:hint="@string/hint_confirm_password"
+                android:hint="@string/hint_enter_password"
                 android:inputType="textPassword"
                 android:padding="@dimen/edit_text_padding"
                 android:textColor="@color/black"
