@@ -22,6 +22,7 @@ import cse110.giftexchangeapplication.ui.activeGroups.ActiveGroupsFragment;
 import cse110.giftexchangeapplication.ui.activeGroups.AddGroupDialogFragment;
 import cse110.giftexchangeapplication.ui.login.LoginActivity;
 import cse110.giftexchangeapplication.ui.pendingGroups.PendingGroupsFragment;
+import cse110.giftexchangeapplication.ui.userProfile.UserProfileActivity;
 import cse110.giftexchangeapplication.utils.Constants;
 
 public class MainActivity extends BaseActivity{
@@ -70,11 +71,14 @@ public class MainActivity extends BaseActivity{
         /* Inflate the menu; This adds items to the action bar if it is present. */
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        MenuItem userProfile = menu.findItem(R.id.action_user_profile);
+
         // Login menu item
         MenuItem logout = menu.findItem(R.id.action_logout);
 
         // Set the visibility
         logout.setVisible(true);
+        userProfile.setVisible(true);
 
         return true;
     }
@@ -98,7 +102,18 @@ public class MainActivity extends BaseActivity{
             return true;
         }
 
+        else if (id == R.id.action_user_profile) {
+            startUserProfileActivity();
+
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startUserProfileActivity() {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
     }
 
     @Override
