@@ -1,21 +1,18 @@
 package cse110.giftexchangeapplication.ui.activeGroups;
 
-import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.model.ActiveGroup;
+import cse110.giftexchangeapplication.ui.activeGroupsDetails.ActiveGroupsDetailsActivity;
 import cse110.giftexchangeapplication.utils.Constants;
 
 /**
@@ -23,9 +20,9 @@ import cse110.giftexchangeapplication.utils.Constants;
  * Use the ShoppingListsFragment#newInstance method to create a
  * create an instance of this fragment.
  */
-public class ActiveGroupsFragment extends Fragment{
+public class ActiveGroupsFragment extends Fragment {
+    private ActiveGroupAdapter mActiveGroupAdapter;
     private ListView mListView;
-    private TextView mTextViewGroupName;
 
     public ActiveGroupsFragment() {
         // Required empty constructor
@@ -43,11 +40,6 @@ public class ActiveGroupsFragment extends Fragment{
         return fragment;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     /* Initialize instance variables  with data from bundles */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +51,7 @@ public class ActiveGroupsFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Initialize UI elements
         View rootView = inflater.inflate(R.layout.fragment_group_list, container, false);
         initializeScreen(rootView);
@@ -66,32 +59,20 @@ public class ActiveGroupsFragment extends Fragment{
         /**
          * Create Firebase references
          */
-        Firebase refGroupName = new Firebase(Constants.FIREBASE_URL).child("activeGroup");
+        Firebase activeGroupsRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS);
 
         /**
-         * Add ValueEventListeners to Firebase references
-         * to control get data and control behavior and visibility of elements
+         * Create the adapter, giving it the activity, model class, layout for each row
+         * in the list & finally, a reference to the Firebase location with the list data
          */
-        refGroupName.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // You can use getValue to deserialize the data at dataSnapshot
-                // into ActiveGroup.
-                ActiveGroup activeGroup = dataSnapshot.getValue(ActiveGroup.class);
+        mActiveGroupAdapter = new ActiveGroupAdapter(getActivity(), ActiveGroup.class,
+                R.layout.single_active_group, activeGroupsRef);
 
-                // If there was no data at the location we added the listener, then
-                // ActiveGroup will be NULL
-                if (activeGroup != null) {
-                    // If there was data, take the TextViews & set appropriate values
-                    mTextViewGroupName.setText(activeGroup.getGroupName());
-                }
-            }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+        /**
+         * Set the adapter to the mListView
+         */
+        mListView.setAdapter(mActiveGroupAdapter);
 
         /**
          * Set interactive bits, such as click events and adapters
@@ -100,30 +81,39 @@ public class ActiveGroupsFragment extends Fragment{
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Blank for now
+                ActiveGroup selectedGroup = mActiveGroupAdapter.getItem(position);
+                if (selectedGroup != null) {
+                    Intent intent = new Intent(getActivity(), ActiveGroupsDetailsActivity.class);
+                    /* Get the group ID using the adapter's get ref method to get the Firebase
+                     * ref and then grab the key.
+                     */
+                    String groupId = mActiveGroupAdapter.getRef(position).getKey();
+                    intent.putExtra(Constants.KEY_GROUP_ID, groupId);
+
+                    // Starts an active showing the details for the selected group
+                    startActivity(intent);
+                }
+
             }
         });
 
-        mTextViewGroupName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Starts an active showing the details for the selected list
-            }
-        });
 
         return rootView;
     }
 
+    /**
+     * Cleanup the adapter when activity is destroyed.
+     */
     @Override
-    public void onDestroy() { super.onDestroy(); }
+    public void onDestroy() {
+        super.onDestroy();
+        mActiveGroupAdapter.cleanup();
+    }
 
     /**
      * Link layout elements from XML
      */
     private void initializeScreen(View rootView) {
         mListView = (ListView) rootView.findViewById(R.id.list_view_active_groups);
-
-        // Get the TextViews in the single_active_group layout for group name
-        mTextViewGroupName = (TextView) rootView.findViewById(R.id.text_view_group_name);
     }
 }

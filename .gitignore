@@ -1,21 +1,11 @@
 # Ignore all files
-
 *
 
 # Except
-
 !.gitignore
-
 !GiftExchangeApplication/app/*
-
 !GiftExchangeApplication/gradle/*
-
 !GiftExchangeApplication/gradle.properties
-
 !GiftExchangeApplication/gradlew
-
 !GiftExchangeApplication/gradlew.bat
-
 !GiftExchangeApplication/settings.gradle
-
-
