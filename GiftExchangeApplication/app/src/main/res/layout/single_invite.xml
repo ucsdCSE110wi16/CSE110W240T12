@@ -16,31 +16,31 @@
 
     <!-- TextView that shows the single ActiveGroup's name-->
     <TextView
-        android:id="@+id/text_view_group_name"
+        android:id="@+id/invite_text_view_group_title"
         style="@style/ListItemText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <!-- TextView that shows the text "Managed by "-->
     <TextView
-        android:id="@+id/managed_by"
+        android:id="@+id/invited_by"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_group_name"
+        android:layout_below="@+id/invite_text_view_group_title"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="2dp"
-        android:text="Managed by"
+        android:text="Invited to Gift Echange by: "
         android:textColor="@color/light_black"
         android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/text_view_managed_by_user"
+        android:id="@+id/text_view_inviter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_group_name"
+        android:layout_below="@+id/invite_text_view_group_title"
         android:layout_marginTop="2dp"
-        android:layout_toEndOf="@+id/managed_by"
-        android:layout_toRightOf="@+id/managed_by"
+        android:layout_toEndOf="@+id/invited_by"
+        android:layout_toRightOf="@+id/invited_by"
         android:textSize="12sp"
         android:textStyle="bold" />
 

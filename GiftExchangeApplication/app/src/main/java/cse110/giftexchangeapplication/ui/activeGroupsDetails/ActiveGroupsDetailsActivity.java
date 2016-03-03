@@ -6,37 +6,61 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.model.ActiveGroup;
+import cse110.giftexchangeapplication.model.Exchanger;
+import cse110.giftexchangeapplication.model.User;
 import cse110.giftexchangeapplication.ui.BaseActivity;
+import cse110.giftexchangeapplication.ui.MainActivity;
 import cse110.giftexchangeapplication.utils.Constants;
+import cse110.giftexchangeapplication.utils.Utils;
 
 /**
  * Represents the details screen for when selecting an active group
  */
 public class ActiveGroupsDetailsActivity extends BaseActivity {
     private Firebase mActiveGroupRef;
+    private Firebase mActiveGroupUsersRef;
     private ListView mListView;
+    private UserAdapter mUserAdapter;
     private String mGroupId;
+    private String mUserEmail;
     private ActiveGroup mActiveGroup;
     private ValueEventListener mActiveGroupRefListener;
 
+    private Set<String> userEmails;
+    private ArrayList<User> users;
+
+    private TextView match;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_group_details);
 
+        users = new ArrayList<User>();
+        mListView = (ListView)findViewById(R.id.list_view_users);
+        mUserAdapter = new UserAdapter(this, users);
+        mListView.setAdapter(mUserAdapter);
+        match = (TextView)findViewById(R.id.match_email);
+
         /* Get the push ID from the extra passed by ActiveGroupFragment */
         Intent intent = this.getIntent();
         mGroupId = intent.getStringExtra(Constants.KEY_GROUP_ID);
+        mUserEmail = intent.getStringExtra(MainActivity.USER_EMAIL);
         if (mGroupId == null) {
             /* No point in continuing if there's no valid ID */
             finish();
@@ -46,6 +70,7 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
          * Create Firebase references
          */
         mActiveGroupRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS).child(mGroupId);
+        mActiveGroupUsersRef = new Firebase(Constants.FIREBASE_URL_USERS);
 
         /**
          * Link layout elements from XML and setup the toolbar
@@ -77,6 +102,36 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
 
                 // Save to instance variable
                 mActiveGroup = activeGroup;
+
+                //if sorted, set up with match
+                if(activeGroup.isSorted()) {
+                    match.setText(Utils.decodeEmail(mActiveGroup.getPairs().get(mUserEmail)));
+                }
+
+                //michael - getting userEmails and Pojos
+                userEmails = mActiveGroup.getUsers().keySet();
+                for(String email: userEmails) {
+                    mActiveGroupUsersRef.child(email).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            User usr = dataSnapshot.getValue(User.class);
+
+                            if(usr != null) {
+                                users.remove(usr);
+                                users.add(usr);
+                            }
+                            if (mUserAdapter != null) {
+                                mUserAdapter.notifyDataSetChanged();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                }
+
 
                 // Calling invalidateOptionsMenu causes onCreateOptionsMenu to be called
                 invalidateOptionsMenu();
@@ -179,5 +234,18 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
         // Create an instance of the dialog fragment and show it
         DialogFragment dialogFragment = RemoveGroupDialogFragment.newInstance(mActiveGroup, mGroupId);
         dialogFragment.show(getFragmentManager(), "RemoveGroupDialogFragment");
+    }
+
+    public void onInviteButtonPressed(View view) {
+        InviteDialogFragment inviteDialog = InviteDialogFragment.newInstance(mUserEmail, mGroupId);
+        inviteDialog.show(this.getFragmentManager(), "InviteDialogFragment");
+    }
+
+    public void instantSortButton(View view) {
+        Map<String, Map<String, Boolean>> userPreferences = mActiveGroup.getUsers();
+        Map<String, String> pairs = Exchanger.pairUsers(userPreferences);
+        mActiveGroupRef.child("pairs").setValue(pairs);
+        mActiveGroupRef.child("sorted").setValue(true);
+        //wait for listener to pickup data change
     }
 }

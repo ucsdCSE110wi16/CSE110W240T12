@@ -2,6 +2,7 @@ package cse110.giftexchangeapplication.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Defines the data structure for User objects.
@@ -10,11 +11,14 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    private String userID;
     private String aboutMe;
     private String likes;
     private String dislikes;
-    private ArrayList<String> groups;
     private HashMap<String, Object> timestampJoined;
+
+    Map<String, Boolean> groups;  //groupIDs to useless booleans
+    Map<String, Boolean> invitations; //groupIDs to useless booleans
 
     public User() {
         // Required empty constructor
@@ -28,17 +32,25 @@ public class User {
      * @param email User's email
      * @param timestampJoined When user joined
      */
-    public User(String firstName, String lastName, String email, HashMap<String, Object> timestampJoined) {
+    public User(String firstName, String lastName, String email, HashMap<String, Object> timestampJoined, String uid) {
+        this.userID = uid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.aboutMe = "";
         this.likes = "";
         this.dislikes = "";
-        this.groups = new ArrayList<String>();
         this.timestampJoined = timestampJoined;
 
+        //michael - adding dummies to initialize the group and invites locations
+        this.groups = new HashMap<String, Boolean>();
+        this.invitations = new HashMap<String, Boolean>();
+        this.groups.put("dummyGroup", true);
+        this.invitations.put("dummyInvitation", true);
+
     }
+
+    public String getUserID() {return userID; }
 
     public String getFirstName() {
         return firstName;
@@ -68,7 +80,15 @@ public class User {
         return dislikes;
     }
 
-    public ArrayList<String> getGroups() {
+    public Map<String, Boolean> getGroups() {
         return groups;
+    }
+
+    public Map<String, Boolean> getInvitations() {
+        return invitations;
+    }
+
+    public boolean equals(Object other) {
+        return this.userID.equals(((User)other).getUserID());
     }
 }

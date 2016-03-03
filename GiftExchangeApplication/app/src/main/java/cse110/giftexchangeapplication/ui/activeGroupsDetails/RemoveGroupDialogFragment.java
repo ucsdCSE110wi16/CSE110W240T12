@@ -70,6 +70,8 @@ public class RemoveGroupDialogFragment extends DialogFragment {
         // Get the location to remove from
         Firebase groupToRemoveRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS).child(mGroupId);
 
+        //TODO: need to remove the group in all its users too
+
         // Remove the value
         groupToRemoveRef.removeValue();
     }

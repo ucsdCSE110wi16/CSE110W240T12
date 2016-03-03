@@ -8,9 +8,6 @@
     <string name="app_name">Gift Exchange Application</string>
     <string name="pager_title_active_groups">Active Groups</string>
     <string name="pager_title_pending_groups">Pending Groups</string>
-    <string name="pager_title_about_me">About Me</string>
-    <string name="pager_title_likes">Likes</string>
-    <string name="pager_title_dislikes">Dislikes</string>
     <string name="app_slogan">Exchanging gifts the easy way</string>
 
     <!-- Edit Group Dialogs -->
@@ -47,9 +44,16 @@
     <string name="error_email_taken">This email is already taken</string>
     <string name="error_invalid_email_not_valid">Please enter a valid email</string>
     <string name="error_confirm_password_not_valid">The passwords don\'t match</string>
-    <string name="title_activity_user_profile">UserProfile</string>
+    <string name="title_activity_create_group">CreateGroupActivity</string>
 
-    <!-- About Me Screen -->
-    <string name="about_me_title">About Me:</string>
+    <!-- Group Creation Strings -->
+    <string name="hint_group_title">Group name</string>
+    <string name="hint_group_description">Group description</string>
+    <string name="create_group">Create Group</string>
+
+    <string name="invite_user">Invite user</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

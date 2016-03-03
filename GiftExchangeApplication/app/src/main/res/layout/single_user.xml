@@ -16,31 +16,31 @@
 
     <!-- TextView that shows the single ActiveGroup's name-->
     <TextView
-        android:id="@+id/text_view_group_name"
+        android:id="@+id/text_user_name"
         style="@style/ListItemText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <!-- TextView that shows the text "Managed by "-->
     <TextView
-        android:id="@+id/managed_by"
+        android:id="@+id/user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_group_name"
+        android:layout_below="@+id/text_user_name"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="2dp"
-        android:text="Managed by"
+        android:text="email"
         android:textColor="@color/light_black"
         android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/text_view_managed_by_user"
+        android:id="@+id/text_view_user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_group_name"
+        android:layout_below="@+id/text_user_name"
         android:layout_marginTop="2dp"
-        android:layout_toEndOf="@+id/managed_by"
-        android:layout_toRightOf="@+id/managed_by"
+        android:layout_toEndOf="@+id/user_email"
+        android:layout_toRightOf="@+id/user_email"
         android:textSize="12sp"
         android:textStyle="bold" />
 
