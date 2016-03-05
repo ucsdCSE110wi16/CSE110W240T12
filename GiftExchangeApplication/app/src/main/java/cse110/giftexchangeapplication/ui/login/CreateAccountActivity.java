@@ -131,7 +131,7 @@ public class CreateAccountActivity extends BaseActivity {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         createUserInFirebase(authData.getUid()); //michael - added UID to parameters
-                        startMainActivity();
+                        //startMainActivity(); bug1
                     }
 
                     @Override
@@ -176,6 +176,7 @@ public class CreateAccountActivity extends BaseActivity {
 
                     User newUser = new User(mFirstName, mLastName, encodedEmail, timestampJoined, userID);
                     userLocation.setValue(newUser);
+                    startMainActivity();
                 }
             }
 

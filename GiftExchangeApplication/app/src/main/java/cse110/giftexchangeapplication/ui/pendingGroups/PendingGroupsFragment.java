@@ -2,6 +2,7 @@ package cse110.giftexchangeapplication.ui.pendingGroups;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,5 +140,4 @@ public class PendingGroupsFragment extends Fragment {
         View footer = getActivity().getLayoutInflater().inflate(R.layout.footer_empty, null);
         mListView.addFooterView(footer);
     }
-
 }

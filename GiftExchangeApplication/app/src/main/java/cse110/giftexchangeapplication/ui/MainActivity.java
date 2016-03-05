@@ -44,6 +44,7 @@ public class MainActivity extends BaseActivity{
     ArrayList<String> groupIDs;
     ArrayList<String> groupInvitations;
     SectionPagerAdapter adapter;
+    boolean uiInitialized;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class MainActivity extends BaseActivity{
         if(authData == null)
         {
             startLoginActivity();
+            finish();
             //initializeScreen();
         }
         else
@@ -68,19 +70,23 @@ public class MainActivity extends BaseActivity{
             //michael
             //getting the userEmail from the userID
             //possibly not needed if we can just save the email that the user enters at login
+            uiInitialized = false;
             groupIDs = new ArrayList<String>();
             groupInvitations = new ArrayList<String>();
-            userID = authData.getUid();
+            userID = authData.getUid().toString();
             ref.child(Constants.FIREBASE_LOCATION_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
+                    System.out.println(userID);
                     for (DataSnapshot usersSnapshot : snapshot.getChildren()) {
                         if (usersSnapshot.child("userID").getValue().toString().equals(userID)) {
                             user = usersSnapshot.getValue(User.class);
                             userEmail = usersSnapshot.getKey().toString();
+                            System.out.println("USER FOUND");
                             break;
                         }
                     }
+                    //USER Listener
                     userRef = ref.child(Constants.FIREBASE_LOCATION_USERS).child(userEmail);
                     userRef.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -93,13 +99,20 @@ public class MainActivity extends BaseActivity{
                                     groupIDs.add(gID);
                                 }
                             }
+                            groupInvitations = new ArrayList<String>();
                             for(String invite: user.getInvitations().keySet()) {
                                 if(!invite.equals("dummyInvite")) {
                                     groupInvitations.add(invite);
                                 }
                             }
-                            //adapter.notifyDataSetChanged();
-                            initializeScreen();
+
+                            if(!uiInitialized) {
+                                initializeScreen();
+                                uiInitialized = true;
+                            }
+                            else {
+                                adapter.notifyDataSetChanged();
+                            }
                         }
 
                         @Override
@@ -185,7 +198,7 @@ public class MainActivity extends BaseActivity{
          */
         adapter = new SectionPagerAdapter(getSupportFragmentManager());
         viewPager.setOffscreenPageLimit(2);
-        viewPager.setAdapter(adapter);
+        viewPager.setAdapter(adapter); //TODO
 
         /**
          * Setup mTabLayout with view pager
@@ -212,8 +225,9 @@ public class MainActivity extends BaseActivity{
      * SectionPagerAdapter class that extends FragmentStatePagerAdapter to save fragments state
      */
     public class SectionPagerAdapter extends FragmentStatePagerAdapter {
+        FragmentManager frgm;
 
-        public SectionPagerAdapter(FragmentManager fm) { super(fm); }
+        public SectionPagerAdapter(FragmentManager fm) { super(fm); frgm = fm;}
 
         /**
          * Use positions (0 and 1) to find and instantiate fragments with newInstance()
@@ -258,6 +272,15 @@ public class MainActivity extends BaseActivity{
                 default:
                     return getString(R.string.pager_title_pending_groups);
             }
+        }
+
+        //michael1
+        @Override
+        public int getItemPosition(Object object) {
+            if(frgm.getFragments().contains(object))
+                return POSITION_NONE;
+            else
+                return POSITION_UNCHANGED;
         }
     }
 
