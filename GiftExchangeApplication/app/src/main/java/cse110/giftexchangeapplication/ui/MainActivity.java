@@ -10,14 +10,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import cse110.giftexchangeapplication.R;
+import cse110.giftexchangeapplication.model.User;
 import cse110.giftexchangeapplication.ui.activeGroups.ActiveGroupsFragment;
 import cse110.giftexchangeapplication.ui.activeGroups.AddGroupDialogFragment;
 import cse110.giftexchangeapplication.ui.login.LoginActivity;
@@ -26,30 +31,38 @@ import cse110.giftexchangeapplication.ui.userProfile.UserProfileActivity;
 import cse110.giftexchangeapplication.utils.Constants;
 
 public class MainActivity extends BaseActivity{
+    private Firebase mUserRef;
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private ValueEventListener mUserRefListener;
 
-    final Firebase ref = new Firebase(Constants.FIREBASE_URL);
-    AuthData authData = ref.getAuth();
+//    final Firebase ref = new Firebase(Constants.FIREBASE_URL);
+//    AuthData authData = ref.getAuth();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /**
-         * Link layout elements from XML and setup the toolbar
-         */
-//        final Firebase ref = new Firebase(Constants.FIREBASE_URL);
-//        AuthData authData = ref.getAuth();
+        final Firebase ref = new Firebase(Constants.FIREBASE_URL);
+        AuthData authData = ref.getAuth();
 
         if(authData == null)
         {
             startLoginActivity();
-            //initializeScreen();
         }
-        else
-        {
-            initializeScreen();
-        }
+
+        mUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
+
+        /**
+         * Link layout elements from XML and setup the toolbar
+         */
+
+
+
+//        else
+//        {
+//            initializeScreen();
+//        }
 //        Button mEmailSignInButton = (Button) findViewById(R.id.logout_button);
 //        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -58,7 +71,30 @@ public class MainActivity extends BaseActivity{
 //                startLoginActivity();
 //            }
 //        });
-        //initializeScreen();
+
+        initializeScreen();
+
+        mUserRefListener = mUserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+
+                // Set the activity's title to current user name if user is not null
+                if (user != null) {
+                    // Assumes that the first word in the user's name is the first name.
+                    String firstName = user.getName().split("\\s+")[0];
+                    String title = "Hello there, " + firstName;
+                    setTitle(title);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e(LOG_TAG,
+                        getString(R.string.log_error_the_read_failed) +
+                                firebaseError.getMessage());
+            }
+        });
     }
 
     /**
@@ -90,23 +126,23 @@ public class MainActivity extends BaseActivity{
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+//        int id = item.getItemId();
 
-        /**
-         * logout when logout action is selected
-         */
-        if (id == R.id.action_logout) {
-            ref.unauth();
-            startLoginActivity();
-
-            return true;
-        }
-
-        else if (id == R.id.action_user_profile) {
-            startUserProfileActivity();
-
-            return true;
-        }
+//        /**
+//         * logout when logout action is selected
+//         */
+//        if (id == R.id.action_logout) {
+////            ref.unauth();
+//            startLoginActivity();
+//
+//            return true;
+//        }
+//
+//        else if (id == R.id.action_user_profile) {
+//            startUserProfileActivity();
+//
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -119,6 +155,7 @@ public class MainActivity extends BaseActivity{
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mUserRef.removeEventListener(mUserRefListener);
     }
 
     /**
@@ -149,7 +186,7 @@ public class MainActivity extends BaseActivity{
      */
     public void showAddGroupDialog(View view) {
         // Create an instance of the dialog fragment and show it
-        DialogFragment dialog = AddGroupDialogFragment.newInstance();
+        DialogFragment dialog = AddGroupDialogFragment.newInstance(mEncodedEmail);
         dialog.show(MainActivity.this.getFragmentManager(), "AddGroupDialogFragment");
     }
 

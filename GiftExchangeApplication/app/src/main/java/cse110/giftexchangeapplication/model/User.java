@@ -7,8 +7,7 @@ import java.util.HashMap;
  * Defines the data structure for User objects.
  */
 public class User {
-    private String firstName;
-    private String lastName;
+    private String name;
     private String email;
     private String aboutMe;
     private String likes;
@@ -20,32 +19,18 @@ public class User {
         // Required empty constructor
     }
 
-    /**
-     * Use this constructor to create new User.
-     *
-     * @param firstName User's first name
-     * @param lastName User's last name
-     * @param email User's email
-     * @param timestampJoined When user joined
-     */
-    public User(String firstName, String lastName, String email, HashMap<String, Object> timestampJoined) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String name, String email, HashMap<String, Object> timestampJoined) {
+        this.name = name;
         this.email = email;
+        this.timestampJoined = timestampJoined;
         this.aboutMe = "";
         this.likes = "";
         this.dislikes = "";
         this.groups = new ArrayList<String>();
-        this.timestampJoined = timestampJoined;
-
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
+    public String getName() {
+        return name;
     }
 
     public String getEmail() {

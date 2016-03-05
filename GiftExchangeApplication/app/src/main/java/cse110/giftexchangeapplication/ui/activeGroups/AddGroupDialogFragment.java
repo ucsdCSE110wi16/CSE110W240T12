@@ -26,15 +26,17 @@ import cse110.giftexchangeapplication.utils.Constants;
  * Adds a new active group
  */
 public class AddGroupDialogFragment extends DialogFragment {
+    String mEncodedEmail;
     EditText mEditTextGroupName;
 
     /**
      * Public static constructor that creates fragment and
      * passes a bundle with data into it when adapter is created
      */
-    public static AddGroupDialogFragment newInstance() {
+    public static AddGroupDialogFragment newInstance(String encodedEmail) {
         AddGroupDialogFragment addGroupDialogFragment = new AddGroupDialogFragment();
         Bundle bundle = new Bundle();
+        bundle.putString(Constants.KEY_ENCODED_EMAIL, encodedEmail);
         addGroupDialogFragment.setArguments(bundle);
 
         return addGroupDialogFragment;
@@ -44,7 +46,11 @@ public class AddGroupDialogFragment extends DialogFragment {
      * Initialize instance variables with data from bundle
      */
     @Override
-    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
+    }
 
     /**
      * Open keyboard automatically when the dialog fragment is opened
@@ -97,9 +103,7 @@ public class AddGroupDialogFragment extends DialogFragment {
      */
     public void addActiveGroup() {
         // Get the string that the user entered into the EditText and make an object with it
-        // We'll user "Anonymous Manager" for the manager because accounts aren't setup yet
         String userEnteredName = mEditTextGroupName.getText().toString();
-        String manager = "Anonymous Manager";
 
         /**
          * If EditText input is not empty
@@ -121,7 +125,7 @@ public class AddGroupDialogFragment extends DialogFragment {
             timestampCreated.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
 
             // Build the active group
-            ActiveGroup newActiveGroup = new ActiveGroup(userEnteredName, manager, timestampCreated);
+            ActiveGroup newActiveGroup = new ActiveGroup(userEnteredName, mEncodedEmail, timestampCreated);
 
             // Add the active group
             newGroupRef.setValue(newActiveGroup);

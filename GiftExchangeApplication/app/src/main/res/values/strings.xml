@@ -13,6 +13,11 @@
     <string name="pager_title_dislikes">Dislikes</string>
     <string name="app_slogan">Exchanging gifts the easy way</string>
 
+    <!-- Base Error Strings -->
+    <string name="log_error_updating_data">Error updating data: </string>
+    <string name="log_error_the_read_failed">The read failed: </string>
+    <string name="log_error_occurred">"Error occurred: "</string>
+
     <!-- Edit Group Dialogs -->
     <string name="positive_button_edit_item">Edit name</string>
     <string name="negative_button_cancel">Cancel</string>
@@ -32,6 +37,7 @@
     <string name="hint_confirm_password">Confirm password</string>
     <string name="hint_enter_first_name">First name</string>
     <string name="hint_enter_last_name">Last name</string>
+    <string name="hint_enter_full_name">Full name</string>
     <string name="text_dont_have_account">Don\'t have an account?</string>
     <string name="button_create_account">Sign Up</string>
     <string name="text_already_have_account">Already have an account?</string>
@@ -47,9 +53,30 @@
     <string name="error_email_taken">This email is already taken</string>
     <string name="error_invalid_email_not_valid">Please enter a valid email</string>
     <string name="error_confirm_password_not_valid">The passwords don\'t match</string>
-    <string name="title_activity_user_profile">UserProfile</string>
+    <string name="log_error_invalid_provider">"Invalid provider: "</string>
 
     <!-- About Me Screen -->
     <string name="about_me_title">About Me:</string>
+
+
+    <!-- Google Errors -->
+    <string name="google_error_recoverable_oauth_error">"Recoverable Google OAuth error: "</string>
+    <string name="google_error_google_play_services_not_available">Google Play Services are not available.</string>
+    <string name="google_error_trying_to_connect_google_api">Trying to connect to Google API</string>
+    <string name="google_error_auth_with_google">"Error authenticating with Google: "</string>
+    <string name="google_error_network_error">"Network error: "</string>
+    <string name="google_error_cant_connect_to_api">Are you sure that you set up a project for your app?
+        Check out : https://console.developers.google.com/project. Also make sure you have all the proper
+    gradle dependencies</string>
+
+
+    <!-- OAuth Format -->
+    <string name="oauth2_format">oauth2:%s</string>
+
+    <!-- Log Messages -->
+    <string name="log_message_password_changed_successfully">Password changed successfully from temporary password to </string>
+    <string name="log_message_auth_successful">Authentication successful.</string>
+
+
 
 </resources>

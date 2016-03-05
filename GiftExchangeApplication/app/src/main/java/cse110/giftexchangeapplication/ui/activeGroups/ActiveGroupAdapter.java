@@ -37,6 +37,6 @@ public class ActiveGroupAdapter extends FirebaseListAdapter<ActiveGroup> {
 
         // Set the group name & owner
         textViewGroupName.setText(group.getGroupName());
-        textViewManagedByUser.setText(group.getGroupManager());
+        textViewManagedByUser.setText(group.getManager());
     }
 }

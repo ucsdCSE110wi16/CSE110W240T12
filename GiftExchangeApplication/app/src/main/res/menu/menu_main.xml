@@ -15,6 +15,6 @@
         android:id="@+id/action_logout"
         android:orderInCategory="200"
         android:title="Logout"
-        android:visible="false"
+        android:visible="true"
         app:showAsAction="never" />
 </menu>

@@ -3,45 +3,142 @@
 <!-- This layout controls the appearance of a single active group object in the List-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:layout_margin="2dp"
+    android:layout_height="wrap_content"
+
     android:background="@android:color/white"
     android:clickable="false"
     android:descendantFocusability="blocksDescendants"
     android:focusable="false"
     android:foreground="?selectableItemBackground"
-    android:gravity="center_vertical"
-    android:paddingLeft="16dp"
-    android:paddingStart="16dp">
+    android:gravity="center_vertical" >
 
-    <!-- TextView that shows the single ActiveGroup's name-->
-    <TextView
-        android:id="@+id/text_view_group_name"
-        style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <!-- TextView that shows the text "Managed by "-->
-    <TextView
-        android:id="@+id/managed_by"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_group_name"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="2dp"
-        android:text="Managed by"
-        android:textColor="@color/light_black"
-        android:textSize="12sp" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp" >
 
-    <TextView
-        android:id="@+id/text_view_managed_by_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_view_group_name"
-        android:layout_marginTop="2dp"
-        android:layout_toEndOf="@+id/managed_by"
-        android:layout_toRightOf="@+id/managed_by"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        <!-- TextView that shows the single ActiveGroup's name-->
+        <TextView
+            android:id="@+id/text_view_group_name"
+            style="@style/ListItemText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="5dp"
+            android:background="@drawable/bottom_border" />
+
+        <!-- Section that displays the start & end dates -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="10dp"
+            android:gravity="center_horizontal"
+            android:background="@drawable/bottom_border">
+
+            <!-- Calendar start image-->
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:id="@+id/calendar_start"
+                android:src="@drawable/calendar_start" />
+
+            <!-- Displays start date-->
+            <TextView
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Fri, 4 Mar 9:00am"
+                android:id="@+id/group_date_start"
+                android:textStyle="bold" />
+
+            <!-- Directional triangle -->
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/group_directional_triangle"
+                android:src="@drawable/triangle_direction" />
+
+            <!-- Calendar end image-->
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:id="@+id/calendar_end"
+                android:src="@drawable/calendar_end" />
+
+            <!-- Displays end date -->
+            <TextView
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Fri, 11 Mar 7:00pm"
+                android:id="@+id/group_date_end"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/bottom_border">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/profile_pic"
+                android:src="@drawable/dude" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- TextView that shows the text "Managed by "-->
+                <TextView
+                    android:id="@+id/managed_by"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text_view_group_name"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="2dp"
+                    android:text="Managed by"
+                    android:textColor="@color/light_black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/text_view_managed_by_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text_view_group_name"
+                    android:layout_marginTop="2dp"
+                    android:layout_toEndOf="@+id/managed_by"
+                    android:layout_toRightOf="@+id/managed_by"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -7,19 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
-
-import com.firebase.client.Firebase;
 
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.ui.BaseActivity;
-import cse110.giftexchangeapplication.ui.activeGroups.ActiveGroupsFragment;
-import cse110.giftexchangeapplication.ui.pendingGroups.PendingGroupsFragment;
-import cse110.giftexchangeapplication.utils.Constants;
 
 /**
  * Created by AJ on 2/29/16.

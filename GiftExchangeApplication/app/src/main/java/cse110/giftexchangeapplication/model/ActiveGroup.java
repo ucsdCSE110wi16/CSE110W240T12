@@ -14,7 +14,7 @@ public class ActiveGroup {
     private String groupName;
     private String groupID;
     private String groupDescription;
-    private String groupManager;
+    private String manager;
     private Date sortDate, endDate;
     private ArrayList<ArrayList<String>> users;
     private ArrayList<ArrayList <String>> blacklistFlags;
@@ -42,7 +42,7 @@ public class ActiveGroup {
         this.groupName = name;
         this.groupID = "";
         this.groupDescription = "";
-        this.groupManager = manager;
+        this.manager = manager;
         this.sortDate = null;
         this.endDate = null;
         this.users = new ArrayList<>();
@@ -63,8 +63,8 @@ public class ActiveGroup {
         return groupName;
     }
 
-    public String getGroupManager() {
-        return groupManager;
+    public String getManager() {
+        return manager;
     }
 
     public HashMap<String, Object> getTimestampLastChanged() {

@@ -1,0 +1,101 @@
+{
+  "project_info": {
+    "project_id": "gift-exchange-application",
+    "project_number": "281975081574",
+    "name": "Gift Exchange Application"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281975081574:android:5cd131bf0c3df5e7",
+        "client_id": "android:cse110.giftexchangeapplication",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "cse110.giftexchangeapplication",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "281975081574-tbjuv0j7o3ct4ug0mail1ek8nvsk8a7q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cse110.giftexchangeapplication",
+            "certificate_hash": "50295D61761CD4AA040409AF0F4666690065CA46"
+          }
+        },
+        {
+          "client_id": "281975081574-49fbrddrr3lprjqll5jobkpdjkj6ovf3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281975081574:android:c4f97890cab04772",
+        "client_id": "android:com.cse110.giftexchangeapplication",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.cse110.giftexchangeapplication",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "281975081574-7rgfag1cmmg2vkr5lo9oruqntgvr0992.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cse110.giftexchangeapplication",
+            "certificate_hash": "50295D61761CD4AA040409AF0F4666690065CA46"
+          }
+        },
+        {
+          "client_id": "281975081574-49fbrddrr3lprjqll5jobkpdjkj6ovf3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

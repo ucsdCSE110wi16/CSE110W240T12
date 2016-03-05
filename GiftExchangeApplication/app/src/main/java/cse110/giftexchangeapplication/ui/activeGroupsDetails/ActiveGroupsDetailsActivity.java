@@ -17,6 +17,7 @@ import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.model.ActiveGroup;
 import cse110.giftexchangeapplication.ui.BaseActivity;
 import cse110.giftexchangeapplication.utils.Constants;
+import cse110.giftexchangeapplication.utils.Utils;
 
 /**
  * Represents the details screen for when selecting an active group
@@ -27,6 +28,9 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
     private String mGroupId;
     private ActiveGroup mActiveGroup;
     private ValueEventListener mActiveGroupRefListener;
+
+    // Stores whether the current user is the owner
+    private boolean mCurrentuserIsManager = false;
 
 
     @Override
@@ -78,6 +82,9 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
                 // Save to instance variable
                 mActiveGroup = activeGroup;
 
+                // Check if current user is manager
+                mCurrentuserIsManager = Utils.checkIfManager(activeGroup, mEncodedEmail);
+
                 // Calling invalidateOptionsMenu causes onCreateOptionsMenu to be called
                 invalidateOptionsMenu();
 
@@ -111,10 +118,12 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
          */
         MenuItem remove = menu.findItem(R.id.action_remove_group);
         MenuItem edit = menu.findItem(R.id.action_edit_group_name);
+//        MenuItem share = menu.findItem(R.id.action_share_group);
+//        MenuItem archive = menu.findItem(R.id.action_archive);
 
         // Only remove & edit options are implemented for now.
-        remove.setVisible(true);
-        edit.setVisible(true);
+        remove.setVisible(mCurrentuserIsManager);
+        edit.setVisible(mCurrentuserIsManager);
 
         return true;
     }

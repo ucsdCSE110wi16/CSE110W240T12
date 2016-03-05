@@ -4,6 +4,8 @@ import android.content.Context;
 
 import java.text.SimpleDateFormat;
 
+import cse110.giftexchangeapplication.model.ActiveGroup;
+
 /**
  * Utility classes
  */
@@ -21,6 +23,15 @@ public class Utils {
      */
     public Utils(Context con) {
         mContext = con;
+    }
+
+    /**
+     * Return true if current userEmail equals to ActiveGroup.manager();
+     * return false otherwise
+     */
+    public static boolean checkIfManager(ActiveGroup activeGroup, String currentUserEmail) {
+        return (activeGroup.getManager() != null &&
+                activeGroup.getManager().equals(currentUserEmail));
     }
 
     /**
