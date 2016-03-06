@@ -35,9 +35,6 @@ public class MainActivity extends BaseActivity{
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private ValueEventListener mUserRefListener;
 
-//    final Firebase ref = new Firebase(Constants.FIREBASE_URL);
-//    AuthData authData = ref.getAuth();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,22 +53,6 @@ public class MainActivity extends BaseActivity{
         /**
          * Link layout elements from XML and setup the toolbar
          */
-
-
-
-//        else
-//        {
-//            initializeScreen();
-//        }
-//        Button mEmailSignInButton = (Button) findViewById(R.id.logout_button);
-//        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                ref.unauth();
-//                startLoginActivity();
-//            }
-//        });
-
         initializeScreen();
 
         mUserRefListener = mUserRef.addValueEventListener(new ValueEventListener() {

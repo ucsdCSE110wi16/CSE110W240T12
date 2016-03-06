@@ -77,6 +77,10 @@
     <string name="log_message_password_changed_successfully">Password changed successfully from temporary password to </string>
     <string name="log_message_auth_successful">Authentication successful.</string>
 
+    <!-- Single Active Group -->
+    <string name="organized_by">Organized by</string>
+    <string name="group_description">Description:</string>
+
 
 
 </resources>

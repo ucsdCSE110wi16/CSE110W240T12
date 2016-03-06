@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
 import com.firebase.client.Query;
 import com.firebase.ui.FirebaseListAdapter;
 
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.model.ActiveGroup;
+import cse110.giftexchangeapplication.utils.Constants;
 
 public class ActiveGroupAdapter extends FirebaseListAdapter<ActiveGroup> {
 
@@ -35,8 +37,10 @@ public class ActiveGroupAdapter extends FirebaseListAdapter<ActiveGroup> {
         TextView textViewGroupName = (TextView) view.findViewById(R.id.text_view_group_name);
         TextView textViewManagedByUser = (TextView) view.findViewById(R.id.text_view_managed_by_user);
 
+        Firebase ref = new Firebase(Constants.FIREBASE_URL_USERS).child(group.getManager());
+        
         // Set the group name & owner
         textViewGroupName.setText(group.getGroupName());
-        textViewManagedByUser.setText(group.getManager());
+        textViewManagedByUser.setText(ref.);
     }
 }
