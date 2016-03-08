@@ -88,33 +88,7 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
         mActiveGroupRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS).child(mGroupId);
         //mactivegroupnotdefined
         mActiveGroupUsersRef = new Firebase(Constants.FIREBASE_URL_USERS);
-        if (mUserEmail == Utils.decodeEmail(mActiveGroup.getGroupManager())){
-            manager = true;
-        }
 
-        /**
-         * Create info based on db
-         */
-
-        sortingOn = (TextView) findViewById(R.id.title_sorting_on);
-        sortDate = mActiveGroup.getSortDate();
-        sortingOn.setText(String.format(getString(R.string.title_sorting_on), sortDate));
-
-        // Convert date
-//        DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
-//        Date date = format.parse(sortDate);
-//
-//        while (c.getTime().before(sortDate)) {
-//            c.getTime().add(Calendar.DAY_OF_MONTH, 1);
-//            daysUntilSort++;
-//        }
-        daysUntilSort = 3;
-        sortDaysLeft = (TextView)findViewById(R.id.title_days_until_sort);
-        if(daysUntilSort >= 2){
-            sortDaysLeft.setText(String.format(getString(R.string.title_days_until_sort), daysUntilSort));
-        } else {
-            sortDaysLeft.setText(String.format(getString(R.string.title_day_until_sort), daysUntilSort));
-        }
 
         /**
          * Link layout elements from XML and setup the toolbar
@@ -152,6 +126,36 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
                     //match.setText(Utils.decodeEmail(mActiveGroup.getPairs().get(mUserEmail)));
 
                 }
+
+                if (mUserEmail == Utils.decodeEmail(mActiveGroup.getGroupManager())){
+                    manager = true;
+                }
+
+                /**
+                 * Create info based on db
+                 */
+
+                sortingOn = (TextView) findViewById(R.id.title_sorting_on);
+                sortDate = mActiveGroup.getSortDate();
+                sortingOn.setText(String.format(getString(R.string.title_sorting_on), sortDate));
+
+                // Convert date
+//        DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+//        Date date = format.parse(sortDate);
+//
+//        while (c.getTime().before(sortDate)) {
+//            c.getTime().add(Calendar.DAY_OF_MONTH, 1);
+//            daysUntilSort++;
+//        }
+                daysUntilSort = 3;
+                sortDaysLeft = (TextView)findViewById(R.id.title_days_until_sort);
+                if(daysUntilSort >= 2){
+                    sortDaysLeft.setText(String.format(getString(R.string.title_days_until_sort), daysUntilSort));
+                } else {
+                    sortDaysLeft.setText(String.format(getString(R.string.title_day_until_sort), daysUntilSort));
+                }
+
+
 
                 //michael - getting userEmails and Pojos
                 userEmails = mActiveGroup.getUsers().keySet();
