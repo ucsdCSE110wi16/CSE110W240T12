@@ -1,10 +1,8 @@
 package cse110.giftexchangeapplication.ui.activeGroups;
 
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,27 +15,17 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import org.w3c.dom.Text;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.model.ActiveGroup;
-import cse110.giftexchangeapplication.model.Exchanger;
 import cse110.giftexchangeapplication.model.User;
 import cse110.giftexchangeapplication.ui.BaseActivity;
 import cse110.giftexchangeapplication.ui.MainActivity;
-import cse110.giftexchangeapplication.ui.activeGroupsDetails.EditGroupNameDialogFragment;
-import cse110.giftexchangeapplication.ui.activeGroupsDetails.InviteDialogFragment;
 import cse110.giftexchangeapplication.ui.activeGroupsDetails.RemoveGroupDialogFragment;
 import cse110.giftexchangeapplication.ui.activeGroupsDetails.UserAdapter;
+import cse110.giftexchangeapplication.ui.login.LoginActivity;
 import cse110.giftexchangeapplication.utils.Constants;
 import cse110.giftexchangeapplication.utils.Utils;
 
@@ -46,41 +34,32 @@ import cse110.giftexchangeapplication.utils.Utils;
  */
 public class PostSortActivity extends BaseActivity {
     private Firebase mActiveGroupRef;
-    private Firebase mActiveGroupUsersRef;
     private Firebase mActiveGroupManager;
-    private ListView mListView;
-    private UserAdapter mUserAdapter;
     private String mGroupId;
     private String mUserEmail;
     private ActiveGroup mActiveGroup;
     private ValueEventListener mActiveGroupRefListener;
     private boolean manager = false;
-    private TextView sortingOn;
-    private String sortDate;
-    private TextView sortDaysLeft;
-    private Calendar c;
-    private int daysUntilSort;
+    private TextView match_text;
 
-    private Set<String> userEmails;
-    private ArrayList<User> users;
 
-    private TextView match;
+    private String match;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_active_group_details);
-
-        users = new ArrayList<User>();
-        mListView = (ListView)findViewById(R.id.list_view_users);
-        mUserAdapter = new UserAdapter(this, users);
-        mListView.setAdapter(mUserAdapter);
-
+        setContentView(R.layout.activity_post_sort);
 
         /* Get the push ID from the extra passed by ActiveGroupFragment */
         Intent intent = this.getIntent();
-        mGroupId = intent.getStringExtra(Constants.KEY_GROUP_ID);
-        mUserEmail = intent.getStringExtra(MainActivity.USER_EMAIL);
+
+
+        // TODO - Being called from presort, not main. (ARTHUR)
+        // will pass the group id as well as the user email and
+        // matched user
+       // mGroupId = intent.getStringExtra(Constants.KEY_GROUP_ID);
+       // mUserEmail = intent.getStringExtra(P.USER_EMAIL);
+
         if (mGroupId == null) {
             /* No point in continuing if there's no valid ID */
             finish();
@@ -90,35 +69,6 @@ public class PostSortActivity extends BaseActivity {
          * Create Firebase references
          */
         mActiveGroupRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS).child(mGroupId);
-        //mactivegroupnotdefined
-        mActiveGroupUsersRef = new Firebase(Constants.FIREBASE_URL_USERS);
-        if (mUserEmail == Utils.decodeEmail(mActiveGroup.getGroupManager())){
-            manager = true;
-        }
-
-        /**
-         * Create info based on db
-         */
-
-        sortingOn = (TextView) findViewById(R.id.title_sorting_on);
-        sortDate = mActiveGroup.getSortDate();
-        sortingOn.setText(String.format(getString(R.string.title_sorting_on), sortDate));
-
-        // Convert date
-//        DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
-//        Date date = format.parse(sortDate);
-//
-//        while (c.getTime().before(sortDate)) {
-//            c.getTime().add(Calendar.DAY_OF_MONTH, 1);
-//            daysUntilSort++;
-//        }
-        daysUntilSort = 3;
-        sortDaysLeft = (TextView)findViewById(R.id.title_days_until_sort);
-        if(daysUntilSort >= 2){
-            sortDaysLeft.setText(String.format(getString(R.string.title_days_until_sort), daysUntilSort));
-        } else {
-            sortDaysLeft.setText(String.format(getString(R.string.title_day_until_sort), daysUntilSort));
-        }
 
         /**
          * Link layout elements from XML and setup the toolbar
@@ -151,36 +101,15 @@ public class PostSortActivity extends BaseActivity {
                 // Save to instance variable
                 mActiveGroup = activeGroup;
 
-                //if sorted, set up with match
-                if(activeGroup.isSorted()) {
-                    //match.setText(Utils.decodeEmail(mActiveGroup.getPairs().get(mUserEmail)));
 
+                if (mUserEmail == Utils.decodeEmail(mActiveGroup.getGroupManager())){
+                    manager = true;
                 }
 
-                //michael - getting userEmails and Pojos
-                userEmails = mActiveGroup.getUsers().keySet();
-                for(String email: userEmails) {
-                    mActiveGroupUsersRef.child(email).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            User usr = dataSnapshot.getValue(User.class);
-
-                            if(usr != null) {
-                                users.remove(usr);
-                                users.add(usr);
-                            }
-                            if (mUserAdapter != null) {
-                                mUserAdapter.notifyDataSetChanged();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
-                }
-
+                match = mActiveGroup.getPairs().get(mUserEmail);
+                // TODO: Do more work to actually get user's name instead of just the email (ARTHUR)
+                match_text = (TextView) match_text.findViewById(R.id.txt_match);
+                match_text.setText(match);
 
                 // Calling invalidateOptionsMenu causes onCreateOptionsMenu to be called
                 invalidateOptionsMenu();
@@ -215,18 +144,12 @@ public class PostSortActivity extends BaseActivity {
          */
         MenuItem remove = menu.findItem(R.id.action_remove_group);
         MenuItem edit = menu.findItem(R.id.action_edit_group_name);
-        MenuItem sort = menu.findItem(R.id.action_last_resort_sort);
-        MenuItem invite = menu.findItem(R.id.action_invite_users);
 
 
         if(manager) {
             remove.setVisible(true);
             edit.setVisible(true);
-            invite.setVisible(true);
-            sort.setVisible(true);
         }
-
-
 
         return true;
     }
@@ -235,12 +158,8 @@ public class PostSortActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        /**
-         * Show edit group name dialog when the edit action is selected
-         */
-        if (id == R.id.action_edit_group_name) {
-            showEditGroupNameDialog();
-            return true;
+        if (id == R.id.action_edit_group_name){
+            // call edit group page TODO
         }
 
 
@@ -252,34 +171,6 @@ public class PostSortActivity extends BaseActivity {
             return true;
         }
 
-        /**
-         * Implement the last resort sort
-         */
-        if (id == R.id.action_invite_users) {
-            inviteUsers(null);
-        }
-
-        /**
-         * Implement the last resort sort
-         */
-        if(id == R.id.action_last_resort_sort) {
-            //Put up the Yes/No message box
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder
-                    .setTitle("Instantly sort your group")
-                    .setMessage("Are you sure?")
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // YES
-                            instantSort(null);
-                        }
-                    })
-                    .setNegativeButton("No", null)						//Do nothing on no
-                    .show();
-
-
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -304,15 +195,6 @@ public class PostSortActivity extends BaseActivity {
     }
 
     /**
-     * Show the edit group name dialog when the user selects "Edit group name" menu item
-     */
-    public void showEditGroupNameDialog() {
-        // Create an instance of the dialog fragment and show it.
-        // TODO
-        DialogFragment dialogFragment = EditGroupNameDialogFragment.newInstance(mActiveGroup, mGroupId);
-        dialogFragment.show(this.getFragmentManager(), "EditGroupNameDialogFragment");
-    }
-    /**
      * Remove current active group *admin user only*
      */
     public void removeGroup() {
@@ -321,20 +203,16 @@ public class PostSortActivity extends BaseActivity {
         dialogFragment.show(getFragmentManager(), "RemoveGroupDialogFragment");
     }
 
-    public void inviteUsers(View view) {
-        InviteDialogFragment inviteDialog = InviteDialogFragment.newInstance(mUserEmail, mGroupId);
-        inviteDialog.show(this.getFragmentManager(), "InviteDialogFragment");
-    }
 
-    public void instantSort(View view) {
-        Map<String, Map<String, Boolean>> userPreferences = mActiveGroup.getUsers();
-        Map<String, String> pairs = Exchanger.pairUsers(userPreferences);
-        mActiveGroupRef.child("pairs").setValue(pairs);
-        mActiveGroupRef.child("sorted").setValue(true);
-        //wait for listener to pickup data change
-    }
+    public void onViewProfile(View view){
 
-    public void onSaveBlacklist(View view){
-        // save blacklist
+        //intent to open profile activity with correct user
+        // Passes a String with the user's email (ARTHUR)
+
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        String userEmail = getUserProfile();
+        intent.putExtra("email", userEmail);
+        startActivity(intent);
+
     }
 }
