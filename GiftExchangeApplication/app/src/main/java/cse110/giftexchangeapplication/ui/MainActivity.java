@@ -113,6 +113,7 @@ public class MainActivity extends BaseActivity{
 
     private void startUserProfileActivity() {
         Intent intent = new Intent(this, UserProfileActivity.class);
+        intent.putExtra("email", ref.getAuth().getProviderData().get("email").toString());
         startActivity(intent);
     }
 

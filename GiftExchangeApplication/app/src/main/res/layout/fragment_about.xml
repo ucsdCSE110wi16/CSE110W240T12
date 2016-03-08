@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.userProfile.AboutFragment"
+    android:weightSum="1">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/infoDisplay"
+        android:hint="No Information Available"
+        android:layout_gravity="center_horizontal"
+        android:background="@android:color/white"
+        android:gravity="top"
+        android:layout_margin="15dp" />
+
+</LinearLayout>

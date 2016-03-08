@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -25,10 +26,15 @@ import cse110.giftexchangeapplication.utils.Constants;
  * Created by AJ on 2/29/16.
  */
 public class UserProfileActivity extends BaseActivity {
+    private static final String ARG_PARAM1 = "email";
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle b = getIntent().getExtras();
+        email = b.getString(ARG_PARAM1);
+
         setContentView(R.layout.activity_user_profile);
 
         // Link layout elements
@@ -98,9 +104,10 @@ public class UserProfileActivity extends BaseActivity {
     /**
      * SectionPagerAdapter class that extends FragmentStatePagerAdapter to save fragments state
      */
-    public class SectionPagerAdapter extends FragmentStatePagerAdapter {
+    public class SectionPagerAdapter extends FragmentPagerAdapter {
 
         public SectionPagerAdapter(FragmentManager fm) { super(fm); }
+        Firebase ref = new Firebase(Constants.FIREBASE_URL);
 
         /**
          * Use positions (0 and 1) to find and instantiate fragments with newInstance()
@@ -109,27 +116,7 @@ public class UserProfileActivity extends BaseActivity {
          */
         @Override
         public Fragment getItem(int position) {
-
-            Fragment fragment = null;
-
-            /**
-             * Set fragment to different fragments depending on position in ViewPage
-             */
-            switch (position) {
-                case 0:
-                    fragment = AboutMeFragment.newInstance();
-                    break;
-                case 1:
-                    fragment = AboutMeFragment.newInstance();
-                    break;
-                case 2:
-                    fragment = AboutMeFragment.newInstance();
-                    break;
-                default:
-                    fragment = AboutMeFragment.newInstance();
-                    break;
-            }
-            return fragment;
+            return AboutFragment.newInstance(email, position);
         }
 
         @Override
