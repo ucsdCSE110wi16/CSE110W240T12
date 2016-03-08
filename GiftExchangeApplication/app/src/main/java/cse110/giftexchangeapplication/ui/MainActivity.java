@@ -30,7 +30,9 @@ import cse110.giftexchangeapplication.ui.activeGroups.AddGroupDialogFragment;
 import cse110.giftexchangeapplication.ui.activeGroups.CreateGroupActivity;
 import cse110.giftexchangeapplication.ui.login.LoginActivity;
 import cse110.giftexchangeapplication.ui.pendingGroups.PendingGroupsFragment;
+import cse110.giftexchangeapplication.ui.userProfile.UserProfileActivity;
 import cse110.giftexchangeapplication.utils.Constants;
+import cse110.giftexchangeapplication.utils.Utils;
 
 public class MainActivity extends BaseActivity{
 
@@ -51,22 +53,13 @@ public class MainActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /**
-         * Link layout elements from XML and setup the toolbar
-         */
-//        final Firebase ref = new Firebase(Constants.FIREBASE_URL);
-//        AuthData authData = ref.getAuth();
-
         if(authData == null)
         {
             startLoginActivity();
             finish();
-            //initializeScreen();
         }
         else
         {
-            //initializeScreen();
-
             //michael
             //getting the userEmail from the userID
             //possibly not needed if we can just save the email that the user enters at login
@@ -74,58 +67,40 @@ public class MainActivity extends BaseActivity{
             groupIDs = new ArrayList<String>();
             groupInvitations = new ArrayList<String>();
             userID = authData.getUid().toString();
-            ref.child(Constants.FIREBASE_LOCATION_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
+            userEmail = Utils.encodeEmail(authData.getProviderData().get("email").toString());
+
+            //USER Listener
+            userRef = ref.child(Constants.FIREBASE_LOCATION_USERS).child(userEmail);
+            userRef.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    System.out.println(userID);
-                    for (DataSnapshot usersSnapshot : snapshot.getChildren()) {
-                        if (usersSnapshot.child("userID").getValue().toString().equals(userID)) {
-                            user = usersSnapshot.getValue(User.class);
-                            userEmail = usersSnapshot.getKey().toString();
-                            System.out.println("USER FOUND");
-                            break;
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //whenever user changes, update arraylist, then initialize screen
+                    user = dataSnapshot.getValue(User.class);
+                    groupIDs = new ArrayList<String>();
+                    for(String gID: user.getGroups().keySet()) {
+                        if(!gID.equals("dummyGroup")) {
+                            groupIDs.add(gID);
                         }
                     }
-                    //USER Listener
-                    userRef = ref.child(Constants.FIREBASE_LOCATION_USERS).child(userEmail);
-                    userRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            //whenever user changes, update arraylist, then initialize screen
-                            user = dataSnapshot.getValue(User.class);
-                            groupIDs = new ArrayList<String>();
-                            for(String gID: user.getGroups().keySet()) {
-                                if(!gID.equals("dummyGroup")) {
-                                    groupIDs.add(gID);
-                                }
-                            }
-                            groupInvitations = new ArrayList<String>();
-                            for(String invite: user.getInvitations().keySet()) {
-                                if(!invite.equals("dummyInvite")) {
-                                    groupInvitations.add(invite);
-                                }
-                            }
-
-                            if(!uiInitialized) {
-                                initializeScreen();
-                                uiInitialized = true;
-                            }
-                            else {
-                                adapter.notifyDataSetChanged();
-                            }
+                    groupInvitations = new ArrayList<String>();
+                    for(String invite: user.getInvitations().keySet()) {
+                        if(!invite.equals("dummyInvite")) {
+                            groupInvitations.add(invite);
                         }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
+                    }
+                    if(!uiInitialized) {
+                        initializeScreen();
+                        uiInitialized = true;
+                    }
+                    else {
+                        adapter.notifyDataSetChanged();
+                    }
                 }
-
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {
                 }
             });
+
         }
 //        Button mEmailSignInButton = (Button) findViewById(R.id.logout_button);
 //        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
@@ -148,11 +123,13 @@ public class MainActivity extends BaseActivity{
         /* Inflate the menu; This adds items to the action bar if it is present. */
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        MenuItem userProfile = menu.findItem(R.id.action_user_profile);
         // Login menu item
         MenuItem logout = menu.findItem(R.id.action_logout);
 
         // Set the visibility
         logout.setVisible(true);
+        userProfile.setVisible(true);
 
         return true;
     }
@@ -175,8 +152,19 @@ public class MainActivity extends BaseActivity{
 
             return true;
         }
+        else if (id == R.id.action_user_profile) {
+            startUserProfileActivity();
+
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startUserProfileActivity() {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        intent.putExtra("email123", userEmail);
+        startActivity(intent);
     }
 
     @Override

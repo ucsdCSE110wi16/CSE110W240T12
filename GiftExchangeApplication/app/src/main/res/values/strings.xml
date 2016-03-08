@@ -3,12 +3,14 @@
     <!-- Menu Items -->
     <string name="action_edit_group_name">Edit group name</string>
     <string name="action_remove_group">Remove group</string>
-    <string name="action_last_resort_sort">Instant sort</string>
 
     <!-- Base Strings for the App -->
     <string name="app_name">Gift Exchange Application</string>
     <string name="pager_title_active_groups">Active Groups</string>
     <string name="pager_title_pending_groups">Pending Groups</string>
+    <string name="pager_title_about_me">About Me</string>
+    <string name="pager_title_likes">Likes</string>
+    <string name="pager_title_dislikes">Dislikes</string>
     <string name="app_slogan">Exchanging gifts the easy way</string>
 
     <!-- Edit Group Dialogs -->
@@ -57,11 +59,22 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Single Active Group -->
+    <string name="organized_by">Organized by</string>
+    <string name="group_description">Description:</string>
+
+    <!-- accepting invites -->
+    <string name="accept_invite">Accept</string>
+    <string name="decline_invite">Decline</string>
+    <string name="invitation_title">Pending Gift Exchange</string>
+    <string name="invitation_mesage">Accept invitation from</string>
+
     <!-- Pre/Post Sort Fragment Strings -->
     <string name="title_day_until_sort" formatted="falase">%d DAY UNTIL SORT</string>
     <string name="title_days_until_sort" formatted="false">%d DAYS UNTIL SORT</string>
     <string name="title_sorting_on" formatted="false">Sorting on: %s</string>
     <string name="desc_pre_sort_blacklist">Have someone you don\'t get along with? Use the checkbox to add them to
-    your blacklist. Keep in mind, your group manager controls how many users you blacklist!</string>
+      your blacklist. Keep in mind, there are no guarantees!</string>
+    <string name="title_activity_post_sort">PostSortActivity</string>
 
 </resources>

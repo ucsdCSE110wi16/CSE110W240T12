@@ -17,6 +17,7 @@
         android:orderInCategory="100"
         android:title="Remove group"
         app:showAsAction="withText" />
+
     <item
         android:id="@+id/action_invite_users"
         android:orderInCategory="100"

@@ -104,7 +104,8 @@ public class InviteDialogFragment extends DialogFragment {
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(userEnteredEmail) && !userEnteredEmail.equals(userEmail)) {
+                if (dataSnapshot.hasChild(userEnteredEmail) && !userEnteredEmail.equals(userEmail)
+                        && !userEnteredEmail.equals("")) {
                     usersRef.child(userEnteredEmail).child("invitations").child(groupID).setValue(true);
                     showToast("Invite Sent!");
                 } else {

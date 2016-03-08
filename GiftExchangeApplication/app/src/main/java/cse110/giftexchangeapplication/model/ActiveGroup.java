@@ -19,6 +19,7 @@ public class ActiveGroup {
     private String sortDate;
     private String sortTime;
     private String endDate;
+    private String endTime;
 
     Map<String, Map<String, Boolean>> users; //with blacklist
     Map<String, String> pairs; //will instantiate when sorting happens
@@ -44,15 +45,16 @@ public class ActiveGroup {
      * @param timeStampCreated When group was created
      *
      */
-    public ActiveGroup(String name, String description, String sortDate, String sortTime, String manager,
-                       HashMap<String, Object> timeStampCreated) {
+    public ActiveGroup(String name, String description, String sortDate, String endDate, String sortTime,
+                       String endTime, String manager, HashMap<String, Object> timeStampCreated) {
         this.groupName = name;
         this.groupID = groupID;
         this.groupDescription = description;
         this.groupManager = manager;
         this.sortDate = sortDate;
         this.sortTime = sortTime;
-        this.endDate = null;
+        this.endDate = endDate;
+        this.endTime = endTime;
         this.users = new HashMap<String, Map<String, Boolean>>();
         this.pairs = new HashMap<String, String>();
         this.priceMin = 0;
@@ -113,6 +115,8 @@ public class ActiveGroup {
     public String getEndDate() {
         return endDate;
     }
+
+    public String getEndTime() { return endTime; }
 
     public Map<String, Map<String, Boolean>> getUsers() {
         return users;

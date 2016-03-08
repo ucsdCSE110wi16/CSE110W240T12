@@ -8,6 +8,9 @@ import android.os.Bundle;
 
 import com.firebase.client.Firebase;
 
+import java.util.Map;
+import java.util.Set;
+
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.model.ActiveGroup;
 import cse110.giftexchangeapplication.utils.Constants;
@@ -17,6 +20,7 @@ import cse110.giftexchangeapplication.utils.Constants;
  */
 public class RemoveGroupDialogFragment extends DialogFragment {
     String mGroupId;
+    String[] userIds;
 
     /**
      * Public static constructor that creates fragment and passes a bundle with data
@@ -26,6 +30,8 @@ public class RemoveGroupDialogFragment extends DialogFragment {
         RemoveGroupDialogFragment removeGroupDialogFragment = new RemoveGroupDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString(Constants.KEY_GROUP_ID, groupId);
+        Set<String> s = activeGroup.getUsers().keySet();
+        bundle.putStringArray("USER_IDS", s.toArray(new String[s.size()]));
         removeGroupDialogFragment.setArguments(bundle);
 
         return removeGroupDialogFragment;
@@ -39,6 +45,7 @@ public class RemoveGroupDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         mGroupId = getArguments().getString(Constants.KEY_GROUP_ID);
+        userIds = getArguments().getStringArray("USER_IDS");
     }
 
     @Override
@@ -69,10 +76,13 @@ public class RemoveGroupDialogFragment extends DialogFragment {
     private void removeGroup() {
         // Get the location to remove from
         Firebase groupToRemoveRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS).child(mGroupId);
-
         //TODO: need to remove the group in all its users too
-
         // Remove the value
+        Firebase userReferences = new Firebase(Constants.FIREBASE_URL_USERS);
+        for(String email: userIds) {
+            Firebase userRef = userReferences.child(email).child("groups").child(mGroupId);
+            userRef.removeValue();
+        }
         groupToRemoveRef.removeValue();
     }
 

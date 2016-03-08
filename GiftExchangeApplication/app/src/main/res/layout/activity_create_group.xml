@@ -20,12 +20,6 @@
         android:background="@color/background"
         android:weightSum="1">
 
-        <LinearLayout
-            android:layout_width="0px"
-            android:layout_height="0px"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
-
         <!-- Display logo -->
         <ImageView
             android:layout_width="152dp"
@@ -80,25 +74,139 @@
                 android:textSize="@dimen/login_buttons_text_size" />
         </android.support.design.widget.TextInputLayout>
 
-        <DatePicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/datePicker"
-            android:theme="@android:style/Theme" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textColor="@android:color/white"
+                android:text = "Select Matching Date"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:textIsSelectable="false" />
+
+
+            <DatePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/datePicker"
+                android:theme="@android:style/Theme" />
+
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.13" />
 
         <TimePicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/timePicker"
-            android:layout_gravity="center_horizontal"
-            android:theme="@android:style/Theme" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/timePicker"
+                android:layout_gravity="center_horizontal"
+                android:theme="@android:style/Theme" />
 
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.13" />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textColor="@android:color/white"
+                android:text = "Select Event End Date"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:textIsSelectable="false" />
+
+
+            <DatePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/datePicker1"
+                android:theme="@android:style/Theme" />
+
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.13" />
+
+        <TimePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/timePicker1"
+                android:layout_gravity="center_horizontal"
+                android:theme="@android:style/Theme" />
+
+
+
+        <!--
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/input_field_height"
+            android:layout_weight="0.04">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android font/>
+
+            <Button
+                android:id="@+id/btn_select_sort_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/primary_dark"
+                android:onClick="onCreateGroupPressed"
+                android:text="Select \n Matching Date"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/login_buttons_text_size"
+                android:clickable="false"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/input_field_height"
+            android:layout_weight="0.04">
+
+
+
+            <Button
+                android:id="@+id/btn_select_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/primary_dark"
+                android:onClick="onCreateGroupPressed"
+                android:text="Select \n Event End Date"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/login_buttons_text_size"
+                android:clickable="false"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+        -->
 
         <!-- Create Group button -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal" />
+
         <Button
             android:id="@+id/btn_create_group_final"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/input_field_height"
+            android:layout_height="wrap_content"
             android:background="@color/primary"
             android:onClick="onCreateGroupPressed"
             android:text="@string/create_group"
