@@ -3,6 +3,7 @@
     <!-- Menu Items -->
     <string name="action_edit_group_name">Edit group name</string>
     <string name="action_remove_group">Remove group</string>
+    <string name="action_last_resort_sort">Instant sort</string>
 
     <!-- Base Strings for the App -->
     <string name="app_name">Gift Exchange Application</string>
@@ -55,5 +56,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Pre/Post Sort Fragment Strings -->
+    <string name="title_day_until_sort" formatted="falase">%d DAY UNTIL SORT</string>
+    <string name="title_days_until_sort" formatted="false">%d DAYS UNTIL SORT</string>
+    <string name="title_sorting_on" formatted="false">Sorting on: %s</string>
+    <string name="desc_pre_sort_blacklist">Have someone you don\'t get along with? Use the checkbox to add them to
+    your blacklist. Keep in mind, your group manager controls how many users you blacklist!</string>
 
 </resources>
