@@ -25,6 +25,7 @@ import cse110.giftexchangeapplication.model.Exchanger;
 import cse110.giftexchangeapplication.model.User;
 import cse110.giftexchangeapplication.ui.BaseActivity;
 import cse110.giftexchangeapplication.ui.MainActivity;
+import cse110.giftexchangeapplication.ui.adminSettings.AdminSettingsActivity;
 import cse110.giftexchangeapplication.utils.Constants;
 import cse110.giftexchangeapplication.utils.Utils;
 
@@ -51,7 +52,7 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_group_details);
 
-        users = new ArrayList<User>();
+        users = new ArrayList<>();
         mListView = (ListView)findViewById(R.id.list_view_users);
         mUserAdapter = new UserAdapter(this, users);
         mListView.setAdapter(mUserAdapter);
@@ -182,7 +183,10 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
          * Show edit group name dialog when the edit action is selected
          */
         if (id == R.id.action_edit_group_name) {
-            showEditGroupNameDialog();
+            Intent intentEditUsers = new Intent(this, AdminSettingsActivity.class);
+            intentEditUsers.putExtra(Constants.KEY_GROUP_ID, mGroupId);
+            intentEditUsers.putExtra("email", mUserEmail);
+            startActivity(intentEditUsers);
             return true;
         }
 

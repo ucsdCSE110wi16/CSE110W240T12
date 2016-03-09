@@ -17,18 +17,26 @@
     android:paddingStart="16dp">
 
     <!-- TextView that shows the single group member's name (NEED TO ADD PICTURE/ANY OTHER INFO NEEDED) -->
-    <TextView
-        android:id="@+id/text_view_member_name"
-        style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <!-- Checkbox that allows a group member to be selected -->
-    <CheckBox
-        android:id= "@+id/check_box_select_member"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:layout_alignParentEnd="true" />
+        <TextView
+            android:id="@+id/text_view_member_name"
+            style="@style/ListItemText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/check_box_select_user"
+            android:focusable="false"
+            android:gravity="right"
+            android:clickable="true"
+            android:layout_gravity="right" />
+    </TableRow>
+
+    <!-- TextView that shows the single group member's name (NEED TO ADD PICTURE/ANY OTHER INFO NEEDED) -->
 
 </RelativeLayout>
