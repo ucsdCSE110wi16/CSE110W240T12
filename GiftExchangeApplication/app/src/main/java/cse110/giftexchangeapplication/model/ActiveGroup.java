@@ -7,6 +7,7 @@ import com.firebase.client.ServerValue;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import cse110.giftexchangeapplication.utils.Constants;
 
@@ -15,12 +16,18 @@ public class ActiveGroup {
     private String groupID;
     private String groupDescription;
     private String groupManager;
-    private Date sortDate, endDate;
-    private ArrayList<ArrayList<String>> users;
-    private ArrayList<ArrayList <String>> blacklistFlags;
+    private String sortDate;
+    private String sortTime;
+    private String endDate;
+    private String endTime;
+
+    Map<String, Map<String, Boolean>> users; //with blacklist
+    Map<String, String> pairs; //will instantiate when sorting happens
+
     private double priceMin, priceMax;
     private int blacklistMax;
     private boolean sorted;
+
     private HashMap<String, Object> timestampLastChanged;
     private HashMap<String, Object> timeStampCreated;
 
@@ -38,25 +45,31 @@ public class ActiveGroup {
      * @param timeStampCreated When group was created
      *
      */
-    public ActiveGroup(String name, String manager, HashMap<String, Object> timeStampCreated) {
+    public ActiveGroup(String name, String description, String sortDate, String endDate, String sortTime,
+                       String endTime, String manager, HashMap<String, Object> timeStampCreated) {
         this.groupName = name;
-        this.groupID = "";
-        this.groupDescription = "";
+        this.groupID = groupID;
+        this.groupDescription = description;
         this.groupManager = manager;
-        this.sortDate = null;
-        this.endDate = null;
-        this.users = new ArrayList<>();
-        this.blacklistFlags = new ArrayList<> ();
+        this.sortDate = sortDate;
+        this.sortTime = sortTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
+        this.users = new HashMap<String, Map<String, Boolean>>();
+        this.pairs = new HashMap<String, String>();
         this.priceMin = 0;
         this.priceMax = 0;
         this.blacklistMax = 0;
         this.sorted = false;
-
         this.timeStampCreated = timeStampCreated;
 
         HashMap<String, Object> timestampNowObject = new HashMap<String, Object>();
         timestampNowObject.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
         this.timestampLastChanged = timestampNowObject;
+
+        Map<String, Boolean> blackList = new HashMap<String, Boolean>();
+        blackList.put(manager, true);
+        this.users.put(manager, blackList);
     }
 
     public String getGroupName() {
@@ -94,20 +107,19 @@ public class ActiveGroup {
         return groupDescription;
     }
 
-    public Date getSortDate() {
+    public String getSortDate() {
         return sortDate;
     }
+    public String getSortTime() {return sortTime;}
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public ArrayList<ArrayList<String>> getUsers() {
-        return users;
-    }
+    public String getEndTime() { return endTime; }
 
-    public ArrayList<ArrayList<String>> getBlacklistFlags() {
-        return blacklistFlags;
+    public Map<String, Map<String, Boolean>> getUsers() {
+        return users;
     }
 
     public double getPriceMin() {
@@ -125,5 +137,9 @@ public class ActiveGroup {
     public boolean isSorted() {
         return sorted;
     }
+
+    public Map<String, String> getPairs() { return pairs; }
+
+    public boolean equals(Object other) { return this.groupID.equals(((ActiveGroup)other).getGroupID()); }
 }
 

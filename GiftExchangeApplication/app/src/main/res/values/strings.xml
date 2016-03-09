@@ -47,12 +47,34 @@
     <string name="error_email_taken">This email is already taken</string>
     <string name="error_invalid_email_not_valid">Please enter a valid email</string>
     <string name="error_confirm_password_not_valid">The passwords don\'t match</string>
-    <string name="title_activity_user_profile">UserProfile</string>
+    <string name="title_activity_create_group">CreateGroupActivity</string>
 
-    <!-- About Me Screen -->
-    <string name="about_me_title">About Me:</string>
+    <!-- Group Creation Strings -->
+    <string name="hint_group_title">Group name</string>
+    <string name="hint_group_description">Group description</string>
+    <string name="create_group">Create Group</string>
+
+    <string name="invite_user">Invite user</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Single Active Group -->
+    <string name="organized_by">Organized by</string>
+    <string name="group_description">Description:</string>
+
+    <!-- accepting invites -->
+    <string name="accept_invite">Accept</string>
+    <string name="decline_invite">Decline</string>
+    <string name="invitation_title">Pending Gift Exchange</string>
+    <string name="invitation_mesage">Accept invitation from</string>
+
+    <!-- Pre/Post Sort Fragment Strings -->
+    <string name="title_day_until_sort" formatted="falase">%d DAY UNTIL SORT</string>
+    <string name="title_days_until_sort" formatted="false">%d DAYS UNTIL SORT</string>
+    <string name="title_sorting_on" formatted="false">Sorting on: %s</string>
+    <string name="desc_pre_sort_blacklist">Have someone you don\'t get along with? Use the checkbox to add them to
+      your blacklist. Keep in mind, there are no guarantees!</string>
+    <string name="title_activity_post_sort">PostSortActivity</string>
 
 </resources>

@@ -6,28 +6,50 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Map;
+import java.util.Set;
+
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.model.ActiveGroup;
+import cse110.giftexchangeapplication.model.Exchanger;
+import cse110.giftexchangeapplication.model.User;
 import cse110.giftexchangeapplication.ui.BaseActivity;
+import cse110.giftexchangeapplication.ui.MainActivity;
 import cse110.giftexchangeapplication.utils.Constants;
+import cse110.giftexchangeapplication.utils.Utils;
 
 /**
  * Represents the details screen for when selecting an active group
  */
 public class ActiveGroupsDetailsActivity extends BaseActivity {
     private Firebase mActiveGroupRef;
+    private Firebase mActiveGroupUsersRef;
     private ListView mListView;
+    private UserAdapter mUserAdapter;
+    private String groupManager;
     private String mGroupId;
+    private String mUserEmail;
     private ActiveGroup mActiveGroup;
     private ValueEventListener mActiveGroupRefListener;
 
+    private Set<String> userEmails;
+    private ArrayList<User> users;
+
+    private String match;
+    private TextView sortingIn;
+    private TextView sortingOn;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -37,15 +59,29 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
         /* Get the push ID from the extra passed by ActiveGroupFragment */
         Intent intent = this.getIntent();
         mGroupId = intent.getStringExtra(Constants.KEY_GROUP_ID);
+        mUserEmail = intent.getStringExtra(MainActivity.USER_EMAIL);
         if (mGroupId == null) {
             /* No point in continuing if there's no valid ID */
             finish();
             return;
         }
+
+        users = new ArrayList<User>();
+        mListView = (ListView)findViewById(R.id.list_view_users);
+        mUserAdapter = new UserAdapter(this, users, mGroupId);
+        mListView.setAdapter(mUserAdapter);
+        //match = (TextView)findViewById(R.id.match_email);
+        sortingIn = (TextView)findViewById(R.id.title_days_until_sort);
+        sortingOn = (TextView)findViewById(R.id.title_sorting_on);
+
+
+
+
         /*
          * Create Firebase references
          */
         mActiveGroupRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS).child(mGroupId);
+        mActiveGroupUsersRef = new Firebase(Constants.FIREBASE_URL_USERS);
 
         /**
          * Link layout elements from XML and setup the toolbar
@@ -75,12 +111,56 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
                     return;
                 }
 
+
                 // Save to instance variable
                 mActiveGroup = activeGroup;
+                groupManager = activeGroup.getGroupManager();
+                Calendar c = getSortingDate();
+                int daysLeft = daysUntilSort(c);
+                sortingIn.setText(String.format(getString(R.string.title_days_until_sort), daysLeft));
+                SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM");
+                String dateDisplay = formatter.format(c.getTime());
+                sortingOn.setText(dateDisplay);
+
+                //if sorted, set up with match
+                if(activeGroup.isSorted()) {
+                    match = mActiveGroup.getPairs().get(mUserEmail);
+                    startPostSortActivity();
+                }
+                else {
+                    if(sortDatePassed(c)) {
+                        matchUsers();
+                        mActiveGroupRef.child("sorted").setValue(true);
+                    }
+                }
+
+                //michael - getting userEmails and Pojos
+                userEmails = mActiveGroup.getUsers().keySet();
+                for(String email: userEmails) {
+                    mActiveGroupUsersRef.child(email).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            User usr = dataSnapshot.getValue(User.class);
+
+                            if(usr != null) {
+                                users.remove(usr);
+                                users.add(usr);
+                            }
+                            if (mUserAdapter != null) {
+                                mUserAdapter.notifyDataSetChanged();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                }
+
 
                 // Calling invalidateOptionsMenu causes onCreateOptionsMenu to be called
                 invalidateOptionsMenu();
-
                 // Set title appropriately
                 setTitle(activeGroup.getGroupName());
             }
@@ -111,10 +191,22 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
          */
         MenuItem remove = menu.findItem(R.id.action_remove_group);
         MenuItem edit = menu.findItem(R.id.action_edit_group_name);
+        MenuItem sort = menu.findItem(R.id.action_last_resort_sort);
+        MenuItem invite = menu.findItem(R.id.action_invite_users);
 
         // Only remove & edit options are implemented for now.
-        remove.setVisible(true);
-        edit.setVisible(true);
+        if(groupManager != null && mUserEmail.equals(groupManager)) {
+            remove.setVisible(true);
+            edit.setVisible(true);
+            sort.setVisible(true);
+            invite.setVisible(true);
+        }
+        else {
+            remove.setVisible(false);
+            edit.setVisible(false);
+            sort.setVisible(false);
+            invite.setVisible(false);
+        }
 
         return true;
     }
@@ -140,6 +232,16 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
             return true;
         }
 
+        if(id == R.id.action_invite_users) {
+            InviteDialogFragment inviteDialog = InviteDialogFragment.newInstance(mUserEmail, mGroupId);
+            inviteDialog.show(this.getFragmentManager(), "InviteDialogFragment");
+        }
+
+        if(id == R.id.action_last_resort_sort) {
+            matchUsers();
+            mActiveGroupRef.child("sorted").setValue(true);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -147,7 +249,7 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mActiveGroupRef.removeEventListener(mActiveGroupRefListener);
+        //mActiveGroupRef.removeEventListener(mActiveGroupRefListener);
     }
 
     /**
@@ -179,5 +281,70 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
         // Create an instance of the dialog fragment and show it
         DialogFragment dialogFragment = RemoveGroupDialogFragment.newInstance(mActiveGroup, mGroupId);
         dialogFragment.show(getFragmentManager(), "RemoveGroupDialogFragment");
+    }
+
+    public void onInviteButtonPressed(View view) {
+        InviteDialogFragment inviteDialog = InviteDialogFragment.newInstance(mUserEmail, mGroupId);
+        inviteDialog.show(this.getFragmentManager(), "InviteDialogFragment");
+    }
+
+    public void instantSortButton(View view) {
+        matchUsers();
+        mActiveGroupRef.child("sorted").setValue(true);
+    }
+
+    public void matchUsers() {
+        Map<String, Map<String, Boolean>> userPreferences = mActiveGroup.getUsers();
+        Map<String, String> pairs = Exchanger.pairUsers(userPreferences);
+        mActiveGroupRef.child("pairs").setValue(pairs);
+        //wait for listener to pickup data change
+    }
+
+    private boolean sortDatePassed(Calendar sortTime) {
+        Calendar currTime = Calendar.getInstance();
+        return currTime.after(sortTime);
+    }
+
+    private int daysUntilSort(Calendar sortTime) {
+        int days = 0;
+        Calendar currTime = Calendar.getInstance();
+        while (currTime.before(sortTime)) {
+            currTime.add(Calendar.DAY_OF_MONTH, 1);
+            days++;
+        }
+        return days;
+    }
+
+    private Calendar getSortingDate() {
+        String date = mActiveGroup.getSortDate();
+        String time = mActiveGroup.getSortTime();
+        int index1 = date.indexOf('/');
+        int index2 = date.indexOf('/', index1 + 1);
+        int index3 = date.indexOf(';');
+        int index4 = time.indexOf(':');
+        int month = Integer.parseInt(date.substring(0, index1));
+        int dayOfMonth = Integer.parseInt(date.substring(index1 + 1, index2));
+        int year = Integer.parseInt(date.substring(index2 + 1, index3));
+        int hour = Integer.parseInt(time.substring(0, index4));
+        int minute = Integer.parseInt(time.substring(index4 + 1));
+        Calendar sortTime = Calendar.getInstance();
+        sortTime.set(year, month, dayOfMonth, hour, minute);
+        return sortTime;
+    }
+
+    public void onSaveBlacklist(View view) {
+
+    }
+
+    public final static String USER_EMAIL = "edu.ucsd.cse110wi16.giftexchange.USER_EMAIL1";
+    public final static String GROUP_ID = "edu.ucsd.cse110wi16.giftexchange.GROUP_ID1";
+    public final static String USER_EMAIL_MATCH = "edu.ucsd.cse110wi16.giftexchange.USER_EMAIL2";
+    public void startPostSortActivity() {
+        Intent intent = new Intent(this, PostSortActivity.class);
+        intent.putExtra(USER_EMAIL, mUserEmail);
+        intent.putExtra(GROUP_ID, mGroupId);
+        intent.putExtra(USER_EMAIL_MATCH, match);
+        startActivity(intent);
+        finish();
     }
 }

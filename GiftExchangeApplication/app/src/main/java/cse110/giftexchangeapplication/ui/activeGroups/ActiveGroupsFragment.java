@@ -9,9 +9,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
+
 import cse110.giftexchangeapplication.R;
 import cse110.giftexchangeapplication.model.ActiveGroup;
+import cse110.giftexchangeapplication.ui.MainActivity;
 import cse110.giftexchangeapplication.ui.activeGroupsDetails.ActiveGroupsDetailsActivity;
 import cse110.giftexchangeapplication.utils.Constants;
 
@@ -23,6 +30,13 @@ import cse110.giftexchangeapplication.utils.Constants;
 public class ActiveGroupsFragment extends Fragment {
     private ActiveGroupAdapter mActiveGroupAdapter;
     private ListView mListView;
+    private String userEmail;
+    private ArrayList<String> groupIDs;
+    private ArrayList<ActiveGroup> groups;
+    private Firebase groupTracker;
+
+    LayoutInflater inflater;
+    ViewGroup container;
 
     public ActiveGroupsFragment() {
         // Required empty constructor
@@ -32,9 +46,11 @@ public class ActiveGroupsFragment extends Fragment {
      * Create fragment and pass bundle with data as it's arguments
      * For the moment... no arguments
      */
-    public static ActiveGroupsFragment newInstance() {
+    public static ActiveGroupsFragment newInstance(String userEmail, ArrayList<String> groups) {
         ActiveGroupsFragment fragment = new ActiveGroupsFragment();
         Bundle args = new Bundle();
+        args.putString("email", userEmail);
+        args.putStringArrayList("groupIDs", groups);
         fragment.setArguments(args);
 
         return fragment;
@@ -45,28 +61,64 @@ public class ActiveGroupsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle args = getArguments();
+        this.userEmail = args.getString("email");
+        this.groupIDs = args.getStringArrayList("groupIDs");
+
+        groupTracker = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS);
+        groups = new ArrayList<ActiveGroup>();
+
+        for(String gID: groupIDs) {
+            groupTracker.child(gID).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ActiveGroup grp = dataSnapshot.getValue(ActiveGroup.class);
+                    if(grp != null) {
+                        groups.remove(grp);
+                        groups.add(grp);
+                    }
+
+                    if (mActiveGroupAdapter != null) {
+                        mActiveGroupAdapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+        }
+
         if (getArguments() != null) {}
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        // Initialize UI elements
+        this.inflater = inflater;
+        this.container = container;
         View rootView = inflater.inflate(R.layout.fragment_group_list, container, false);
         initializeScreen(rootView);
+        loadScreen();
+        return rootView;
+    }
+
+    public void loadScreen() {
 
         /**
          * Create Firebase references
          */
-        Firebase activeGroupsRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS);
+        //michael - changed from general groups to user groups
+        //Firebase activeGroupsRef = new Firebase(Constants.FIREBASE_URL_USERS + "/" + userEmail);
 
         /**
          * Create the adapter, giving it the activity, model class, layout for each row
          * in the list & finally, a reference to the Firebase location with the list data
          */
-        mActiveGroupAdapter = new ActiveGroupAdapter(getActivity(), ActiveGroup.class,
-                R.layout.single_active_group, activeGroupsRef);
+        mActiveGroupAdapter = new ActiveGroupAdapter(getActivity(), groups);
+        //getActivity(), ActiveGroup.class, R.layout.single_active_group, activeGroupsRef);
 
 
         /**
@@ -87,8 +139,9 @@ public class ActiveGroupsFragment extends Fragment {
                     /* Get the group ID using the adapter's get ref method to get the Firebase
                      * ref and then grab the key.
                      */
-                    String groupId = mActiveGroupAdapter.getRef(position).getKey();
+                    String groupId = mActiveGroupAdapter.getItem(position).getGroupID(); //getRef(position).getKey();
                     intent.putExtra(Constants.KEY_GROUP_ID, groupId);
+                    intent.putExtra(MainActivity.USER_EMAIL, userEmail);
 
                     // Starts an active showing the details for the selected group
                     startActivity(intent);
@@ -96,9 +149,6 @@ public class ActiveGroupsFragment extends Fragment {
 
             }
         });
-
-
-        return rootView;
     }
 
     /**
@@ -107,7 +157,7 @@ public class ActiveGroupsFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mActiveGroupAdapter.cleanup();
+        mActiveGroupAdapter.clear();// cleanup();
     }
 
     /**

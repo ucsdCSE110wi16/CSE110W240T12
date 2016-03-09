@@ -130,8 +130,8 @@ public class CreateAccountActivity extends BaseActivity {
                 mFirebaseRef.authWithPassword(mUserEmail, mPassword, new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        createUserInFirebase();
-                        startMainActivity();
+                        createUserInFirebase(authData.getUid()); //michael - added UID to parameters
+                        //startMainActivity(); bug1
                     }
 
                     @Override
@@ -161,9 +161,10 @@ public class CreateAccountActivity extends BaseActivity {
      * Helper that creates a User & stores it in Firebase
      */
 
-    private void createUserInFirebase() {
+    private void createUserInFirebase(String uid) { //michael - added uid parameter here and in user pojo
         final String encodedEmail = Utils.encodeEmail(mUserEmail);
         final Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail);
+        final String userID = uid;
 
         userLocation.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -173,8 +174,9 @@ public class CreateAccountActivity extends BaseActivity {
                     HashMap<String, Object> timestampJoined = new HashMap<>();
                     timestampJoined.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
 
-                    User newUser = new User(mFirstName, mLastName, encodedEmail, timestampJoined);
+                    User newUser = new User(mFirstName, mLastName, encodedEmail, timestampJoined, userID);
                     userLocation.setValue(newUser);
+                    startMainActivity();
                 }
             }
 

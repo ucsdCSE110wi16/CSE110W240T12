@@ -13,6 +13,7 @@
         android:hint="No Information Available"
         android:layout_gravity="center_horizontal"
         android:background="@android:color/white"
+        android:textColor="@android:color/black"
         android:gravity="top"
         android:layout_margin="15dp" />
 

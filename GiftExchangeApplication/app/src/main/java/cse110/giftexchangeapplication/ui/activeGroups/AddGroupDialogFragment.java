@@ -121,7 +121,7 @@ public class AddGroupDialogFragment extends DialogFragment {
             timestampCreated.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
 
             // Build the active group
-            ActiveGroup newActiveGroup = new ActiveGroup(userEnteredName, manager, timestampCreated);
+            ActiveGroup newActiveGroup = new ActiveGroup();//userEnteredName, manager, timestampCreated);
 
             // Add the active group
             newGroupRef.setValue(newActiveGroup);

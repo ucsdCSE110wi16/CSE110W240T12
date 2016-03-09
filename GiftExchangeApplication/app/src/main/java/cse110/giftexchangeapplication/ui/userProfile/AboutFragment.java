@@ -111,7 +111,7 @@ public class AboutFragment extends Fragment {
 
             }
         });
-        if(ref.getAuth().getProviderData().get("email").toString().equals(email)) {
+        if(Utils.encodeEmail(ref.getAuth().getProviderData().get("email").toString()).equals(email)) {
             mInfoDisplay.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {

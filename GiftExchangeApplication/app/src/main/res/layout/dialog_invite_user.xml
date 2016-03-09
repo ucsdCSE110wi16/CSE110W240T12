@@ -11,12 +11,12 @@
     tools:context="cse110.giftexchangeapplication.ui.MainActivity">
 
     <EditText
-        android:id="@+id/edit_text_group_name"
+        android:id="@+id/edit_text_invite_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Create a group"
+        android:hint="Enter an email"
         android:imeOptions="actionDone|flagNoExtractUi"
-        android:inputType="textCapWords"
+        android:inputType="textEmailAddress"
         android:textColor="@color/black"
         android:textColorHint="@color/dark_grey" />
 </RelativeLayout>

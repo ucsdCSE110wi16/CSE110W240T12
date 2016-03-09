@@ -26,7 +26,7 @@ import cse110.giftexchangeapplication.utils.Constants;
  * Created by AJ on 2/29/16.
  */
 public class UserProfileActivity extends BaseActivity {
-    private static final String ARG_PARAM1 = "email";
+    private static final String ARG_PARAM1 = "email123";
     private String email;
 
     @Override
