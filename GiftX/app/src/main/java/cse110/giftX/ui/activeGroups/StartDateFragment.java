@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.DatePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import cse110.giftX.R;
@@ -32,7 +33,14 @@ public class StartDateFragment extends DialogFragment implements DatePickerDialo
         // Do something with the date chosen by the user
         Button button = (Button) getActivity().findViewById(R.id.edit_text_start_date);
 
-        String stringOfDate = month + "/" + day + "/" + year;
-        button.setText(stringOfDate);
+        Calendar date = Calendar.getInstance();
+
+        date.set(Calendar.YEAR, year);
+        date.set(Calendar.MONTH, month);
+        date.set(Calendar.DAY_OF_MONTH, day);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+        button.setText(sdf.format(date.getTime()));
     }
 }
