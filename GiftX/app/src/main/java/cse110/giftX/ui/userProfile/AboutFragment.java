@@ -1,7 +1,6 @@
 package cse110.giftX.ui.userProfile;
 
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

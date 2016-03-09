@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="cse110.giftX.ui.MainActivity"
-            android:label="Gift Exchange App"
+            android:label="giftX"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -35,6 +35,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cse110.giftX.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.adminSettings.AdminSettingsActivity"
+            android:label="Admin Settings"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.adminSettings.AdminSettingsActivity"
+                />
         </activity>
         <activity android:name="cse110.giftX.ui.login.LoginActivity" />
         <activity

@@ -215,6 +215,7 @@ public class CreateAccountActivity extends BaseActivity {
         // Check if both passwords match
         else if (!password.equals(confirmPassword)) {
             mEditTextPasswordConfirmCreate.setError(getResources().getString(R.string.error_confirm_password_not_valid));
+            return false;
         }
 
         // If this point is reached, password is valid

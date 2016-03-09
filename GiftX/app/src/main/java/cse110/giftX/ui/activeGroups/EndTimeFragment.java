@@ -28,7 +28,7 @@ public class EndTimeFragment extends DialogFragment implements TimePickerDialog.
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        Button endTime = (Button) getActivity().findViewById(R.id.edit_text_start_time);
+        Button endTime = (Button) getActivity().findViewById(R.id.edit_text_end_time);
         String AMPM = "AM";
         String min;
 

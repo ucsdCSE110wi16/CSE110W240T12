@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.ServerValue;
@@ -117,6 +118,13 @@ public class CreateGroupActivity extends BaseActivity {
         String startTime = startTimeButton.getText().toString();
         String endTime = endTimeButton.getText().toString();
 
+        if(title.isEmpty() || description.isEmpty()  || startDate.isEmpty()  ||
+                endDate.isEmpty()  || startTime.isEmpty()  || endTime.isEmpty() ){
+            showErrorToast("Please fill in all fields");
+            return;
+
+        }
+
         //creating group Pojo and pushing it to firebase
         HashMap<String, Object> timestampCreated = new HashMap<>();
         timestampCreated.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
@@ -131,5 +139,10 @@ public class CreateGroupActivity extends BaseActivity {
         Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS + "/" + userEmail + "/groups/" + groupID);
         userLocation.setValue(true);
         finish();
+    }
+
+    // Show error toast to user
+    private void showErrorToast(String message) {
+        Toast.makeText(CreateGroupActivity.this, message, Toast.LENGTH_LONG).show();
     }
 }
