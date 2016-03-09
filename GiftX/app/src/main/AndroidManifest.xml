@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cse110.giftx">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".GiftX"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="cse110.giftx.ui.MainActivity"
+            android:label="Gift Exchange App"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cse110.giftx.ui.MainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="cse110.giftx.ui.activeGroupsDetails.ActiveGroupsDetailsActivity"
+            android:label="Group Details"
+            android:parentActivityName="cse110.giftx.ui.MainActivity"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cse110.giftx.ui.MainActivity" />
+        </activity>
+        <activity android:name="cse110.giftx.ui.login.LoginActivity" />
+        <activity
+            android:name="cse110.giftx.ui.login.CreateAccountActivity"
+            android:label="@string/title_activity_create_account"
+            android:parentActivityName="cse110.giftx.ui.login.LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cse110.giftx.ui.login.LoginActivity" />
+        </activity>
+        <activity
+            android:name="cse110.giftx.ui.activeGroups.CreateGroupActivity"
+            android:label="@string/title_activity_create_group"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="cse110.giftx.ui.activeGroupsDetails.PostSortActivity"
+            android:label="@string/title_activity_post_sort"
+            android:theme="@style/AppTheme" />
+        <activity android:name="cse110.giftx.ui.userProfile.UserProfileActivity"></activity>
+    </application>
+
+</manifest>
