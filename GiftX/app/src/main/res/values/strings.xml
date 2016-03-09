@@ -58,6 +58,9 @@
     <!-- About Me Screen -->
     <string name="about_me_title">About Me:</string>
 
+    <!-- User Profile -->
+    <string name="user_profile_title">Profile</string>
+
     <!-- Group Creation Strings -->
     <string name="hint_group_title">Group name</string>
     <string name="hint_group_description">Group description</string>

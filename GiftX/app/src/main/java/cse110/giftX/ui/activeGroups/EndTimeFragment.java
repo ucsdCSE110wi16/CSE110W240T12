@@ -28,15 +28,21 @@ public class EndTimeFragment extends DialogFragment implements TimePickerDialog.
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        Button startTime = (Button) getActivity().findViewById(R.id.edit_text_end_time);
+        Button endTime = (Button) getActivity().findViewById(R.id.edit_text_start_time);
         String AMPM = "AM";
+        String min;
 
+        if (minute < 10) {
+            min = "0" + Integer.toString(minute);
+        } else {
+            min = Integer.toString(minute);
+        }
         if(hourOfDay > 12) {
             hourOfDay = hourOfDay - 12;
             AMPM = "PM";
         }
 
-        startTime.setText(hourOfDay + ":" + minute + " " + AMPM);
+        endTime.setText(hourOfDay + ":" + min + " " + AMPM);
 
     }
 }

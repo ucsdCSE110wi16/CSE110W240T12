@@ -1,7 +1,5 @@
 package cse110.giftX.ui.userProfile;
 
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,13 +9,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import cse110.giftX.R;
+import cse110.giftX.model.User;
 import cse110.giftX.ui.BaseActivity;
 import cse110.giftX.utils.Constants;
-import cse110.giftX.utils.Utils;
 
 /**
  * Created by AJ on 2/29/16.
@@ -25,6 +27,8 @@ import cse110.giftX.utils.Utils;
 public class UserProfileActivity extends BaseActivity {
     private static final String ARG_PARAM1 = "email123";
     private String email;
+    Firebase mUserRef;
+    TextView userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,29 @@ public class UserProfileActivity extends BaseActivity {
         email = b.getString(ARG_PARAM1);
 
         setContentView(R.layout.activity_user_profile);
+
+        mUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(email);
+
+        mUserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+
+                String name  = user.getUserName();
+
+                userName = (TextView) findViewById(R.id.text_view_user_name_profile);
+
+                userName.setText(name);
+
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        setTitle(R.string.user_profile_title);
 
         // Link layout elements
         initializeScreen();
