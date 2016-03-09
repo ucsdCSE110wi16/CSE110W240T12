@@ -178,7 +178,7 @@ public class PostSortActivity extends BaseActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_edit_group_name){
-            // call edit group page TODO
+            showEditGroupNameDialog();
         }
 
 
@@ -231,6 +231,16 @@ public class PostSortActivity extends BaseActivity {
         intent.putExtra("email123", match);
         startActivity(intent);
 
+    }
+
+    /**
+     * Show the edit group name dialog when the user selects "Edit group name" menu item
+     */
+    public void showEditGroupNameDialog() {
+        // Create an instance of the dialog fragment and show it.
+        // TODO
+        DialogFragment dialogFragment = EditGroupNameDialogFragment.newInstance(mActiveGroup, mGroupId);
+        dialogFragment.show(this.getFragmentManager(), "EditGroupNameDialogFragment");
     }
 
     private class DownloadImageTask extends AsyncTask<Object, Integer, Drawable> {

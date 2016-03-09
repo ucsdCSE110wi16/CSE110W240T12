@@ -249,10 +249,15 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
          * Show edit group name dialog when the edit action is selected
          */
         if (id == R.id.action_edit_group_name) {
-            Intent intentEditUsers = new Intent(this, AdminSettingsActivity.class);
-            intentEditUsers.putExtra(Constants.KEY_GROUP_ID, mGroupId);
-            intentEditUsers.putExtra("email", mUserEmail);
-            startActivity(intentEditUsers);
+
+            // For demo purposes only edit name
+            showEditGroupNameDialog();
+            return true;
+
+//            Intent intentEditUsers = new Intent(this, AdminSettingsActivity.class);
+//            intentEditUsers.putExtra(Constants.KEY_GROUP_ID, mGroupId);
+//            intentEditUsers.putExtra("email", mUserEmail);
+//            startActivity(intentEditUsers);
         }
 
 
