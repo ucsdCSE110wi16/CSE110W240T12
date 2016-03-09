@@ -41,13 +41,12 @@ public class ActiveGroupAdapter extends ArrayAdapter<ActiveGroup> {//FirebaseLis
 
         if(group != null) {
             //dates formatted as MM/dd/yyyy;w
-            //1/7/2020
             String startDateInfo = group.getSortDate();
             String endDateInfo = group.getEndDate();
             int dayOfWeekStart = Integer.parseInt(startDateInfo.substring(startDateInfo.indexOf(';') + 1));
             int dayOfWeekEnd = Integer.parseInt(endDateInfo.substring(endDateInfo.indexOf(';') + 1));
             String dayStart = startDateInfo.substring(startDateInfo.indexOf('/') + 1, startDateInfo.indexOf('/', 3));
-            String dayEnd = endDateInfo.substring(endDateInfo.indexOf('/') + 1, endDateInfo.indexOf('/', 3));
+            String dayEnd = endDateInfo.substring(startDateInfo.indexOf('/') + 1, startDateInfo.indexOf('/', 3));
             int monthStart = Integer.parseInt(startDateInfo.substring(0, startDateInfo.indexOf('/')));
             int monthEnd = Integer.parseInt(endDateInfo.substring(0, endDateInfo.indexOf('/')));
             String startTime = group.getSortTime();

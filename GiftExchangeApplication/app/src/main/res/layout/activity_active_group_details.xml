@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -65,95 +64,6 @@
 
 
         </LinearLayout>
-        </ScrollView>
-
-
-    </LinearLayout>
-
-</RelativeLayout>
-    -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".ui.activeGroupDetails.ActiveGroupDetailsActivity">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/Toolbar" />
-
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_margin="15dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/title_days_until_sort"
-                    android:layout_weight="0.03"
-                    android:textSize="30dp"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:background="#FFFFFF" />
-
-                <TextView
-                    android:layout_width="364dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_sorting_on"
-                    android:id="@+id/title_sorting_on"
-                    android:layout_gravity="center_horizontal"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:background="#FFFFFF" />
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/desc_pre_sort_blacklist"
-                    android:id="@+id/desc_presort_blacklist"
-                    android:paddingTop="5dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="15dp"
-                    android:textColor="#000000"
-                    android:background="#FFFFFF" />
-
-
-                <ListView
-                    android:id="@+id/list_view_users"
-                    android:layout_width="match_parent"
-                    android:layout_height="287dp"
-                    android:scrollbars="none"
-                    android:layout_weight="5.55"
-                    android:background="#FFFFFF" />
-
-                <Button
-                    android:id="@+id/btn_save_blacklist"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_field_height"
-                    android:background="@color/primary"
-                    android:onClick="onSaveBlacklist"
-                    android:text="Save Preferences"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/login_buttons_text_size" />
-
-
-            </LinearLayout>
         </ScrollView>
 
 

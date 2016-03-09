@@ -34,7 +34,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.login.LoginActivity" />
+        <activity android:name=".ui.login.LoginActivity"></activity>
         <activity
             android:name=".ui.login.CreateAccountActivity"
             android:label="@string/title_activity_create_account"
@@ -46,12 +46,7 @@
         <activity
             android:name=".ui.activeGroups.CreateGroupActivity"
             android:label="@string/title_activity_create_group"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".ui.activeGroupsDetails.PostSortActivity"
-            android:label="@string/title_activity_post_sort"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".ui.userProfile.UserProfileActivity"></activity>
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

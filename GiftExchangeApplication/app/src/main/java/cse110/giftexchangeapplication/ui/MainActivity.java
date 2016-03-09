@@ -30,7 +30,6 @@ import cse110.giftexchangeapplication.ui.activeGroups.AddGroupDialogFragment;
 import cse110.giftexchangeapplication.ui.activeGroups.CreateGroupActivity;
 import cse110.giftexchangeapplication.ui.login.LoginActivity;
 import cse110.giftexchangeapplication.ui.pendingGroups.PendingGroupsFragment;
-import cse110.giftexchangeapplication.ui.userProfile.UserProfileActivity;
 import cse110.giftexchangeapplication.utils.Constants;
 import cse110.giftexchangeapplication.utils.Utils;
 
@@ -152,19 +151,8 @@ public class MainActivity extends BaseActivity{
 
             return true;
         }
-        else if (id == R.id.action_user_profile) {
-            startUserProfileActivity();
-
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void startUserProfileActivity() {
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        intent.putExtra("email123", userEmail);
-        startActivity(intent);
     }
 
     @Override

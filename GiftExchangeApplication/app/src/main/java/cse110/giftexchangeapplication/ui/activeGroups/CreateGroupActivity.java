@@ -45,8 +45,6 @@ public class CreateGroupActivity extends BaseActivity {
         EditText descriptionText = (EditText)findViewById(R.id.edit_text_group_description);
         DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
         TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
-        DatePicker datePicker1 = (DatePicker) findViewById(R.id.datePicker1);
-        TimePicker timePicker1 = (TimePicker) findViewById(R.id.timePicker1);
 
         //getting values from Views
         String title = titleText.getText().toString();
@@ -63,22 +61,10 @@ public class CreateGroupActivity extends BaseActivity {
         else
             startTime = "" + timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
 
-        String endDate = "" + datePicker1.getMonth() + "/" + datePicker1.getDayOfMonth() + "/"
-                + datePicker1.getYear() + ";";
-        Calendar cal = Calendar.getInstance();
-        cal.set(datePicker1.getYear(), datePicker1.getMonth(), datePicker1.getDayOfMonth());
-        int dayOfWeek1 = cal.get(Calendar.DAY_OF_WEEK);
-        endDate += dayOfWeek1;
-        String endTime;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            endTime = "" + timePicker1.getHour() + ":" + timePicker1.getMinute();
-        else
-            endTime = "" + timePicker1.getCurrentHour() + ":" + timePicker1.getCurrentMinute();
-
         //creating group Pojo and pushing it to firebase
         HashMap<String, Object> timestampCreated = new HashMap<>();
         timestampCreated.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
-        ActiveGroup group = new ActiveGroup(title, description, startDate, endDate, startTime, endTime, userEmail, timestampCreated);
+        ActiveGroup group = new ActiveGroup(title, description, startDate, startDate, startTime, startTime, userEmail, timestampCreated);
         Firebase groupLocation = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS);
         groupLocation = groupLocation.push();
         groupLocation.setValue(group);
