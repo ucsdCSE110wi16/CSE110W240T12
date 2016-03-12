@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.adminSettings.AdminEditUsersActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="15dp">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_remove_users"
+                    android:id="@+id/desc_remove_users"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="15dp"
+                    android:textColor="#000000"
+                    android:background="#FFFFFF" />
+
+
+                <ListView
+                    android:id="@+id/list_view_remove_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="360dp"
+                    android:scrollbars="none"
+                    android:layout_weight="5.55"
+                    android:background="#FFFFFF" />
+
+                <Button
+                    android:id="@+id/btn_remove_users"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/input_field_height"
+                    android:background="@color/primary"
+                    android:onClick="onSaveBlacklist"
+                    android:text="Remove Users"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/login_buttons_text_size" />
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/input_field_height"
+                    android:background="@color/primary"
+                    android:text="Cancel"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/login_buttons_text_size"
+                    android:layout_marginTop="10dp" />
+
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

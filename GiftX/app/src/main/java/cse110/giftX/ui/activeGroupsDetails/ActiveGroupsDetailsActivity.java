@@ -29,14 +29,13 @@ import cse110.giftX.model.Exchanger;
 import cse110.giftX.model.User;
 import cse110.giftX.ui.BaseActivity;
 import cse110.giftX.ui.MainActivity;
-import cse110.giftX.ui.adminSettings.AdminSettingsActivity;
 import cse110.giftX.utils.Constants;
 import cse110.giftX.utils.Utils;
 
 /**
  * Represents the details screen for when selecting an active group
  */
-public class ActiveGroupsDetailsActivity extends BaseActivity {
+public class  ActiveGroupsDetailsActivity extends BaseActivity {
     private Firebase mActiveGroupRef;
     private Firebase mActiveGroupUsersRef;
     private ListView mListView;
@@ -248,16 +247,24 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
         /**
          * Show edit group name dialog when the edit action is selected
          */
-        if (id == R.id.action_edit_group_name) {
-
-            // For demo purposes only edit name
-            showEditGroupNameDialog();
-            return true;
+//        if (id == R.id.action_edit_group_name) {
+//
+//            // For demo purposes only edit name
+//            showEditGroupNameDialog();
+//            return true;
 
 //            Intent intentEditUsers = new Intent(this, AdminSettingsActivity.class);
 //            intentEditUsers.putExtra(Constants.KEY_GROUP_ID, mGroupId);
 //            intentEditUsers.putExtra("email", mUserEmail);
-//            startActivity(intentEditUsers);
+////            startActivity(intentEditUsers);
+//        }
+
+        if (id == R.id.action_edit_group_name) {
+            Intent intentEditUsers = new Intent(this, cse110.giftX.ui.adminSettings.AdminSettingsActivity.class);
+            intentEditUsers.putExtra(Constants.KEY_GROUP_ID, mGroupId);
+            intentEditUsers.putExtra("email", mUserEmail);
+            startActivity(intentEditUsers);
+            return true;
         }
 
 

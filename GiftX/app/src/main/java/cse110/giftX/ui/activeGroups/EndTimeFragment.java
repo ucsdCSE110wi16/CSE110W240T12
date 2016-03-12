@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TimePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import cse110.giftX.R;
@@ -42,7 +43,13 @@ public class EndTimeFragment extends DialogFragment implements TimePickerDialog.
             AMPM = "PM";
         }
 
-        endTime.setText(hourOfDay + ":" + min + " " + AMPM);
+        Calendar date = Calendar.getInstance();
+        date.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        date.set(Calendar.MINUTE, minute);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        endTime.setText(sdf.format(date.getTime()) + " " + AMPM);
+        //endTime.setText(hourOfDay + ":" + min + " " + AMPM);
 
     }
 }

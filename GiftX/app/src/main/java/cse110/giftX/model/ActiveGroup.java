@@ -45,7 +45,8 @@ public class ActiveGroup {
      *
      */
     public ActiveGroup(String name, String description, String sortDate, String endDate, String sortTime,
-                       String endTime, String manager, HashMap<String, Object> timeStampCreated, String url) {
+                       String endTime, String manager, double priceMin, double priceMax,
+                       HashMap<String, Object> timeStampCreated, String url) {
         this.groupName = name;
         this.groupID = groupID;
         this.groupDescription = description;
@@ -56,8 +57,8 @@ public class ActiveGroup {
         this.endTime = endTime;
         this.users = new HashMap<String, Map<String, Boolean>>();
         this.pairs = new HashMap<String, String>();
-        this.priceMin = 0;
-        this.priceMax = 0;
+        this.priceMin = priceMin;
+        this.priceMax = priceMax;
         this.blacklistMax = 0;
         this.sorted = false;
         this.timeStampCreated = timeStampCreated;

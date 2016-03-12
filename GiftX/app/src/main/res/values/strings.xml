@@ -109,4 +109,16 @@
     <!-- OAuth Format -->
     <string name="oauth2_format">oauth2:%s</string>
 
+    <!-- Admin Edit Group Settings Activity Strings -->
+    <string name = "title_activity_admin_settings">Group Settings</string>
+    <string name = "save_edited_group_settings">Save Settings</string>
+    <string name = "remove_users">Remove Users</string>
+    <string name = "hint_price_min">Gift price minimum</string>
+    <string name = "hint_price_max">Gift price maximum</string>
+
+    <!-- Remove Users Activity Strings -->
+    <string name = "title_activity_remove_users">Remove Users</string>
+    <string name = "desc_remove_users"> To remove users from this group, press the checkbox next
+      to their names and then press the "Remove Users" button.</string>
+
 </resources>

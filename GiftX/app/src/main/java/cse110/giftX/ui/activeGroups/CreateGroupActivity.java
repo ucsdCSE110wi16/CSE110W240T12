@@ -104,6 +104,8 @@ public class CreateGroupActivity extends BaseActivity {
         //getting the Views
         EditText titleText = (EditText)findViewById(R.id.edit_text_group_title);
         EditText descriptionText = (EditText)findViewById(R.id.edit_text_group_description);
+        EditText priceMin = (EditText) findViewById(R.id.edit_text_price_min);
+        EditText priceMax = (EditText) findViewById(R.id.edit_text_price_max);
         Button startDateButton = (Button) findViewById(R.id.edit_text_start_date);
         Button endDateButton = (Button) findViewById(R.id.edit_text_end_date);
         Button startTimeButton = (Button) findViewById(R.id.edit_text_start_time);
@@ -117,6 +119,22 @@ public class CreateGroupActivity extends BaseActivity {
         String endDate = endDateButton.getText().toString();
         String startTime = startTimeButton.getText().toString();
         String endTime = endTimeButton.getText().toString();
+        Double min = 0.00;
+        Double max = 0.00;
+        if(!priceMax.getText().toString().equals("")) {
+            try {
+                max = Double.parseDouble(priceMax.getText().toString());
+            }
+            catch (NumberFormatException e) {
+            }
+        }
+        if(!priceMin.getText().toString().equals("")) {
+            try {
+                min = Double.parseDouble(priceMin.getText().toString());
+            }
+            catch (NumberFormatException e) {
+            }
+        }
 
         if(title.isEmpty() || description.isEmpty()  || startDate.isEmpty()  ||
                 endDate.isEmpty()  || startTime.isEmpty()  || endTime.isEmpty() ){
@@ -124,21 +142,24 @@ public class CreateGroupActivity extends BaseActivity {
             return;
 
         }
+        if(max < min) {
+            Toast.makeText(getApplicationContext(), "Max price must be greater than min price!", Toast.LENGTH_LONG).show();
+        } else {
+            //creating group Pojo and pushing it to firebase
+            HashMap<String, Object> timestampCreated = new HashMap<>();
+            timestampCreated.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
+            ActiveGroup group = new ActiveGroup(title, description, startDate, endDate, startTime, endTime, userEmail, min, max, timestampCreated, profileURL);
+            Firebase groupLocation = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS);
+            groupLocation = groupLocation.push();
+            groupLocation.setValue(group);
+            String groupID = groupLocation.getKey().toString();
+            groupLocation.child("groupID").setValue(groupID);
 
-        //creating group Pojo and pushing it to firebase
-        HashMap<String, Object> timestampCreated = new HashMap<>();
-        timestampCreated.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
-        ActiveGroup group = new ActiveGroup(title, description, startDate, endDate, startTime, endTime, userEmail, timestampCreated, profileURL);
-        Firebase groupLocation = new Firebase(Constants.FIREBASE_URL_ACTIVE_GROUPS);
-        groupLocation = groupLocation.push();
-        groupLocation.setValue(group);
-        String groupID = groupLocation.getKey().toString();
-        groupLocation.child("groupID").setValue(groupID);
-
-        //adding the group to the user
-        Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS + "/" + userEmail + "/groups/" + groupID);
-        userLocation.setValue(true);
-        finish();
+            //adding the group to the user
+            Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS + "/" + userEmail + "/groups/" + groupID);
+            userLocation.setValue(true);
+            finish();
+        }
     }
 
     // Show error toast to user
