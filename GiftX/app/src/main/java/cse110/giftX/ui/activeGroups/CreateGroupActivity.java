@@ -8,8 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -106,11 +106,10 @@ public class CreateGroupActivity extends BaseActivity {
         EditText descriptionText = (EditText)findViewById(R.id.edit_text_group_description);
         EditText priceMin = (EditText) findViewById(R.id.edit_text_price_min);
         EditText priceMax = (EditText) findViewById(R.id.edit_text_price_max);
-        Button startDateButton = (Button) findViewById(R.id.edit_text_start_date);
-        Button endDateButton = (Button) findViewById(R.id.edit_text_end_date);
-        Button startTimeButton = (Button) findViewById(R.id.edit_text_start_time);
-        Button endTimeButton = (Button) findViewById(R.id.edit_text_end_time);
-
+        TextView startDateButton = (TextView) findViewById(R.id.edit_text_start_date);
+        TextView endDateButton = (TextView) findViewById(R.id.edit_text_end_date);
+        TextView startTimeButton = (TextView) findViewById(R.id.edit_text_start_time);
+        TextView endTimeButton = (TextView) findViewById(R.id.edit_text_end_time);
 
         //getting values from Views
         String title = titleText.getText().toString();
@@ -119,22 +118,8 @@ public class CreateGroupActivity extends BaseActivity {
         String endDate = endDateButton.getText().toString();
         String startTime = startTimeButton.getText().toString();
         String endTime = endTimeButton.getText().toString();
-        Double min = 0.00;
-        Double max = 0.00;
-        if(!priceMax.getText().toString().equals("")) {
-            try {
-                max = Double.parseDouble(priceMax.getText().toString());
-            }
-            catch (NumberFormatException e) {
-            }
-        }
-        if(!priceMin.getText().toString().equals("")) {
-            try {
-                min = Double.parseDouble(priceMin.getText().toString());
-            }
-            catch (NumberFormatException e) {
-            }
-        }
+        Double min = Double.parseDouble(priceMin.getText().toString());
+        Double max = Double.parseDouble(priceMax.getText().toString());
 
         if(title.isEmpty() || description.isEmpty()  || startDate.isEmpty()  ||
                 endDate.isEmpty()  || startTime.isEmpty()  || endTime.isEmpty() ){

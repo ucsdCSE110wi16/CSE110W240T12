@@ -30,4 +30,11 @@
         android:title="Instant Sort"
         app:showAsAction="withText" />
 
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="100"
+        android:title="Logout"
+        android:visible="false"
+        app:showAsAction="never" />
+
 </menu>

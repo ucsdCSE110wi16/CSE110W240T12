@@ -4,7 +4,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +29,7 @@ public class EndTimeFragment extends DialogFragment implements TimePickerDialog.
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        Button endTime = (Button) getActivity().findViewById(R.id.edit_text_end_time);
+        TextView endTime = (TextView) getActivity().findViewById(R.id.edit_text_end_time);
         String AMPM = "AM";
         String min;
 

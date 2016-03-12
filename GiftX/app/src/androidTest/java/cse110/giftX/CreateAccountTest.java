@@ -1,20 +1,27 @@
-package cse110.giftx;
+package cse110.giftX;
 
 import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import cse110.giftx.ui.login.LoginActivity;
+import cse110.giftX.ui.login.LoginActivity;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.core.StringStartsWith.startsWith;
+
 /**
  * Created by AJ on 3/8/16.
  */
@@ -34,12 +41,12 @@ public class CreateAccountTest {
 
     @Test
     public void test1CreateMismatchAccount() {
-        onView(withId(R.id.tv_sign_up)).perform(click());
+        onView(withId(R.id.tv_sign_up))
+                .perform(scrollTo())
+                .perform(click());
 
-        onView(withId(R.id.edit_text_first_name_create))
-                .perform(typeText("John"), closeSoftKeyboard());
-        onView(withId(R.id.edit_text_user_last_name_create))
-                .perform(typeText("Smith"), closeSoftKeyboard());
+        onView(withId(R.id.edit_text_username_create))
+                .perform(typeText("John Smith"), closeSoftKeyboard());
         onView(withId(R.id.edit_text_email_create))
                 .perform(typeText("JohnSmithattestEMAIL.com"), closeSoftKeyboard());
         onView(withId(R.id.edit_text_password_create))
@@ -54,12 +61,12 @@ public class CreateAccountTest {
 
     @Test
     public void test2CreateShortPasswordAccount() {
-        onView(withId(R.id.tv_sign_up)).perform(click());
+        onView(withId(R.id.tv_sign_up))
+                .perform(scrollTo())
+                .perform(click());
 
-        onView(withId(R.id.edit_text_first_name_create))
-                .perform(typeText("John"), closeSoftKeyboard());
-        onView(withId(R.id.edit_text_user_last_name_create))
-                .perform(typeText("Smith"), closeSoftKeyboard());
+        onView(withId(R.id.edit_text_username_create))
+                .perform(typeText("John Smith"), closeSoftKeyboard());
         onView(withId(R.id.edit_text_email_create))
                 .perform(typeText("JohnSmith@testEMAIL.com"), closeSoftKeyboard());
         onView(withId(R.id.edit_text_password_create))
@@ -73,15 +80,15 @@ public class CreateAccountTest {
     }
 
     @Test
-    public void test3CreateGoodAccount() {
-        onView(withId(R.id.tv_sign_up)).perform(click());
+    public void test3CreateGoodAccount() throws Exception {
+        onView(withId(R.id.tv_sign_up))
+                .perform(scrollTo())
+                .perform(click());
 
-        onView(withId(R.id.edit_text_first_name_create))
-                .perform(typeText("Espresso"), closeSoftKeyboard());
-        onView(withId(R.id.edit_text_user_last_name_create))
-                .perform(typeText("Test"), closeSoftKeyboard());
+        onView(withId(R.id.edit_text_username_create))
+                .perform(typeText("John Smith"), closeSoftKeyboard());
         onView(withId(R.id.edit_text_email_create))
-                .perform(typeText("EspressoTest@TestEmail.com"), closeSoftKeyboard());
+                .perform(typeText("espressotest@testemail.com"), closeSoftKeyboard());
         onView(withId(R.id.edit_text_password_create))
                 .perform(typeText("password111"), closeSoftKeyboard());
         onView(withId(R.id.edit_text_confirm_password_create))
@@ -89,6 +96,10 @@ public class CreateAccountTest {
         onView(withId(R.id.btn_create_account_final))
                 .perform(click())
                 .check(matches(isDisplayed()));
+        Thread.sleep(2000);
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        onData(hasToString(startsWith("Logout")))
+                .perform(click());
     }
 
 }

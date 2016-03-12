@@ -139,10 +139,9 @@ public class LoginActivity extends BaseActivity {
         mAuthProgressDialog.setMessage(getString(R.string.progress_dialog_authenticating_with_firebase));
         mAuthProgressDialog.setCancelable(false);
 
-        // Setup Google Sign In
-        // for demo
 
-        //setupGoogleSignIn();
+
+        setupGoogleSignIn();
     }
 
     /**
@@ -383,17 +382,16 @@ public class LoginActivity extends BaseActivity {
      */
 
     // Sets up the Google button
-    // remove for demo
-//    private void setupGoogleSignIn() {
-//        SignInButton signInButton = (SignInButton)findViewById(R.id.login_with_google);
-//        signInButton.setSize(SignInButton.SIZE_WIDE);
-//        signInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onSignInGooglePressed(v);
-//            }
-//        });
-//    }
+    private void setupGoogleSignIn() {
+        SignInButton signInButton = (SignInButton)findViewById(R.id.login_with_google);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSignInGooglePressed(v);
+            }
+        });
+    }
 
     // Sign in with Google+ when user clicks button
     public void onSignInGooglePressed(View view) {

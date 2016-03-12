@@ -55,6 +55,8 @@ public class  ActiveGroupsDetailsActivity extends BaseActivity {
     private Set<String> blacklist;
     Firebase blacklistRef;
 
+    private String theGroupID;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,7 @@ public class  ActiveGroupsDetailsActivity extends BaseActivity {
         /* Get the push ID from the extra passed by ActiveGroupFragment */
         Intent intent = this.getIntent();
         mGroupId = intent.getStringExtra(Constants.KEY_GROUP_ID);
+        theGroupID = mGroupId;
         mUserEmail = intent.getStringExtra(MainActivity.USER_EMAIL);
         if (mGroupId == null) {
             /* No point in continuing if there's no valid ID */
@@ -244,24 +247,9 @@ public class  ActiveGroupsDetailsActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        /**
-         * Show edit group name dialog when the edit action is selected
-         */
-//        if (id == R.id.action_edit_group_name) {
-//
-//            // For demo purposes only edit name
-//            showEditGroupNameDialog();
-//            return true;
-
-//            Intent intentEditUsers = new Intent(this, AdminSettingsActivity.class);
-//            intentEditUsers.putExtra(Constants.KEY_GROUP_ID, mGroupId);
-//            intentEditUsers.putExtra("email", mUserEmail);
-////            startActivity(intentEditUsers);
-//        }
-
         if (id == R.id.action_edit_group_name) {
             Intent intentEditUsers = new Intent(this, cse110.giftX.ui.adminSettings.AdminSettingsActivity.class);
-            intentEditUsers.putExtra(Constants.KEY_GROUP_ID, mGroupId);
+            intentEditUsers.putExtra(Constants.KEY_GROUP_ID, theGroupID);
             intentEditUsers.putExtra("email", mUserEmail);
             startActivity(intentEditUsers);
             return true;

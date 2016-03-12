@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
+    <permission android:name="cse110.giftX.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="cse110.giftX.permission.C2D_MESSAGE" />
+
     <application
         android:name="giftX"
         android:allowBackup="true"
@@ -17,6 +21,7 @@
             android:name="cse110.giftX.ui.MainActivity"
             android:label="giftX"
             android:screenOrientation="portrait"
+            android:configChanges="orientation"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -32,6 +37,8 @@
             android:name="cse110.giftX.ui.activeGroupsDetails.ActiveGroupsDetailsActivity"
             android:label="Group Details"
             android:parentActivityName="cse110.giftX.ui.MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -46,7 +53,9 @@
                 <!--android:value="cse110.giftX.ui.adminSettings.AdminSettingsActivity"-->
                 <!--/>-->
         <!--</activity>-->
-        <activity android:name="cse110.giftX.ui.login.LoginActivity" />
+        <activity android:name="cse110.giftX.ui.login.LoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"/>
         <activity
             android:name="cse110.giftX.ui.login.CreateAccountActivity"
             android:label="@string/title_activity_create_account"
@@ -58,21 +67,31 @@
         <activity
             android:name="cse110.giftX.ui.activeGroups.CreateGroupActivity"
             android:label="@string/title_activity_create_group"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
             android:theme="@style/AppTheme" />
         <activity
             android:name="cse110.giftX.ui.activeGroupsDetails.PostSortActivity"
             android:label="@string/title_activity_post_sort"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
             android:theme="@style/AppTheme" />
 
         <activity
             android:name="cse110.giftX.ui.adminSettings.AdminSettingsActivity"
             android:label="@string/title_activity_admin_settings"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
             android:theme="@style/AppTheme" />
         <activity
             android:name="cse110.giftX.ui.adminSettings.AdminEditUsersActivity"
             android:label="@string/title_activity_remove_users"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
             android:theme="@style/AppTheme" />
-        <activity android:name="cse110.giftX.ui.userProfile.UserProfileActivity"></activity>
+        <activity android:name="cse110.giftX.ui.userProfile.UserProfileActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"></activity>
     </application>
 
 </manifest>

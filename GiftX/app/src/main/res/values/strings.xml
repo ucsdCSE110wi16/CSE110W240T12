@@ -68,6 +68,8 @@
     <string name="action_create_group">CREATE</string>
     <string name="action_cancel_create_group">Cancel</string>
     <string name="create_group_activity_title">Create group</string>
+    <string name="set_time">Set Time</string>
+    <string name="choose_date">Choose Date</string>
 
     <string name="invite_user">Invite user</string>
 
@@ -115,6 +117,7 @@
     <string name = "remove_users">Remove Users</string>
     <string name = "hint_price_min">Gift price minimum</string>
     <string name = "hint_price_max">Gift price maximum</string>
+    <string name="action_save_settings">SAVE CHANGES</string>
 
     <!-- Remove Users Activity Strings -->
     <string name = "title_activity_remove_users">Remove Users</string>

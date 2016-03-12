@@ -11,6 +11,8 @@
         android:id="@+id/list_view_pending_groups"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        android:layout_margin="10dp"
+        android:dividerHeight="15dp"/>
 
 </RelativeLayout>
