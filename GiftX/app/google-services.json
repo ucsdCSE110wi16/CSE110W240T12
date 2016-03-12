@@ -1,0 +1,93 @@
+{
+  "project_info": {
+    "project_id": "giftx-47dd4",
+    "project_number": "1067216159846",
+    "name": "GiftX"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067216159846:android:5cd131bf0c3df5e7",
+        "client_id": "android:cse110.giftexchangeapplication",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "cse110.giftexchangeapplication",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1067216159846-5llff11c06nqbrbcqm26nve8p5su67n2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067216159846:android:305ec470208c976b",
+        "client_id": "android:cse110.giftX",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "cse110.giftX",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1067216159846-jdcvod9enjbgvn9kk9ovbui4ftvjv0u5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cse110.giftX",
+            "certificate_hash": "50295D61761CD4AA040409AF0F4666690065CA46"
+          }
+        },
+        {
+          "client_id": "1067216159846-5llff11c06nqbrbcqm26nve8p5su67n2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

@@ -1,5 +1,7 @@
-package cse110.giftx.ui.userProfile;
+package cse110.giftX.ui.userProfile;
 
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -8,16 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import cse110.giftx.R;
-import cse110.giftx.model.User;
-import cse110.giftx.utils.Constants;
-import cse110.giftx.utils.Utils;
+import cse110.giftX.R;
+import cse110.giftX.model.User;
+import cse110.giftX.utils.Constants;
+import cse110.giftX.utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +41,7 @@ public class AboutFragment extends Fragment {
     private int position;
     private Firebase ref;
     private EditText mInfoDisplay;
+    private ImageView profilePicture;
     public AboutFragment() {
         // Required empty public constructor
     }
@@ -67,7 +71,7 @@ public class AboutFragment extends Fragment {
             email = getArguments().getString(ARG_PARAM1);
             position = getArguments().getInt(ARG_PARAM2);
         }
-
+        profilePicture = (ImageView) getActivity().findViewById(R.id.userAvatar);
     }
 
     @Override
@@ -85,6 +89,8 @@ public class AboutFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
+                new DownloadImageTask().execute(user.getProfileURL());
+
                 switch (position) {
                     case 0:
                         mInfoDisplay.setText(user.getAboutMe());
@@ -148,4 +154,17 @@ public class AboutFragment extends Fragment {
         mInfoDisplay = (EditText) rootView.findViewById(R.id.infoDisplay);
     }
 
+    private class DownloadImageTask extends AsyncTask<Object, Integer, Drawable> {
+
+        protected Drawable doInBackground(Object... args) {
+            Drawable d = Utils.loadImageFromWeb((String) args[0]);
+            return d;
+        }
+
+        protected void onPostExecute(Drawable result) {
+            if(result != null && profilePicture != null) {
+                profilePicture.setImageDrawable(result);
+            }
+        }
+    }
 }

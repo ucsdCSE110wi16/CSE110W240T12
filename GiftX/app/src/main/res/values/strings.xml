@@ -5,7 +5,7 @@
     <string name="action_remove_group">Remove group</string>
 
     <!-- Base Strings for the App -->
-    <string name="app_name">Gift Exchange Application</string>
+    <string name="app_name">giftX</string>
     <string name="pager_title_active_groups">Active Groups</string>
     <string name="pager_title_pending_groups">Pending Groups</string>
     <string name="pager_title_about_me">About Me</string>
@@ -20,6 +20,11 @@
         Are you sure you want to remove this group?
     </string>
 
+    <!-- Base Error Strings -->
+    <string name="log_error_updating_data">Error updating data: </string>
+    <string name="log_error_the_read_failed">The read failed: </string>
+    <string name="log_error_occurred">"Error occurred: "</string>
+
     <!-- Instructions and Loading Text -->
     <string name="progress_dialog_loading">Loading…</string>
     <string name="progress_dialog_authenticating_with_firebase">Authenticating…</string>
@@ -30,8 +35,7 @@
     <string name="hint_enter_email">Email</string>
     <string name="hint_enter_password">Password</string>
     <string name="hint_confirm_password">Confirm password</string>
-    <string name="hint_enter_first_name">First name</string>
-    <string name="hint_enter_last_name">Last name</string>
+    <string name="hint_enter_full_name">Full name</string>
     <string name="text_dont_have_account">Don\'t have an account?</string>
     <string name="button_create_account">Sign Up</string>
     <string name="text_already_have_account">Already have an account?</string>
@@ -47,12 +51,25 @@
     <string name="error_email_taken">This email is already taken</string>
     <string name="error_invalid_email_not_valid">Please enter a valid email</string>
     <string name="error_confirm_password_not_valid">The passwords don\'t match</string>
+    <string name="log_error_invalid_provider">"Invalid provider: "</string>
+
     <string name="title_activity_create_group">CreateGroupActivity</string>
+
+    <!-- About Me Screen -->
+    <string name="about_me_title">About Me:</string>
+
+    <!-- User Profile -->
+    <string name="user_profile_title">Profile</string>
 
     <!-- Group Creation Strings -->
     <string name="hint_group_title">Group name</string>
     <string name="hint_group_description">Group description</string>
     <string name="create_group">Create Group</string>
+    <string name="action_create_group">CREATE</string>
+    <string name="action_cancel_create_group">Cancel</string>
+    <string name="create_group_activity_title">Create group</string>
+    <string name="set_time">Set Time</string>
+    <string name="choose_date">Choose Date</string>
 
     <string name="invite_user">Invite user</string>
 
@@ -76,5 +93,35 @@
     <string name="desc_pre_sort_blacklist">Have someone you don\'t get along with? Use the checkbox to add them to
       your blacklist. Keep in mind, there are no guarantees!</string>
     <string name="title_activity_post_sort">PostSortActivity</string>
+
+    <!-- Log Messages -->
+    <string name="log_message_password_changed_successfully">Password changed successfully from temporary password to </string>
+    <string name="log_message_auth_successful">Authentication successful.</string>
+
+    <!-- Google Errors -->
+    <string name="google_error_recoverable_oauth_error">"Recoverable Google OAuth error: "</string>
+    <string name="google_error_google_play_services_not_available">Google Play Services are not available.</string>
+    <string name="google_error_trying_to_connect_google_api">Trying to connect to Google API</string>
+    <string name="google_error_auth_with_google">"Error authenticating with Google: "</string>
+    <string name="google_error_network_error">"Network error: "</string>
+    <string name="google_error_cant_connect_to_api">Are you sure that you set up a project for your app?
+        Check out : https://console.developers.google.com/project. Also make sure you have all the proper
+    gradle dependencies</string>
+
+    <!-- OAuth Format -->
+    <string name="oauth2_format">oauth2:%s</string>
+
+    <!-- Admin Edit Group Settings Activity Strings -->
+    <string name = "title_activity_admin_settings">Group Settings</string>
+    <string name = "save_edited_group_settings">Save Settings</string>
+    <string name = "remove_users">Remove Users</string>
+    <string name = "hint_price_min">Gift price minimum</string>
+    <string name = "hint_price_max">Gift price maximum</string>
+    <string name="action_save_settings">SAVE CHANGES</string>
+
+    <!-- Remove Users Activity Strings -->
+    <string name = "title_activity_remove_users">Remove Users</string>
+    <string name = "desc_remove_users"> To remove users from this group, press the checkbox next
+      to their names and then press the "Remove Users" button.</string>
 
 </resources>

@@ -1,8 +1,8 @@
-package cse110.giftx;
+package cse110.giftX;
 
 import com.firebase.client.Firebase;
 
-public class GiftX extends android.app.Application{
+public class giftX extends android.app.Application{
 
     @Override
     public void onCreate() {

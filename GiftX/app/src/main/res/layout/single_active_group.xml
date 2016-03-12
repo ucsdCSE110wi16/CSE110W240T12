@@ -34,7 +34,8 @@
         android:layout_marginTop="15dp"
         android:paddingBottom="10dp"
         android:gravity="center_horizontal"
-        android:background="@drawable/bottom_border">
+        android:background="@drawable/bottom_border"
+        android:weightSum="1">
 
         <!-- Calendar start image-->
         <ImageView
@@ -51,9 +52,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:text="Fri, 4 Mar 9:00am"
+            android:text="Fri, 7 Mar 7:00pm"
             android:id="@+id/group_date_start"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_weight="0.20" />
 
         <!-- Directional triangle -->
         <ImageView
@@ -80,9 +82,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:text="Fri, 11 Mar 7:00pm"
+            android:text="Thu, 24 Mar 11:41pm"
             android:id="@+id/group_date_end"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_weight="0.20" />
 
     </LinearLayout>
 
@@ -101,8 +104,8 @@
             android:layout_marginRight="15dp"
             android:layout_marginEnd="15dp"
             android:paddingBottom="10dp"
-            android:id="@+id/profile_pic"
-            android:src="@drawable/dude" />
+            android:id="@+id/profile_pic"/>
+            <!--android:src="@drawable/dude"-->
 
         <LinearLayout
             android:orientation="vertical"

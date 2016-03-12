@@ -1,4 +1,4 @@
-package cse110.giftx;
+package cse110.giftX;
 
 import org.junit.Test;
 

@@ -1,12 +1,12 @@
-package cse110.giftx.ui.login;
+package cse110.giftX.ui.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,25 +20,29 @@ import com.firebase.client.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import cse110.giftx.R;
-import cse110.giftx.model.User;
-import cse110.giftx.ui.BaseActivity;
-import cse110.giftx.ui.MainActivity;
-import cse110.giftx.utils.Constants;
-import cse110.giftx.utils.Utils;
+import cse110.giftX.R;
+import cse110.giftX.model.User;
+import cse110.giftX.ui.BaseActivity;
+import cse110.giftX.ui.MainActivity;
+import cse110.giftX.utils.Constants;
+import cse110.giftX.utils.Utils;
 
 public class CreateAccountActivity extends BaseActivity {
 
-    private Firebase mFirebaseRef;
-    private EditText mEditTextFirstNameCreate;
-    private EditText mEditTextLastNameCreate;
-    private EditText mEditTextEmailCreate;
-    private EditText mEditTextPasswordCreate;
-    private EditText mEditTextPasswordConfirmCreate;
+    //Log tag
+    private static final String LOG_TAG = CreateAccountActivity.class.getSimpleName();
 
-    private String mFirstName, mLastName, mUserEmail, mPassword, mConFirmPassword;
-
+    // Progress dialog
     ProgressDialog mAuthProgressDialog;
+
+    // Firebase reference
+    private Firebase mFirebaseRef;
+
+    // Declare TextViews
+    private EditText mEditTextUserNameCreate, mEditTextEmailCreate, mEditTextPasswordCreate, mEditTextPasswordConfirmCreate;
+
+    private String mUserName, mUserEmail, mPassword, mConFirmPassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +54,6 @@ public class CreateAccountActivity extends BaseActivity {
 
         // Link XML layout elements & setup the progress dialog
         initializeScreen();
-
-        //Add functionality to button.
-        Button mRegisterButton = (Button) findViewById(R.id.btn_create_account_final);
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNewAccount();
-            }
-        });
     }
 
     @Override
@@ -67,8 +62,7 @@ public class CreateAccountActivity extends BaseActivity {
     }
 
     public void initializeScreen() {
-        mEditTextFirstNameCreate = (EditText) findViewById(R.id.edit_text_first_name_create);
-        mEditTextLastNameCreate = (EditText) findViewById(R.id.edit_text_user_last_name_create);
+        mEditTextUserNameCreate = (EditText) findViewById(R.id.edit_text_username_create);
         mEditTextEmailCreate = (EditText) findViewById(R.id.edit_text_email_create);
         mEditTextPasswordCreate = (EditText) findViewById(R.id.edit_text_password_create);
         mEditTextPasswordConfirmCreate = (EditText) findViewById(R.id.edit_text_confirm_password_create);
@@ -78,7 +72,6 @@ public class CreateAccountActivity extends BaseActivity {
         mAuthProgressDialog.setTitle(getResources().getString(R.string.progress_dialog_loading));
         mAuthProgressDialog.setMessage(getResources().getString(R.string.progress_dialog_creating_user_with_firebase));
         mAuthProgressDialog.setCancelable(false);
-
     }
 
     /**
@@ -94,22 +87,20 @@ public class CreateAccountActivity extends BaseActivity {
     /**
      * Create a new account using Firebase email/password provider
      */
-    public void createNewAccount() {
+    public void createNewAccount(View view) {
 
-        mFirstName = mEditTextFirstNameCreate.getText().toString();
-        mLastName = mEditTextLastNameCreate.getText().toString();
+        mUserName = mEditTextUserNameCreate.getText().toString();
         mUserEmail = mEditTextEmailCreate.getText().toString();
         mPassword = mEditTextPasswordCreate.getText().toString();
         mConFirmPassword = mEditTextPasswordConfirmCreate.getText().toString();
 
-
         //Checks validity of all text fields
+        boolean validUserName = isUserNameValid(mUserName);
         boolean validEmail = isEmailValid(mUserEmail);
-        boolean validFirstName = isFirstNameValid(mFirstName);
-        boolean validLastName = isLastNameValid(mLastName);
         boolean validPassword = isPasswordValid(mPassword, mConFirmPassword);
 
-        if(!validEmail || !validFirstName || !validLastName || !validPassword)
+        // Exit if any field is not valid
+        if(!validEmail || !validUserName || !validPassword)
             return;
 
         // If everything is valid show the progress dialog
@@ -120,18 +111,21 @@ public class CreateAccountActivity extends BaseActivity {
             mFirebaseRef.unauth();
         }
 
+        /**
+         * Create new user with given email & password
+         */
         mFirebaseRef.createUser(mUserEmail, mPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> stringObjectMap) {
                 // Dismiss progress dialog
                 mAuthProgressDialog.dismiss();
-                final String uid = (String) stringObjectMap.get("uid");
+                Log.i(LOG_TAG, getString(R.string.log_message_auth_successful));
+                createUserInFirebase();
 
                 mFirebaseRef.authWithPassword(mUserEmail, mPassword, new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        createUserInFirebase(authData.getUid()); //michael - added UID to parameters
-                        //startMainActivity(); bug1
+                        startMainActivity();
                     }
 
                     @Override
@@ -161,11 +155,14 @@ public class CreateAccountActivity extends BaseActivity {
      * Helper that creates a User & stores it in Firebase
      */
 
-    private void createUserInFirebase(String uid) { //michael - added uid parameter here and in user pojo
+    private void createUserInFirebase() {
         final String encodedEmail = Utils.encodeEmail(mUserEmail);
         final Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail);
-        final String userID = uid;
 
+        /**
+         * Check if there is already a user
+         * ex. if they already logged in w/ Google Account
+         */
         userLocation.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -174,20 +171,27 @@ public class CreateAccountActivity extends BaseActivity {
                     HashMap<String, Object> timestampJoined = new HashMap<>();
                     timestampJoined.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
 
-                    User newUser = new User(mFirstName, mLastName, encodedEmail, timestampJoined, userID);
+                    User newUser = new User(mUserName, encodedEmail, timestampJoined);
                     userLocation.setValue(newUser);
-                    startMainActivity();
                 }
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                // blank
+                Log.d(LOG_TAG, getString(R.string.log_error_occurred) + firebaseError.getMessage());
             }
         });
 
     }
 
+    // Check if the user's full name is valid
+    private boolean isUserNameValid(String userName) {
+        if (userName.equals("")) {
+            mEditTextUserNameCreate.setError(getResources().getString(R.string.error_cannot_be_empty));
+            return false;
+        }
+        return true;
+    }
     // Check if email is valid
     private boolean isEmailValid(String email) {
         boolean isGoodEmail =
@@ -201,33 +205,20 @@ public class CreateAccountActivity extends BaseActivity {
         return isGoodEmail;
     }
 
-    // Check if first name is valid
-    private boolean isFirstNameValid(String firstName) {
-        if (firstName.equals("")) {
-            mEditTextFirstNameCreate.setError(getResources().getString(R.string.error_cannot_be_empty));
-            return false;
-        }
-        return true;
-    }
-
-    // Check if last name is valid
-    private boolean isLastNameValid(String lastName) {
-        if (lastName.equals("")) {
-            mEditTextFirstNameCreate.setError(getResources().getString(R.string.error_cannot_be_empty));
-            return false;
-        }
-        return true;
-    }
-
     // Check if password is valid
     private boolean isPasswordValid(String password, String confirmPassword) {
+        // Check if password is correct length
         if (password.length() < 6) {
             mEditTextPasswordCreate.setError(getResources().getString(R.string.error_invalid_password_not_valid));
             return false;
         }
+        // Check if both passwords match
         else if (!password.equals(confirmPassword)) {
             mEditTextPasswordConfirmCreate.setError(getResources().getString(R.string.error_confirm_password_not_valid));
+            return false;
         }
+
+        // If this point is reached, password is valid
         return true;
     }
     

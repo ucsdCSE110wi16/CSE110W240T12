@@ -1,4 +1,4 @@
-package cse110.giftx.ui.activeGroupsDetails;
+package cse110.giftX.ui.activeGroupsDetails;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -8,9 +8,9 @@ import com.firebase.client.ServerValue;
 
 import java.util.HashMap;
 
-import cse110.giftx.R;
-import cse110.giftx.model.ActiveGroup;
-import cse110.giftx.utils.Constants;
+import cse110.giftX.R;
+import cse110.giftX.model.ActiveGroup;
+import cse110.giftX.utils.Constants;
 
 /**
  * Lets user edit the group name for all copies of the current list

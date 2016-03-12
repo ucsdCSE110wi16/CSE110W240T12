@@ -5,13 +5,6 @@
     tools:context="ui.MainActivity">
 
     <item
-        android:id="@+id/action_sort"
-        android:icon="@drawable/ic_sort_white"
-        android:title="Sort"
-        android:visible="false"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/action_user_profile"
         android:orderInCategory="100"
         android:title="View Profile"

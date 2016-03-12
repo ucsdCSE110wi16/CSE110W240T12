@@ -1,4 +1,4 @@
-package cse110.giftx.ui.activeGroupsDetails;
+package cse110.giftX.ui.activeGroupsDetails;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,9 +20,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import cse110.giftx.R;
-import cse110.giftx.utils.Constants;
-import cse110.giftx.utils.Utils;
+import cse110.giftX.R;
+import cse110.giftX.utils.Constants;
+import cse110.giftX.utils.Utils;
 
 public class InviteDialogFragment extends DialogFragment {
     EditText mEditTextInviteEmail;

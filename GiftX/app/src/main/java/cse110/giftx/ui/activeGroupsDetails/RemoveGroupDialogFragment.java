@@ -1,4 +1,4 @@
-package cse110.giftx.ui.activeGroupsDetails;
+package cse110.giftX.ui.activeGroupsDetails;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,9 +10,9 @@ import com.firebase.client.Firebase;
 
 import java.util.Set;
 
-import cse110.giftx.R;
-import cse110.giftx.model.ActiveGroup;
-import cse110.giftx.utils.Constants;
+import cse110.giftX.R;
+import cse110.giftX.model.ActiveGroup;
+import cse110.giftX.utils.Constants;
 
 /**
  * Gives user the ability to delete an Active Group

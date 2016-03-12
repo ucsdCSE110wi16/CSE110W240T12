@@ -1,12 +1,15 @@
-package cse110.giftx.ui.activeGroupsDetails;
+package cse110.giftX.ui.activeGroupsDetails;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -14,12 +17,13 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import cse110.giftx.R;
-import cse110.giftx.model.ActiveGroup;
-import cse110.giftx.model.User;
-import cse110.giftx.ui.BaseActivity;
-import cse110.giftx.ui.userProfile.UserProfileActivity;
-import cse110.giftx.utils.Constants;
+import cse110.giftX.R;
+import cse110.giftX.model.ActiveGroup;
+import cse110.giftX.model.User;
+import cse110.giftX.ui.BaseActivity;
+import cse110.giftX.ui.userProfile.UserProfileActivity;
+import cse110.giftX.utils.Constants;
+import cse110.giftX.utils.Utils;
 
 /**
  * Represents the details screen for when selecting an active group
@@ -34,7 +38,7 @@ public class PostSortActivity extends BaseActivity {
     private String groupManager;
     private TextView match_text;
     private User matchedUser;
-
+    private ImageView profileView;
 
     private String match;
 
@@ -51,6 +55,7 @@ public class PostSortActivity extends BaseActivity {
 
         //initialize views
         match_text = (TextView) findViewById(R.id.txt_match);
+        profileView = (ImageView) findViewById(R.id.imageView2);
 
         // TODO - Being called from presort, not main. (ARTHUR)
         // will pass the group id as well as the user email and
@@ -117,8 +122,10 @@ public class PostSortActivity extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 matchedUser = dataSnapshot.getValue(User.class);
-                String displayName = matchedUser.getFirstName() + " " + matchedUser.getLastName();
+                String displayName = matchedUser.getUserName();
                 match_text.setText(displayName);
+                String profileURL = matchedUser.getProfileURL();
+                new DownloadImageTask().execute(profileURL);
             }
 
             @Override
@@ -171,7 +178,7 @@ public class PostSortActivity extends BaseActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_edit_group_name){
-            // call edit group page TODO
+            showEditGroupNameDialog();
         }
 
 
@@ -215,7 +222,6 @@ public class PostSortActivity extends BaseActivity {
         dialogFragment.show(getFragmentManager(), "RemoveGroupDialogFragment");
     }
 
-
     public void onViewProfile(View view){
 
         //intent to open profile activity with correct user
@@ -225,5 +231,29 @@ public class PostSortActivity extends BaseActivity {
         intent.putExtra("email123", match);
         startActivity(intent);
 
+    }
+
+    /**
+     * Show the edit group name dialog when the user selects "Edit group name" menu item
+     */
+    public void showEditGroupNameDialog() {
+        // Create an instance of the dialog fragment and show it.
+        // TODO
+        DialogFragment dialogFragment = EditGroupNameDialogFragment.newInstance(mActiveGroup, mGroupId);
+        dialogFragment.show(this.getFragmentManager(), "EditGroupNameDialogFragment");
+    }
+
+    private class DownloadImageTask extends AsyncTask<Object, Integer, Drawable> {
+
+        protected Drawable doInBackground(Object... args) {
+            Drawable d = Utils.loadImageFromWeb((String) args[0]);
+            return d;
+        }
+
+        protected void onPostExecute(Drawable result) {
+            if(result != null && profileView != null) {
+                profileView.setImageDrawable(result);
+            }
+        }
     }
 }

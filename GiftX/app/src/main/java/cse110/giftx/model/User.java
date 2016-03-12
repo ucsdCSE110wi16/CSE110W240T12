@@ -1,4 +1,4 @@
-package cse110.giftx.model;
+package cse110.giftX.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,14 +7,14 @@ import java.util.Map;
  * Defines the data structure for User objects.
  */
 public class User {
-    private String firstName;
-    private String lastName;
+    private String userName;
     private String email;
     private String userID;
     private String aboutMe;
     private String likes;
     private String dislikes;
     private HashMap<String, Object> timestampJoined;
+    private String profileURL;
 
     Map<String, Boolean> groups;  //groupIDs to useless booleans
     Map<String, Boolean> invitations; //groupIDs to useless booleans
@@ -26,19 +26,16 @@ public class User {
     /**
      * Use this constructor to create new User.
      *
-     * @param firstName User's first name
-     * @param lastName User's last name
      * @param email User's email
      * @param timestampJoined When user joined
      */
-    public User(String firstName, String lastName, String email, HashMap<String, Object> timestampJoined, String uid) {
-        this.userID = uid;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String userName, String email, HashMap<String, Object> timestampJoined) {
+        this.userName = userName;
         this.email = email;
         this.aboutMe = "";
         this.likes = "";
         this.dislikes = "";
+        this.userID = "";
         this.timestampJoined = timestampJoined;
 
         //michael - adding dummies to initialize the group and invites locations
@@ -49,14 +46,16 @@ public class User {
 
     }
 
-    public String getUserID() {return userID; }
-
-    public String getFirstName() {
-        return firstName;
+    public String getProfileURL(){
+        if(profileURL != null)
+            return profileURL;
+        return null;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getUserID() {return userID; }
+
+    public String getUserName() {
+        return userName;
     }
 
     public String getEmail() {
@@ -88,6 +87,6 @@ public class User {
     }
 
     public boolean equals(Object other) {
-        return this.userID.equals(((User)other).getUserID());
+        return this.email.equals(((User)other).getEmail());
     }
 }

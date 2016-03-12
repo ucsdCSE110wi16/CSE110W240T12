@@ -3,12 +3,11 @@
     <color name="primary">#7D314A</color>
     <color name="primary_dark">#541E30</color>
 
-    <color name="accent">#7D314A</color>
+    <color name="accent">#CE6789</color>
     <color name="background">#220C13</color>
 
     <color name="black">#616161</color>
     <color name="light_black">#747474</color>
     <color name="dark_grey">#AEAEAE</color>
     <color name="grey">#EDEEEF</color>
-
 </resources>

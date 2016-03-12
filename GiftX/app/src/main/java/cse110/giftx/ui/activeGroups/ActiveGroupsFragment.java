@@ -1,4 +1,4 @@
-package cse110.giftx.ui.activeGroups;
+package cse110.giftX.ui.activeGroups;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,11 +16,11 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
-import cse110.giftx.R;
-import cse110.giftx.model.ActiveGroup;
-import cse110.giftx.ui.MainActivity;
-import cse110.giftx.ui.activeGroupsDetails.ActiveGroupsDetailsActivity;
-import cse110.giftx.utils.Constants;
+import cse110.giftX.R;
+import cse110.giftX.model.ActiveGroup;
+import cse110.giftX.ui.MainActivity;
+import cse110.giftX.ui.activeGroupsDetails.ActiveGroupsDetailsActivity;
+import cse110.giftX.utils.Constants;
 
 /**
  * A simple Fragment subclass that shows a list of all active groups

@@ -1,4 +1,4 @@
-package cse110.giftx.ui;
+package cse110.giftX.ui;
 
 
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,29 +22,48 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
-import cse110.giftx.R;
-import cse110.giftx.model.User;
-import cse110.giftx.ui.activeGroups.ActiveGroupsFragment;
-import cse110.giftx.ui.activeGroups.CreateGroupActivity;
-import cse110.giftx.ui.login.LoginActivity;
-import cse110.giftx.ui.pendingGroups.PendingGroupsFragment;
-import cse110.giftx.ui.userProfile.UserProfileActivity;
-import cse110.giftx.utils.Constants;
-import cse110.giftx.utils.Utils;
+import cse110.giftX.R;
+import cse110.giftX.model.User;
+import cse110.giftX.ui.activeGroups.ActiveGroupsFragment;
+import cse110.giftX.ui.activeGroups.CreateGroupActivity;
+import cse110.giftX.ui.login.LoginActivity;
+import cse110.giftX.ui.pendingGroups.PendingGroupsFragment;
+import cse110.giftX.ui.userProfile.UserProfileActivity;
+import cse110.giftX.utils.Constants;
+import cse110.giftX.utils.Utils;
 
 public class MainActivity extends BaseActivity{
 
     public final static String USER_EMAIL = "edu.ucsd.cse110wi16.giftexchange.USER_EMAIL";
-    final Firebase ref = new Firebase(Constants.FIREBASE_URL);
-    Firebase userRef;
-    AuthData authData = ref.getAuth();
+//    final Firebase ref = new Firebase(Constants.FIREBASE_URL);
+//    Firebase userRef;
+//    AuthData authData = ref.getAuth();
     String userEmail;
-    String userID;
-    User user;
+    String imageURL;
+//    String userID;
+//    User user;
+//    ArrayList<String> groupIDs;
+//    ArrayList<String> groupInvitations;
+//    SectionPagerAdapter adapter;
+//    boolean uiInitialized;
+//
+
+//    final Firebase mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
+
+    final Firebase ref = new Firebase(Constants.FIREBASE_URL);
+
+    private Firebase mUserRef;
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private ValueEventListener mUserRefListener;
+
     ArrayList<String> groupIDs;
     ArrayList<String> groupInvitations;
-    SectionPagerAdapter adapter;
+
     boolean uiInitialized;
+
+    SectionPagerAdapter sectionPagerAdapter;
+
+    AuthData authData = ref.getAuth();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,59 +75,65 @@ public class MainActivity extends BaseActivity{
             startLoginActivity();
             finish();
         }
-        else
-        {
-            //michael
-            //getting the userEmail from the userID
-            //possibly not needed if we can just save the email that the user enters at login
-            uiInitialized = false;
-            groupIDs = new ArrayList<String>();
-            groupInvitations = new ArrayList<String>();
-            userID = authData.getUid().toString();
-            userEmail = Utils.encodeEmail(authData.getProviderData().get("email").toString());
 
-            //USER Listener
-            userRef = ref.child(Constants.FIREBASE_LOCATION_USERS).child(userEmail);
-            userRef.addValueEventListener(new ValueEventListener() {
+        else {
+            userEmail = Utils.encodeEmail(authData.getProviderData().get("email").toString());
+            mUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(userEmail);
+
+            //profile pictures
+            imageURL = authData.getProviderData().get("profileImageURL").toString();
+            mUserRef.child("profileURL").setValue(imageURL);
+
+            uiInitialized = false;
+
+            groupIDs = new ArrayList<>();
+            groupInvitations = new ArrayList<>();
+
+            /**
+             * Link layout elements from XML and setup the toolbar
+             */
+            initializeScreen();
+
+            mUserRefListener = mUserRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    //whenever user changes, update arraylist, then initialize screen
-                    user = dataSnapshot.getValue(User.class);
-                    groupIDs = new ArrayList<String>();
-                    for(String gID: user.getGroups().keySet()) {
+                    User user = dataSnapshot.getValue(User.class);
+
+                    // Assumes that the first word in the user's name is the first name.
+                    String firstName = user.getUserName().split("\\s+")[0];
+                    String title = "Hello there, " + firstName;
+                    setTitle(title);
+                    groupIDs = new ArrayList<String>(); //needed
+                    for (String gID: user.getGroups().keySet()) {
                         if(!gID.equals("dummyGroup")) {
                             groupIDs.add(gID);
                         }
                     }
-                    groupInvitations = new ArrayList<String>();
-                    for(String invite: user.getInvitations().keySet()) {
-                        if(!invite.equals("dummyInvite")) {
+                    groupInvitations = new ArrayList<String>(); //needed
+                    for (String invite: user.getInvitations().keySet()) {
+                        if( !invite.equals("dummyInvitation")) {
                             groupInvitations.add(invite);
                         }
                     }
-                    if(!uiInitialized) {
+
+                    if (!uiInitialized) {
                         initializeScreen();
                         uiInitialized = true;
                     }
+
                     else {
-                        adapter.notifyDataSetChanged();
+                        sectionPagerAdapter.notifyDataSetChanged();
                     }
                 }
+
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {
+                    Log.e(LOG_TAG,
+                            getString(R.string.log_error_the_read_failed) +
+                                    firebaseError.getMessage());
                 }
             });
-
         }
-//        Button mEmailSignInButton = (Button) findViewById(R.id.logout_button);
-//        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                ref.unauth();
-//                startLoginActivity();
-//            }
-//        });
-        //initializeScreen();
     }
 
     /**
@@ -121,6 +147,7 @@ public class MainActivity extends BaseActivity{
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         MenuItem userProfile = menu.findItem(R.id.action_user_profile);
+
         // Login menu item
         MenuItem logout = menu.findItem(R.id.action_logout);
 
@@ -167,6 +194,7 @@ public class MainActivity extends BaseActivity{
     @Override
     public void onDestroy() {
         super.onDestroy();
+//        mUserRef.removeEventListener(mUserRefListener);
     }
 
     /**
@@ -181,9 +209,9 @@ public class MainActivity extends BaseActivity{
         /**
          * Create SectionPagerAdapter, set is as adapter to viewPager with setOffscreenPageLimt(2)
          */
-        adapter = new SectionPagerAdapter(getSupportFragmentManager());
+        sectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
         viewPager.setOffscreenPageLimit(2);
-        viewPager.setAdapter(adapter); //TODO
+        viewPager.setAdapter(sectionPagerAdapter);
 
         /**
          * Setup mTabLayout with view pager
@@ -197,12 +225,13 @@ public class MainActivity extends BaseActivity{
      */
     public void showAddGroupDialog(View view) {
         // Create an instance of the dialog fragment and show it
+//        DialogFragment dialog = AddGroupDialogFragment.newInstance(mEncodedEmail);
+//        dialog.show(MainActivity.this.getFragmentManager(), "AddGroupDialogFragment");
 
-        //michael - replacing dialog with activity, but probably shouldnt open directly to new Activity
-        //DialogFragment dialog = AddGroupDialogFragment.newInstance();
         //dialog.show(MainActivity.this.getFragmentManager(), "AddGroupDialogFragment");
         Intent intent = new Intent(this, CreateGroupActivity.class);
         intent.putExtra(USER_EMAIL, userEmail);
+        intent.putExtra("profile_url", imageURL);
         startActivity(intent);
     }
 
@@ -210,9 +239,12 @@ public class MainActivity extends BaseActivity{
      * SectionPagerAdapter class that extends FragmentStatePagerAdapter to save fragments state
      */
     public class SectionPagerAdapter extends FragmentStatePagerAdapter {
-        FragmentManager frgm;
+        FragmentManager fragmentManager;
 
-        public SectionPagerAdapter(FragmentManager fm) { super(fm); frgm = fm;}
+        public SectionPagerAdapter(FragmentManager fm) {
+            super(fm);
+            fragmentManager = fm;
+        }
 
         /**
          * Use positions (0 and 1) to find and instantiate fragments with newInstance()
@@ -227,8 +259,6 @@ public class MainActivity extends BaseActivity{
             /**
              * Set fragment to different fragments depending on position in ViewPage
              */
-
-            //michael - passed in userEmail to newInstances and added userEmail variable to each fragment class
             switch (position) {
                 case 0:
                     fragment = ActiveGroupsFragment.newInstance(userEmail, groupIDs);
@@ -259,10 +289,9 @@ public class MainActivity extends BaseActivity{
             }
         }
 
-        //michael1
         @Override
         public int getItemPosition(Object object) {
-            if(frgm.getFragments().contains(object))
+            if(fragmentManager.getFragments().contains(object))
                 return POSITION_NONE;
             else
                 return POSITION_UNCHANGED;

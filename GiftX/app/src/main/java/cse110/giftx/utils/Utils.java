@@ -1,8 +1,12 @@
-package cse110.giftx.utils;
+package cse110.giftX.utils;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Utility classes
@@ -64,28 +68,39 @@ public class Utils {
         }
     }
 
+    public static Calendar parseDate(String date, String time) {
+        int index1 = date.indexOf('/');
+        int index2 = date.indexOf('/', index1 + 1);
+        int index4 = time.indexOf(':');
+        int month = Integer.parseInt(date.substring(0, index1));
+        int dayOfMonth = Integer.parseInt(date.substring(index1 + 1, index2));
+        int year = Integer.parseInt(date.substring(index2 + 1));
+        int hour = Integer.parseInt(time.substring(0, index4));
+        if(hour == 12) hour = 0;
+        int minute = Integer.parseInt(time.substring(index4 + 1, index4 + 3));
+        String ampm = time.substring(time.length() - 2);
+        if(ampm.equals("PM")) {
+            hour += 12;
+        }
+        Calendar sortTime = Calendar.getInstance();
+        sortTime.set(year, month, dayOfMonth, hour, minute);
+        return sortTime;
+    }
+
     public static String getTime(String s) {
+        //hh:mmaa
         int hour = Integer.parseInt(s.substring(0, s.indexOf(':')));
-        String newHour = "";
-        String newMinute = s.substring(s.indexOf(':') + 1);
-        if(newMinute.length() < 2)
-            newMinute = "0" + newMinute;
-        String ampm = "";
-        if(hour >= 12) {
-            int nHour = hour - 12;
-            if(nHour == 0) nHour = 12;
-            newHour += nHour;
-            ampm = "pm";
+        String lowerCaseAMPM = s.substring(5).toLowerCase();
+        return "" + hour + s.substring(2, 5) + lowerCaseAMPM;
+    }
+
+    public static Drawable loadImageFromWeb(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+        } catch (Exception e) {
+            return null;
         }
-        else {
-            if(hour == 0) {
-                newHour = "12";
-            }
-            else {
-                newHour += hour;
-            }
-            ampm = "am";
-        }
-        return newHour + ":" + newMinute + ampm;
     }
 }

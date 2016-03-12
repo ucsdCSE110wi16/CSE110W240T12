@@ -1,4 +1,4 @@
-package cse110.giftx.ui.userProfile;
+package cse110.giftX.ui.userProfile;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -9,12 +9,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
-import cse110.giftx.R;
-import cse110.giftx.ui.BaseActivity;
-import cse110.giftx.utils.Constants;
+import cse110.giftX.R;
+import cse110.giftX.model.User;
+import cse110.giftX.ui.BaseActivity;
+import cse110.giftX.utils.Constants;
 
 /**
  * Created by AJ on 2/29/16.
@@ -22,6 +27,8 @@ import cse110.giftx.utils.Constants;
 public class UserProfileActivity extends BaseActivity {
     private static final String ARG_PARAM1 = "email123";
     private String email;
+    Firebase mUserRef;
+    TextView userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,29 @@ public class UserProfileActivity extends BaseActivity {
         email = b.getString(ARG_PARAM1);
 
         setContentView(R.layout.activity_user_profile);
+
+        mUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(email);
+
+        mUserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+
+                String name  = user.getUserName();
+
+                userName = (TextView) findViewById(R.id.text_view_user_name_profile);
+
+                userName.setText(name);
+
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        setTitle(R.string.user_profile_title);
 
         // Link layout elements
         initializeScreen();
@@ -50,7 +80,7 @@ public class UserProfileActivity extends BaseActivity {
         MenuItem logout = menu.findItem(R.id.action_logout);
 
         // Set the visibility
-        logout.setVisible(true);
+        logout.setVisible(false);
 
         return true;
     }
@@ -79,8 +109,12 @@ public class UserProfileActivity extends BaseActivity {
     private void initializeScreen() {
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile);
         setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         /**
          * Create SectionPagerAdapter, set is as adapter to viewPager with setOffscreenPageLimt(2)
@@ -93,6 +127,22 @@ public class UserProfileActivity extends BaseActivity {
          * Setup mTabLayout with view pager
          */
         tabLayout.setupWithViewPager(viewPager);
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+
+            switch (i) {
+                case 1:
+                    tabLayout.getTabAt(1).setIcon(R.drawable.likes);
+                    break;
+                case 2:
+                    tabLayout.getTabAt(2).setIcon(R.drawable.dislikes);
+                    break;
+                case 0:
+                default:
+                    tabLayout.getTabAt(0).setIcon(R.drawable.aboutme);
+                    break;
+            }
+
+        }
     }
 
     /**

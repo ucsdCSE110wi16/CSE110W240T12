@@ -1,4 +1,4 @@
-package cse110.giftx.ui.pendingGroups;
+package cse110.giftX.ui.pendingGroups;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,10 +18,10 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
-import cse110.giftx.R;
-import cse110.giftx.model.ActiveGroup;
-import cse110.giftx.utils.Constants;
-import cse110.giftx.utils.Utils;
+import cse110.giftX.R;
+import cse110.giftX.model.ActiveGroup;
+import cse110.giftX.utils.Constants;
+import cse110.giftX.utils.Utils;
 
 public class PendingGroupsFragment extends Fragment {
 
@@ -160,8 +160,9 @@ public class PendingGroupsFragment extends Fragment {
 
     private void initializeScreen(View rootView) {
         mListView = (ListView) rootView.findViewById(R.id.list_view_pending_groups);
-        View footer = getActivity().getLayoutInflater().inflate(R.layout.footer_empty, null);
-        mListView.addFooterView(footer);
+        //causes bugs:
+        //View footer = getActivity().getLayoutInflater().inflate(R.layout.footer_empty, null);
+        //mListView.addFooterView(footer);
     }
 
     private void acceptInvite() {

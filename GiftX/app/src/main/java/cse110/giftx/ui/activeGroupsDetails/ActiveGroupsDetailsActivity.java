@@ -1,4 +1,4 @@
-package cse110.giftx.ui.activeGroupsDetails;
+package cse110.giftX.ui.activeGroupsDetails;
 
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -18,21 +18,24 @@ import com.firebase.client.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import cse110.giftx.R;
-import cse110.giftx.model.ActiveGroup;
-import cse110.giftx.model.Exchanger;
-import cse110.giftx.model.User;
-import cse110.giftx.ui.BaseActivity;
-import cse110.giftx.ui.MainActivity;
-import cse110.giftx.utils.Constants;
+import cse110.giftX.R;
+import cse110.giftX.model.ActiveGroup;
+import cse110.giftX.model.Exchanger;
+import cse110.giftX.model.User;
+import cse110.giftX.ui.BaseActivity;
+import cse110.giftX.ui.MainActivity;
+import cse110.giftX.utils.Constants;
+import cse110.giftX.utils.Utils;
 
 /**
  * Represents the details screen for when selecting an active group
  */
-public class ActiveGroupsDetailsActivity extends BaseActivity {
+public class  ActiveGroupsDetailsActivity extends BaseActivity {
     private Firebase mActiveGroupRef;
     private Firebase mActiveGroupUsersRef;
     private ListView mListView;
@@ -49,6 +52,10 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
     private String match;
     private TextView sortingIn;
     private TextView sortingOn;
+    private Set<String> blacklist;
+    Firebase blacklistRef;
+
+    private String theGroupID;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -58,6 +65,7 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
         /* Get the push ID from the extra passed by ActiveGroupFragment */
         Intent intent = this.getIntent();
         mGroupId = intent.getStringExtra(Constants.KEY_GROUP_ID);
+        theGroupID = mGroupId;
         mUserEmail = intent.getStringExtra(MainActivity.USER_EMAIL);
         if (mGroupId == null) {
             /* No point in continuing if there's no valid ID */
@@ -65,9 +73,10 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
             return;
         }
 
-        users = new ArrayList<User>();
+        users = new ArrayList<>();
+        blacklist = new HashSet<String>();
         mListView = (ListView)findViewById(R.id.list_view_users);
-        mUserAdapter = new UserAdapter(this, users, mGroupId);
+        mUserAdapter = new UserAdapter(this, users, mGroupId, blacklist);
         mListView.setAdapter(mUserAdapter);
         //match = (TextView)findViewById(R.id.match_email);
         sortingIn = (TextView)findViewById(R.id.title_days_until_sort);
@@ -91,6 +100,26 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
          * Save the most recent version of current active group into mActiveGroup instance
          * variable and update the UI to match the current group
          */
+
+        blacklistRef = mActiveGroupRef.child("users").child(mUserEmail);
+        blacklistRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Boolean> blMap = (Map<String, Boolean>) dataSnapshot.getValue();
+                Set<String> blSet = blMap.keySet();
+                for (String u : blSet) {
+                    blacklist.add(u);
+                }
+                mUserAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
         mActiveGroupRefListener = mActiveGroupRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -114,7 +143,9 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
                 // Save to instance variable
                 mActiveGroup = activeGroup;
                 groupManager = activeGroup.getGroupManager();
-                Calendar c = getSortingDate();
+                String date = mActiveGroup.getSortDate();
+                String time = mActiveGroup.getSortTime();
+                Calendar c = Utils.parseDate(date, time);
                 int daysLeft = daysUntilSort(c);
                 sortingIn.setText(String.format(getString(R.string.title_days_until_sort), daysLeft));
                 SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM");
@@ -125,11 +156,13 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
                 if(activeGroup.isSorted()) {
                     match = mActiveGroup.getPairs().get(mUserEmail);
                     startPostSortActivity();
+                    return;
                 }
                 else {
                     if(sortDatePassed(c)) {
                         matchUsers();
                         mActiveGroupRef.child("sorted").setValue(true);
+                        return;
                     }
                 }
 
@@ -214,11 +247,11 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        /**
-         * Show edit group name dialog when the edit action is selected
-         */
         if (id == R.id.action_edit_group_name) {
-            showEditGroupNameDialog();
+            Intent intentEditUsers = new Intent(this, cse110.giftX.ui.adminSettings.AdminSettingsActivity.class);
+            intentEditUsers.putExtra(Constants.KEY_GROUP_ID, theGroupID);
+            intentEditUsers.putExtra("email", mUserEmail);
+            startActivity(intentEditUsers);
             return true;
         }
 
@@ -314,25 +347,13 @@ public class ActiveGroupsDetailsActivity extends BaseActivity {
         return days;
     }
 
-    private Calendar getSortingDate() {
-        String date = mActiveGroup.getSortDate();
-        String time = mActiveGroup.getSortTime();
-        int index1 = date.indexOf('/');
-        int index2 = date.indexOf('/', index1 + 1);
-        int index3 = date.indexOf(';');
-        int index4 = time.indexOf(':');
-        int month = Integer.parseInt(date.substring(0, index1));
-        int dayOfMonth = Integer.parseInt(date.substring(index1 + 1, index2));
-        int year = Integer.parseInt(date.substring(index2 + 1, index3));
-        int hour = Integer.parseInt(time.substring(0, index4));
-        int minute = Integer.parseInt(time.substring(index4 + 1));
-        Calendar sortTime = Calendar.getInstance();
-        sortTime.set(year, month, dayOfMonth, hour, minute);
-        return sortTime;
-    }
-
-    public void onSaveBlacklist(View view) {
-
+    //changed to clear preferences
+    public void onClearBlacklist(View view) {
+        blacklist.clear();
+        Map<String, Boolean> blk = new HashMap<String, Boolean>();
+        blk.put(mUserEmail, true);
+        blacklistRef.setValue(blk);
+        mUserAdapter.notifyDataSetChanged();
     }
 
     public final static String USER_EMAIL = "edu.ucsd.cse110wi16.giftexchange.USER_EMAIL1";

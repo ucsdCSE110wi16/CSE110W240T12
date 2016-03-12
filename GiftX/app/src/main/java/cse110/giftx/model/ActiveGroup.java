@@ -1,4 +1,4 @@
-package cse110.giftx.model;
+package cse110.giftX.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,13 +7,14 @@ import com.firebase.client.ServerValue;
 import java.util.HashMap;
 import java.util.Map;
 
-import cse110.giftx.utils.Constants;
+import cse110.giftX.utils.Constants;
 
 public class ActiveGroup {
     private String groupName;
     private String groupID;
     private String groupDescription;
     private String groupManager;
+    private String managerURL;
     private String sortDate;
     private String sortTime;
     private String endDate;
@@ -44,7 +45,8 @@ public class ActiveGroup {
      *
      */
     public ActiveGroup(String name, String description, String sortDate, String endDate, String sortTime,
-                       String endTime, String manager, HashMap<String, Object> timeStampCreated) {
+                       String endTime, String manager, double priceMin, double priceMax,
+                       HashMap<String, Object> timeStampCreated, String url) {
         this.groupName = name;
         this.groupID = groupID;
         this.groupDescription = description;
@@ -55,11 +57,12 @@ public class ActiveGroup {
         this.endTime = endTime;
         this.users = new HashMap<String, Map<String, Boolean>>();
         this.pairs = new HashMap<String, String>();
-        this.priceMin = 0;
-        this.priceMax = 0;
+        this.priceMin = priceMin;
+        this.priceMax = priceMax;
         this.blacklistMax = 0;
         this.sorted = false;
         this.timeStampCreated = timeStampCreated;
+        this.managerURL = url;
 
         HashMap<String, Object> timestampNowObject = new HashMap<String, Object>();
         timestampNowObject.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
@@ -76,6 +79,12 @@ public class ActiveGroup {
 
     public String getGroupManager() {
         return groupManager;
+    }
+
+    public String getManagerURL(){
+        if(managerURL != null)
+            return managerURL;
+        return null;
     }
 
     public HashMap<String, Object> getTimestampLastChanged() {
